@@ -1,0 +1,8 @@
+*.sqlite3
+node_modules/
+*.sh
+staticfiles/
+.coverage
+.coveragerc
+*.pyc
+*/*.pyc

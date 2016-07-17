@@ -15,9 +15,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'bucketlist', # Enter your database's name
-            'USER': 'postgres', # Enter your DB user
-            'PASSWORD': '', # Enter your DB password
+            'NAME': 'bucketlist',
+            'USER': 'postgres',
+            'PASSWORD': '',
             'HOST': '127.0.0.1',
             'PORT': '5432',
         }
