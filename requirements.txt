@@ -1,0 +1,5 @@
+Django==1.9.7
+django-envie==0.0.9
+djangorestframework==3.4.0
+psycopg2==2.6.2
+PyYAML==3.11
