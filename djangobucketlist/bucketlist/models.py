@@ -19,7 +19,7 @@ class Base(models.Model):
 
 
 class BucketList(Base):
-    creator = models.ForeignKey(User, related_name='bucketlist', on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, related_name='bucketlist', on_delete=models.CASCADE)
 
     class Meta(Base.Meta):
         db_table = 'bucketlist'

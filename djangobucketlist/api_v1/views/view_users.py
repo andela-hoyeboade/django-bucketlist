@@ -4,9 +4,10 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from validate_email import validate_email
-from api_v1.serializers import *
-# Create your views here.
+
+from api_v1.serializers import UserSerializer
+
+
 class RegisterView(ObtainAuthToken):
 
     """
