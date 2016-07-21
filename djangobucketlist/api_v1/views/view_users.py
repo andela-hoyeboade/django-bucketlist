@@ -77,7 +77,14 @@ class RegisterView(ObtainAuthToken):
                                      'Username already exist.'},
                                     status=status.HTTP_400_BAD_REQUEST)
 
+        if not email:
+            return Response({'message':
+                                     'Email not provided.'},
+                                    status=status.HTTP_400_BAD_REQUEST)
+
         serializer = UserSerializer(data=data)
+        #import ipdb;
+        #ipdb.set_trace()
         if serializer.is_valid():
             User.objects.create_user(username=username, password=password,
             email=email)

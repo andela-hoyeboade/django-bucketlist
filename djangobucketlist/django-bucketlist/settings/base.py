@@ -43,9 +43,20 @@ INSTALLED_APPS = [
     'bucketlist',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_nose',
 
 ]
 
+# Use nose to run all tests
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# Tell nose to measure coverage on the 'foo' and 'bar' apps
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=api_v1',
+    '--cover-erase',
+    '--cover-html',
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
