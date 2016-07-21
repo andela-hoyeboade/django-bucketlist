@@ -11,18 +11,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'password', 'email', 'bucketlist')
 
 
-class BucketListSerializer(serializers.ModelSerializer):
-
-    items = serializers.PrimaryKeyRelatedField(many=True, queryset=BucketListItem.objects.all())
-    owner = serializers.ReadOnlyField(source='owner.username')
-
-    class Meta:
-        model = BucketList
-        fields = (
-            'id', 'name', 'owner', 'date_created',
-            'date_modified', 'items')
-
-
 class BucketListItemSerializer(serializers.ModelSerializer):
 
     bucketlist = serializers.ReadOnlyField(source='bucketlist.id')
@@ -32,3 +20,15 @@ class BucketListItemSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'name', 'bucketlist', 'date_created', 'date_modified', 'done'
         )
+
+
+class BucketListSerializer(serializers.ModelSerializer):
+
+    items = BucketListItemSerializer(many=True, read_only=True)
+    owner = serializers.ReadOnlyField(source='owner.username')
+
+    class Meta:
+        model = BucketList
+        fields = (
+            'id', 'name', 'owner', 'date_created',
+            'date_modified', 'items')

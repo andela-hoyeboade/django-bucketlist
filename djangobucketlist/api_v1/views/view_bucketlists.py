@@ -18,10 +18,10 @@ class BucketListView(APIView):
         List all bucketlists that belong to a user
         """
         bucketlist = BucketList.objects.filter(owner=self.request.user)
-        serializer = BucketListSerializer(bucketlist, many=True)
+        serializer = BucketListSerializer(instance=bucketlist, many=True)
         return Response(serializer.data)
 
-    # creates a bucketlist
+    # Creates a bucketlist
     def post(self, request):
         """
         Create a new bucketlist
@@ -184,15 +184,6 @@ class BucketListItemDetailView(APIView):
             return bucketlist_item
         else:
             raise Http404
-
-    # Get an item in a bucketlist
-    def get(self, request, bucketlist_id, item_id):
-        """
-        Retrieve an item from a bucketlist
-        """
-        bucketlist_item = self.get_object(bucketlist_id, item_id)
-        serializer = BucketListItemSerializer(bucketlist_item)
-        return Response(serializer.data)
 
     # Edit an item in a bucketlist
     def put(self, request, bucketlist_id, item_id):
