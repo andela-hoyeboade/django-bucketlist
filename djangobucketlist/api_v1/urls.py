@@ -10,10 +10,10 @@ urlpatterns = [
     url(r'^bucketlists/(?P<bucketlist_id>[0-9]+)$',
         view_bucketlists.BucketListDetailView.as_view(),
         name='bucketlist_detail_api'),
-    #url(r'^bucketlists/(?P<bucket_list_id>[0-9]+)/items/$',
-    #    views.BucketListItemView.as_view(),
-    #    name='bucket_list_item_api'),
-    #url(r'^bucketlists/(?P<bucket_list_id>[0-9]+)/items/(?P<bucket_list_item_id>[0-9]+)$',
-    #    views.BucketListItemDetailView.as_view(),
-    #    name='bucket_list_item_api_detail')
+    url(r'^bucketlists/(?P<bucketlist_id>[0-9]+)/items/$',
+        view_bucketlists.BucketListItemView.as_view(),
+        name='bucketlist_item_api'),
+    url(r'^bucketlists/(?P<bucketlist_id>[0-9]+)/items/(?P<item_id>[0-9]+)$',
+        view_bucketlists.BucketListItemDetailView.as_view(),
+        name='bucketlist_item_detail_api')
 ]
