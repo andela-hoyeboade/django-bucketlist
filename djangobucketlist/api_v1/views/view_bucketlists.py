@@ -96,7 +96,7 @@ class BucketListDetailView(APIView):
         if bucketlist.name != name:
             if BucketList.objects.filter(name=name, owner=self.request.user):
                 return Response({'message':
-                                     'THis bucketlist already exist.'},
+                                     'This bucketlist already exist.'},
                                     status=status.HTTP_400_BAD_REQUEST)
 
         serializer = BucketListSerializer(bucketlist, data=request.data)
@@ -179,7 +179,7 @@ class BucketListItemDetailView(APIView):
             pk=bucketlist_id,
             owner=self.request.user).first()
         bucketlist_item = BucketListItem.objects.filter(
-            pk=item_id, bucketlist_id=bucketlist.id).first()
+            pk=item_id, bucketlist_id=bucketlist_id).first()
         if bucketlist and bucketlist_item:
             return bucketlist_item
         else:

@@ -1,5 +1,5 @@
 """
-This creates and generated tokens for users stored in the database
+This creates and generate tokens for users stored in the database
 """
 
 from django.conf import settings
