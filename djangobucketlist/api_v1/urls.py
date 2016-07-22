@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import include, url
 from api_v1 import views
 from views import view_users, view_bucketlists
 
@@ -15,5 +15,7 @@ urlpatterns = [
         name='bucketlist_item_api'),
     url(r'^bucketlists/(?P<bucketlist_id>[0-9]+)/items/(?P<item_id>[0-9]+)$',
         view_bucketlists.BucketListItemDetailView.as_view(),
-        name='bucketlist_item_detail_api')
+        name='bucketlist_item_detail_api'),
+    url(r'^docs/', include('rest_framework_swagger.urls')),
+
 ]

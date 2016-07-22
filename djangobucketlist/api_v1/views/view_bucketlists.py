@@ -83,7 +83,7 @@ class BucketListDetailView(APIView):
         ---
         parameters:
             - name: name
-              description: change the name of bucket
+              description: new name for the bucketlist
               required: true
               type: string
               paramType: form
@@ -109,7 +109,7 @@ class BucketListDetailView(APIView):
     # Delete the bucketlist
     def delete(self, request, bucketlist_id):
         """
-        Delete a bucket
+        Delete a bucketlist
         """
         bucketlist = self.get_object(bucketlist_id)
         bucketlist.delete()
@@ -138,7 +138,7 @@ class BucketListItemView(APIView):
         ---
         parameters:
             - name: name
-              description: name of bucketitem to create
+              description: name of the bucketlist item to be created
               required: true
               type: string
               paramType: form
