@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import LoginForm from './login.jsx';
 import RegisterForm from './register.jsx';
 import Menu from './menu.jsx';
+import {Jumbotron, Button} from 'react-bootstrap';
 export default class Home extends Component {
     constructor() {
         super();

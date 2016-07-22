@@ -143,6 +143,7 @@ export default class BucketListItem extends Component {
                 trigger="click"
                 container={document.body}
                 placement="top"
+                rootClose={true}
                 show={this.state.showDeletePopover}
                 onHide={() => this.setState({ showDeletePopover: false })}
                   overlay={

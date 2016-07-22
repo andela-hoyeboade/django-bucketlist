@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+    Alert,
     Col,
     form,
     Form,
@@ -14,16 +15,23 @@ import {
 } from 'react-bootstrap';
 import request from 'superagent';
 import { Redirect } from 'react-router';
-import Flash from './flash.jsx';
+//import Flash from './flash.jsx';
 
 export default class LoginForm extends Component {
     constructor() {
       super();
       this.handleSubmit = this.handleSubmit.bind(this);
       this.handleFieldChange = this.handleFieldChange.bind(this);
+      this.handleDisplayMessage = this.handleDisplayMessage.bind(this);
+      this.displayMessage = this.displayMessage.bind(this);
+      this.hideMessage = this.hideMessage.bind(this);
+      this.handleRedirectToDashboard = this.handleRedirectToDashboard.bind(this);
       this.state = {
         username: '',
-        password: ''
+        password: '',
+        flashMessage: '',
+        timeout: 0,
+        displayFlashMessageStatus: "none"
       }
     }
     handleFieldChange(event) {
@@ -40,8 +48,31 @@ export default class LoginForm extends Component {
       this.loginUser(this.state.username, this.state.password);
     }
 
+    handleDisplayMessage(message, timeout=3000) {
+      this.displayMessage(message);
+      setTimeout(this.hideMessage, timeout);
+    }
+
+    hideMessage() {
+      this.setState({displayFlashMessageStatus: "none",
+                    flashMessage: ""
+                  });
+    }
+
+    displayMessage(message) {
+      this.setState({flashMessage: message,
+                    displayFlashMessageStatus: "block"
+                  })
+    }
+
+    handleRedirectToDashboard() {
+      localStorage.setItem('username', JSON.stringify(this.state.username));
+      localStorage.setItem('token', JSON.stringify(this.state.token));
+      localStorage.setItem('isAuthenticated', true);
+      this.context.router.push('/dashboard');
+    }
+
     loginUser(username, password) {
-      //alert("You are logged in with username:" + username + " and " + "password:" +password)
       request
         .post('/api/v1/auth/login')
         .send({'username': username, 'password': password })
@@ -50,39 +81,19 @@ export default class LoginForm extends Component {
               this.setState({
                     token: result.body.token
                 });
-              console.log("success")
-              console.log(result.body.token);
-              //window.location.reload();
-              localStorage.setItem('username', JSON.stringify(this.state.username));
-              localStorage.setItem('token', JSON.stringify(this.state.token));
-              localStorage.setItem('isAuthenticated', true);
-              this.context.router.push('/dashboard');
-              //<Redirect to="/dashboard"/>
-
-// this should appear outside the element
-/*
-                this.setState({
-                    token: result.body.token
-                });
-                localStorage.setItem('token', JSON.stringify(this.state.token));
-                localStorage.setItem('username',
-                    JSON.stringify(this.state.username));
-                window.location.reload()
-                this.props.history.pushState({token: this.state.token}, '/home');
-*/
+              this.handleRedirectToDashboard()
             } else {
-                console.log(result.status);
-                console.log(result.body.message);
-                <Flash id="message" content={result.body.message} />
-                //this.setState({
-                //    error: true;
-                //})
+                var message = "Unable to log in. Please try again"
+                if (!(result.body.message) === undefined);
+                {
+                  message = result.body.message
+                }
+                this.handleDisplayMessage(message)
             }
 
         })
 
     }
-
 
     render() {
       return(
@@ -91,20 +102,27 @@ export default class LoginForm extends Component {
         <div className="col-md-12">
         <div className="well  well-sm" style={this.props.menustyle}>
       <h1>Welcome Back</h1>
+      <div style={{display:this.state.displayFlashMessageStatus}}>
+      <Alert bsStyle="danger">
+        {this.state.flashMessage}
+      </Alert>
+      </div>
       <Form action="post" onSubmit={this.handleSubmit} className="login">
-      <FormGroup><Col>Username:</Col>
-      <FormControl
-        name="username" type="text" required = {true} placeholder="Enter your username" onChange={this.handleFieldChange}
-      />
-      </FormGroup>
-        <FormGroup><Col>Password:</Col>
-      <FormControl
-        name="password" type="password" required = {true} placeholder="Enter your password" onChange={this.handleFieldChange}
-      />
-      </FormGroup>
-      <FormGroup>
-      <Button type="submit" className="btn btn-primary">Log In</Button>
-      </FormGroup>
+        <FormGroup>
+          <Col>Username:</Col>
+          <FormControl
+            name="username" type="text" required = {true} placeholder="Enter your username" onChange={this.handleFieldChange}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Col>Password:</Col>
+          <FormControl
+            name="password" type="password" required = {true} placeholder="Enter your password" onChange={this.handleFieldChange}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Button bsStyle="primary" type="submit">Log In</Button>
+        </FormGroup>
       </Form>
       </div>
       </div>

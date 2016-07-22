@@ -143,7 +143,7 @@ export default class Dashboard extends Component {
         <div>
           <Menu
             username={(JSON.parse(localStorage.getItem('username')))}
-            handleLogout={this.handleLogout} menustyle={{display:"inline-block"}}
+            handleLogout={this.handleLogout} menustyle={{display:"block"}}
           />
 
           <div className="container">

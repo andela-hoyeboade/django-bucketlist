@@ -266,7 +266,7 @@
 	        null,
 	        _react2.default.createElement(_menu2.default, {
 	          username: JSON.parse(localStorage.getItem('username')),
-	          handleLogout: this.handleLogout, menustyle: { display: "inline-block" }
+	          handleLogout: this.handleLogout, menustyle: { display: "block" }
 	        }),
 	        _react2.default.createElement(
 	          'div',
@@ -4306,15 +4306,19 @@
 	            )
 	          ),
 	          _react2.default.createElement(
-	            _reactBootstrap.Nav,
-	            { pullRight: true },
+	            'div',
+	            { style: this.props.menustyle },
 	            _react2.default.createElement(
-	              _reactBootstrap.NavDropdown,
-	              { eventKey: 3, title: 'Adeola', id: 'basic-nav-dropdown' },
+	              _reactBootstrap.Nav,
+	              { pullRight: true },
 	              _react2.default.createElement(
-	                _reactBootstrap.MenuItem,
-	                { eventKey: 3.1 },
-	                'Logout'
+	                _reactBootstrap.NavDropdown,
+	                { eventKey: 3, title: this.props.username || "", id: 'basic-nav-dropdown' },
+	                _react2.default.createElement(
+	                  _reactBootstrap.MenuItem,
+	                  { onClick: this.props.handleLogout, eventKey: 3.1 },
+	                  'Logout'
+	                )
 	              )
 	            )
 	          )
@@ -41066,6 +41070,7 @@
 	                trigger: 'click',
 	                container: document.body,
 	                placement: 'top',
+	                rootClose: true,
 	                target: function target() {
 	                  return ReactDOM.findDOMNode(_this6.refs.target);
 	                },
@@ -41357,6 +41362,7 @@
 	                trigger: 'click',
 	                container: document.body,
 	                placement: 'top',
+	                rootClose: true,
 	                show: this.state.showDeletePopover,
 	                onHide: function onHide() {
 	                  return _this5.setState({ showDeletePopover: false });
@@ -43381,6 +43387,8 @@
 
 	var _menu2 = _interopRequireDefault(_menu);
 
+	var _reactBootstrap = __webpack_require__(36);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -43503,10 +43511,6 @@
 
 	var _reactRouter = __webpack_require__(451);
 
-	var _flash = __webpack_require__(512);
-
-	var _flash2 = _interopRequireDefault(_flash);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -43516,6 +43520,8 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	//import Flash from './flash.jsx';
 
 	var LoginForm = function (_Component) {
 	  _inherits(LoginForm, _Component);
@@ -43527,9 +43533,16 @@
 
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
 	    _this.handleFieldChange = _this.handleFieldChange.bind(_this);
+	    _this.handleDisplayMessage = _this.handleDisplayMessage.bind(_this);
+	    _this.displayMessage = _this.displayMessage.bind(_this);
+	    _this.hideMessage = _this.hideMessage.bind(_this);
+	    _this.handleRedirectToDashboard = _this.handleRedirectToDashboard.bind(_this);
 	    _this.state = {
 	      username: '',
-	      password: ''
+	      password: '',
+	      flashMessage: '',
+	      timeout: 0,
+	      displayFlashMessageStatus: "none"
 	    };
 	    return _this;
 	  }
@@ -43549,43 +43562,53 @@
 	      this.loginUser(this.state.username, this.state.password);
 	    }
 	  }, {
+	    key: 'handleDisplayMessage',
+	    value: function handleDisplayMessage(message) {
+	      var timeout = arguments.length <= 1 || arguments[1] === undefined ? 3000 : arguments[1];
+
+	      this.displayMessage(message);
+	      setTimeout(this.hideMessage, timeout);
+	    }
+	  }, {
+	    key: 'hideMessage',
+	    value: function hideMessage() {
+	      this.setState({ displayFlashMessageStatus: "none",
+	        flashMessage: ""
+	      });
+	    }
+	  }, {
+	    key: 'displayMessage',
+	    value: function displayMessage(message) {
+	      this.setState({ flashMessage: message,
+	        displayFlashMessageStatus: "block"
+	      });
+	    }
+	  }, {
+	    key: 'handleRedirectToDashboard',
+	    value: function handleRedirectToDashboard() {
+	      localStorage.setItem('username', JSON.stringify(this.state.username));
+	      localStorage.setItem('token', JSON.stringify(this.state.token));
+	      localStorage.setItem('isAuthenticated', true);
+	      this.context.router.push('/dashboard');
+	    }
+	  }, {
 	    key: 'loginUser',
 	    value: function loginUser(username, password) {
 	      var _this2 = this;
 
-	      //alert("You are logged in with username:" + username + " and " + "password:" +password)
 	      _superagent2.default.post('/api/v1/auth/login').send({ 'username': username, 'password': password }).end(function (err, result) {
 	        if (result.status === 200) {
 	          _this2.setState({
 	            token: result.body.token
 	          });
-	          console.log("success");
-	          console.log(result.body.token);
-	          //window.location.reload();
-	          localStorage.setItem('username', JSON.stringify(_this2.state.username));
-	          localStorage.setItem('token', JSON.stringify(_this2.state.token));
-	          localStorage.setItem('isAuthenticated', true);
-	          _this2.context.router.push('/dashboard');
-	          //<Redirect to="/dashboard"/>
-
-	          // this should appear outside the element
-	          /*
-	                          this.setState({
-	                              token: result.body.token
-	                          });
-	                          localStorage.setItem('token', JSON.stringify(this.state.token));
-	                          localStorage.setItem('username',
-	                              JSON.stringify(this.state.username));
-	                          window.location.reload()
-	                          this.props.history.pushState({token: this.state.token}, '/home');
-	          */
+	          _this2.handleRedirectToDashboard();
 	        } else {
-	          console.log(result.status);
-	          console.log(result.body.message);
-	          _react2.default.createElement(_flash2.default, { id: 'message', content: result.body.message });
-	          //this.setState({
-	          //    error: true;
-	          //})
+	          var message = "Unable to log in. Please try again";
+	          if (!result.body.message === undefined) ;
+	          {
+	            message = result.body.message;
+	          }
+	          _this2.handleDisplayMessage(message);
 	        }
 	      });
 	    }
@@ -43608,6 +43631,15 @@
 	                'h1',
 	                null,
 	                'Welcome Back'
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { style: { display: this.state.displayFlashMessageStatus } },
+	                _react2.default.createElement(
+	                  _reactBootstrap.Alert,
+	                  { bsStyle: 'danger' },
+	                  this.state.flashMessage
+	                )
 	              ),
 	              _react2.default.createElement(
 	                _reactBootstrap.Form,
@@ -43641,7 +43673,7 @@
 	                  null,
 	                  _react2.default.createElement(
 	                    _reactBootstrap.Button,
-	                    { type: 'submit', className: 'btn btn-primary' },
+	                    { bsStyle: 'primary', type: 'submit' },
 	                    'Log In'
 	                  )
 	                )
@@ -49155,59 +49187,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 512 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(3);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Flash = function (_Component) {
-	  _inherits(Flash, _Component);
-
-	  function Flash() {
-	    _classCallCheck(this, Flash);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Flash).apply(this, arguments));
-	  }
-
-	  _createClass(Flash, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'h1',
-	          { id: this.props.id },
-	          this.props.content
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Flash;
-	}(_react.Component);
-
-	exports.default = Flash;
-
-/***/ },
+/* 512 */,
 /* 513 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -49249,11 +49229,17 @@
 
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
 	    _this.handleFieldChange = _this.handleFieldChange.bind(_this);
+	    _this.handleDisplayMessage = _this.handleDisplayMessage.bind(_this);
+	    _this.displayMessage = _this.displayMessage.bind(_this);
+	    _this.hideMessage = _this.hideMessage.bind(_this);
 	    _this.state = {
 	      username: '',
 	      email: '',
 	      password: '',
-	      confirm_password: ''
+	      confirm_password: '',
+	      flashMessage: '',
+	      displayFlashMessageStatus: "none",
+	      timeout: 0
 	    };
 	    return _this;
 	  }
@@ -49273,12 +49259,34 @@
 	      this.registerUser(this.state.username, this.state.email, this.state.password, this.state.confirm_password);
 	    }
 	  }, {
+	    key: 'handleDisplayMessage',
+	    value: function handleDisplayMessage(message) {
+	      var timeout = arguments.length <= 1 || arguments[1] === undefined ? 3000 : arguments[1];
+
+	      this.displayMessage(message);
+	      setTimeout(this.hideMessage, timeout);
+	    }
+	  }, {
+	    key: 'hideMessage',
+	    value: function hideMessage() {
+	      this.setState({ displayFlashMessageStatus: "none",
+	        flashMessage: ""
+	      });
+	    }
+	  }, {
+	    key: 'displayMessage',
+	    value: function displayMessage(message) {
+	      this.setState({ flashMessage: message,
+	        displayFlashMessageStatus: "block"
+	      });
+	    }
+	  }, {
 	    key: 'registerUser',
 	    value: function registerUser(username, email, password, confirm_password) {
 	      var _this2 = this;
 
 	      //alert("You are signing up with username:" + username + ",  email:" + email + " password:" + password + " confirm_password: "+confirm_password)
-	      _superagent2.default.post('/api/v1/auth/register').send({ 'username': username, 'email': email, 'password': password, 'confirm_password': confirm_password }).end(function (err, result) {
+	      _superagent2.default.post('/api/v1/auth/register').send({ 'username': username, 'email': email, 'password': password, 'confirm_password': confirm_password }).type('form').end(function (err, result) {
 	        if (result.status === 200) {
 	          console.log("success");
 	          console.log(result.body.token);
@@ -49291,12 +49299,12 @@
 	          localStorage.setItem('isAuthenticated', true);
 	          _this2.context.router.push('/dashboard');
 	        } else {
-	          console.log(result.status);
-	          console.log(result.body.message);
-
-	          //this.setState({
-	          //    error: true;
-	          //})
+	          var message = "Unable to sign up. Please try again";
+	          if (!result.body.message === undefined) ;
+	          {
+	            message = result.body.message;
+	          }
+	          _this2.handleDisplayMessage(message);
 	        }
 	      });
 	    }
@@ -49319,6 +49327,19 @@
 	                'h1',
 	                null,
 	                'Sign Up for Free'
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { style: { display: this.state.displayFlashMessageStatus } },
+	                _react2.default.createElement(
+	                  _reactBootstrap.Alert,
+	                  { bsStyle: 'danger' },
+	                  _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    this.state.flashMessage
+	                  )
+	                )
 	              ),
 	              _react2.default.createElement(
 	                _reactBootstrap.Form,
@@ -49376,8 +49397,8 @@
 	                  null,
 	                  _react2.default.createElement(
 	                    _reactBootstrap.Button,
-	                    { type: 'submit', className: 'btn btn-primary' },
-	                    'Get Started '
+	                    { bsStyle: 'primary', type: 'submit' },
+	                    'Get Started'
 	                  )
 	                )
 	              )

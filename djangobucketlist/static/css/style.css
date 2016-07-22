@@ -960,6 +960,7 @@ textarea {
 .new-bucket-list {
   margin-left: 15em;
   margin-top: 2em;
+  background-color: cadetblue;
 }
 
 .search {
@@ -1034,4 +1035,35 @@ textarea {
   width: 100%;
   height: 2.5em;
   background: #337ab7;
+}
+
+#login .alert-msg {
+  text-align: center
+}
+
+.navbar-brand {
+  height: 65px;
+  line-height: 30px;
+  font-size: 30px;
+}
+
+.dropdown-toggle {
+  font-size: 20px;
+  line-height: inherit;
+  margin-top: 0.3em;
+}
+
+.navbar-default {
+  background-color: gainsboro;
+}
+.navbar-default .navbar-brand {
+    color: #000000;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #000000;
+}
+
+.alert {
+  text-align: center;
 }

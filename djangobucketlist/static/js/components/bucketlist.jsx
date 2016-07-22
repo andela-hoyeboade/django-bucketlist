@@ -212,6 +212,7 @@ export default class BucketList extends Component {
                   trigger="click"
                   container={document.body}
                   placement="top"
+                  rootClose={true}
                   target={() => ReactDOM.findDOMNode(this.refs.target)}
                   show={this.state.showDeletePopover}
                   onHide={() => this.setState({ showDeletePopover: false })}
