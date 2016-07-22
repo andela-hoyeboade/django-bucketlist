@@ -73,12 +73,12 @@ export default class RegisterForm extends Component {
       <div id="signup">
       <div className="row">
       <div className="col-md-12">
-      <div  className="well  well-sm">
+      <div  className="well  well-sm" style={this.props.menustyle}>
     <h1>Sign Up for Free</h1>
     <Form action="post" onSubmit={this.handleSubmit} className="signup">
     <FormGroup><Col>Username:</Col>
     <FormControl
-      type="text" name="username" required = {true} placeholder="Choose a username" onChange={this.handleFieldChange}
+      type="text" name="username" required = {true} placeholder="Enter your username" onChange={this.handleFieldChange}
     />
     </FormGroup>
     <FormGroup><Col>Email:</Col>
@@ -89,7 +89,7 @@ export default class RegisterForm extends Component {
 
     <FormGroup><Col>Password:</Col>
     <FormControl
-      type="password" name="password" required = {true} placeholder="Choose a password" onChange={this.handleFieldChange}
+      type="password" name="password" required = {true} placeholder="Enter your password" onChange={this.handleFieldChange}
     />
     </FormGroup>
     <FormGroup><Col>Confirm Password:</Col>

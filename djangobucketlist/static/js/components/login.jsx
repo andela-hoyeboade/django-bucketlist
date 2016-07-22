@@ -89,7 +89,7 @@ export default class LoginForm extends Component {
         <div id="login">
         <div className="row">
         <div className="col-md-12">
-        <div className="well  well-sm">
+        <div className="well  well-sm" style={this.props.menustyle}>
       <h1>Welcome Back</h1>
       <Form action="post" onSubmit={this.handleSubmit} className="login">
       <FormGroup><Col>Username:</Col>

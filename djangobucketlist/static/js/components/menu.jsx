@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import {
-    Col,
-    form,
-    Form,
-    FormGroup,
+import { Col, form, Form, FormGroup,
     FormControl,
     Control,
     ControlLabel,
@@ -14,8 +10,14 @@ import {
     SplitButton,
     MenuItem,
     DropdownButton,
-    ButtonGroup
+    ButtonGroup,
+    Navbar,
+    Nav,
+    NavItem,
+    NavDropdown,
 } from 'react-bootstrap';
+
+
 
 export default class Menu extends Component {
    constructor() {
@@ -24,22 +26,19 @@ export default class Menu extends Component {
 
     render() {
         return (
-            <div className="menu">
-            <div className="container">
-            <div className="row">
-            <div className="col-sm-4 app-name">
-
-              <h2>MyBucketlists</h2>
-            </div>
-            <div className="col-sm-4 user-menu" style={this.props.menustyle}>
-            <h2>
-            Hello {this.props.username}
-            <a onClick = {this.props.handleLogout}>Logout</a>
-            </h2>
-            </div>
-            </div>
-
-            </div>
+          <div className="menu">
+            <Navbar staticTop={true}>
+              <Navbar.Header>
+                <Navbar.Brand>
+                  <a href="#">MyBucketlists</a>
+                </Navbar.Brand>
+            </Navbar.Header>
+            <Nav pullRight>
+              <NavDropdown eventKey={3} title="Adeola" id="basic-nav-dropdown">
+                <MenuItem eventKey={3.1}>Logout</MenuItem>
+              </NavDropdown>
+            </Nav>
+            </Navbar>
             </div>
 
         );
