@@ -1,11 +1,11 @@
-import webpack from 'webpack';
+var webpack = require('webpack');
 module.exports = {
     'stat': 'no-error',
     entry: [
-      "./static/js/app.react.js"
+      "./djangobucketlist/static/js/app.react.js"
     ],
     output: {
-        path: __dirname + '/static/js/build/',
+        path: __dirname + '/djangobucketlist/static/js/build/',
         filename: "bundle.js"
     },
     module: {
@@ -13,3 +13,4 @@ module.exports = {
             { test: /\.jsx?$/, loaders: ['babel-loader'], exclude: /node_modules/ }, // to transform JSX into JS
         ]
     },
+  }
