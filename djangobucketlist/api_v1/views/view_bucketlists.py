@@ -28,7 +28,7 @@ class BucketListView(APIView):
         ---
         parameters:
             - name: name
-              description: name of bucket to create
+              description: name of bucketlist to be created
               required: true
               type: string
               paramType: form
@@ -67,7 +67,7 @@ class BucketListDetailView(APIView):
         else:
             raise Http404
 
-    # Get the bucketlist
+    # Get a bucketlist
     def get(self, request, bucketlist_id):
         """
         Retrieve a bucketlist
@@ -76,15 +76,15 @@ class BucketListDetailView(APIView):
         serializer = BucketListSerializer(bucketlist)
         return Response(serializer.data)
 
-    # Edit the bucketlist
+    # Edit a bucketlist
     def put(self, request, bucketlist_id):
         """
         Edit a bucketlist
         ---
         parameters:
             - name: name
-              description: change the name of bucket
-              required: true
+              description: new name for the bucketlist
+              required: false
               type: string
               paramType: form
         """
@@ -106,10 +106,10 @@ class BucketListDetailView(APIView):
         return Response({'message':
                               serializer.errors},  status=status.HTTP_400_BAD_REQUEST)
 
-    # Delete the bucketlist
+    # Delete a bucketlist
     def delete(self, request, bucketlist_id):
         """
-        Delete a bucket
+        Delete a bucketlist
         """
         bucketlist = self.get_object(bucketlist_id)
         bucketlist.delete()
@@ -138,7 +138,7 @@ class BucketListItemView(APIView):
         ---
         parameters:
             - name: name
-              description: name of bucketitem to create
+              description: name of the bucketlist item to be created
               required: true
               type: string
               paramType: form
@@ -200,7 +200,7 @@ class BucketListItemDetailView(APIView):
             - done: done
               description: status of the bucketlist item
               required: false
-              type: string
+              type: boolean
               paramType: form
         """
         bucketlist_item = self.get_object(bucketlist_id, item_id)
