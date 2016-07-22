@@ -1,0 +1,35 @@
+{
+  "name": "Django-bucketlist",
+  "version": "1.0.0",
+  "description": "A Bucketlist app that allows users make a list of things they wish to do before doing",
+  "main": "app.index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-hoyeboade/django-bucketlist.git"
+  },
+  "author": "Hassan Oyeboade",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andela-hoyeboade/django-bucketlist/issues"
+  },
+  "homepage": "https://github.com/andela-hoyeboade/django-bucketlist#readme",
+  "devDependencies": {
+    "babel-core": "^6.10.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "bootstrap": "^3.3.6",
+    "webpack": "^1.13.1"
+  },
+  "dependencies": {
+    "jquery": "^3.0.0",
+    "react": "^15.2.0",
+    "react-bootstrap": "^0.29.5",
+    "react-dom": "^15.2.0",
+    "react-router": "^2.5.2",
+    "superagent": "^2.0.0"
+  }
+}
