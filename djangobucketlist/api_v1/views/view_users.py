@@ -20,17 +20,17 @@ class RegisterView(ObtainAuthToken):
         ---
         parameters:
             - name: email
-              description: email used to register
+              description: email to register
               required: true
               type: string
               paramType: form
             - name: username
-              description: username used to register
+              description: username to register
               required: true
               type: string
               paramType: form
             - name: password
-              description: password used to register
+              description: password to register
               required: true
               type: string
               paramType: form
@@ -104,7 +104,7 @@ class LoginView(ObtainAuthToken):
 
     def post(self, request):
         """
-        Returns token for a registered user
+        Returns token for a logged in user
         ---
         parameters:
             - name: username
