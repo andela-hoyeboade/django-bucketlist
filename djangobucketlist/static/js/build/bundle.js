@@ -61,7 +61,7 @@
 
 	var _home2 = _interopRequireDefault(_home);
 
-	var _main = __webpack_require__(514);
+	var _main = __webpack_require__(513);
 
 	var _main2 = _interopRequireDefault(_main);
 
@@ -40940,7 +40940,6 @@
 	          _this3.props.fetchAllBucketlists();
 	          _this3.fetchBucketlistItems(bucketlistId);
 	        } else {
-	          //console.log(result.status);
 	          console.log("error");
 	        }
 	      });
@@ -41007,7 +41006,7 @@
 
 	      if (this.props.bucketlists.length > 0) {
 	        return this.props.bucketlists.map(function (bucketlist) {
-	          return _this5.displaySingleBucketlist(bucketlist);
+	          return _this5.displaySingleBucketlist(bucketlist, (_this5.props.bucketlists.indexOf(bucketlist) + 1).toString());
 	        });
 	      } else {
 	        return _react2.default.createElement(
@@ -41025,83 +41024,88 @@
 	    }
 	  }, {
 	    key: 'displaySingleBucketlist',
-	    value: function displaySingleBucketlist(bucketlist) {
+	    value: function displaySingleBucketlist(bucketlist, bucketlistIndex) {
 	      var _this6 = this;
 
 	      return _react2.default.createElement(
-	        'div',
-	        { className: 'row', key: bucketlist.id },
+	        _reactBootstrap.Panel,
+	        { header: bucketlist.name + "(" + bucketlist.items.length + ")", eventKey: bucketlistIndex, onClick: function onClick() {
+	            return _this6.onbucketlistClick(bucketlist.id, bucketlist.name);
+	          }, onExit: this.testexit, onEntering: this.testentered },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'single-bucketlist' },
-	          _react2.default.createElement(
-	            'a',
-	            { className: 'btn btn-default', onClick: function onClick() {
-	                return _this6.onbucketlistClick(bucketlist.id, bucketlist.name);
-	              } },
-	            bucketlist.name,
-	            _react2.default.createElement(
-	              'span',
-	              null,
-	              ' (',
-	              bucketlist.items.length,
-	              ')'
-	            )
-	          ),
+	          { className: 'row', key: bucketlist.id },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'manage' },
+	            { className: 'single-bucketlist' },
 	            _react2.default.createElement(
-	              'a',
-	              { onClick: function onClick() {
-	                  return _this6.handleSaveNewBucketlistItem(bucketlist.id, bucketlist.name);
-	                } },
-	              _react2.default.createElement('span', { className: 'glyphicon glyphicon-plus', title: 'Add Items' })
-	            ),
-	            _react2.default.createElement(
-	              'a',
-	              { onClick: function onClick() {
-	                  return _this6.handleEditBucketlist(bucketlist.id, bucketlist.name);
-	                } },
-	              _react2.default.createElement('span', { className: 'glyphicon glyphicon-pencil', title: 'Edit this bucetlist' })
-	            ),
-	            _react2.default.createElement(
-	              _reactBootstrap.OverlayTrigger,
-	              {
-	                trigger: 'click',
-	                container: document.body,
-	                placement: 'top',
-	                target: function target() {
-	                  return ReactDOM.findDOMNode(_this6.refs.target);
-	                },
-	                show: this.state.showDeletePopover,
-	                onHide: function onHide() {
-	                  return _this6.setState({ showDeletePopover: false });
-	                },
-	                overlay: _react2.default.createElement(
-	                  _reactBootstrap.Popover,
-	                  { id: bucketlist.id, title: 'Do you really want to delete this bucketlist?' },
-	                  _react2.default.createElement(
-	                    'a',
-	                    { style: { 'marginLeft': 60, position: 'relative' }, className: 'btn btn-danger', onClick: function onClick() {
-	                        return _this6.deleteBucketlist(bucketlist.id);
-	                      } },
-	                    'Yes'
-	                  ),
-	                  _react2.default.createElement(
-	                    'a',
-	                    { style: { 'marginLeft': 30, position: 'relative' }, className: 'btn btn-primary',
-	                      onClick: function onClick() {
-	                        return _this6.hideDeletePopover();
-	                      } },
-	                    'No'
-	                  )
-	                ) },
+	              'div',
+	              { className: 'manage' },
 	              _react2.default.createElement(
 	                'a',
-	                null,
-	                ' ',
-	                _react2.default.createElement('span', { className: 'glyphicon glyphicon-trash', title: 'Delete this bucketlist' })
+	                { onClick: function onClick() {
+	                    return _this6.handleSaveNewBucketlistItem(bucketlist.id, bucketlist.name);
+	                  } },
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: 'badge add-item', title: 'Add Items' },
+	                  'Add items'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { onClick: function onClick() {
+	                    return _this6.handleEditBucketlist(bucketlist.id, bucketlist.name);
+	                  } },
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: 'badge btn edit-item', title: 'Edit this bucetlist' },
+	                  'Edit'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _reactBootstrap.OverlayTrigger,
+	                {
+	                  trigger: 'click',
+	                  container: document.body,
+	                  placement: 'top',
+	                  rootClose: true,
+	                  target: function target() {
+	                    return ReactDOM.findDOMNode(_this6.refs.target);
+	                  },
+	                  show: this.state.showDeletePopover,
+	                  onHide: function onHide() {
+	                    return _this6.setState({ showDeletePopover: false });
+	                  },
+	                  overlay: _react2.default.createElement(
+	                    _reactBootstrap.Popover,
+	                    { id: bucketlist.id, title: 'Do you really want to delete this bucketlist?' },
+	                    _react2.default.createElement(
+	                      'a',
+	                      { style: { 'marginLeft': 60, position: 'relative' }, className: 'btn btn-danger', onClick: function onClick() {
+	                          return _this6.deleteBucketlist(bucketlist.id);
+	                        } },
+	                      'Yes'
+	                    ),
+	                    _react2.default.createElement(
+	                      'a',
+	                      { style: { 'marginLeft': 30, position: 'relative' }, className: 'btn btn-primary',
+	                        onClick: function onClick() {
+	                          return _this6.hideDeletePopover();
+	                        } },
+	                      'No'
+	                    )
+	                  ) },
+	                _react2.default.createElement(
+	                  'a',
+	                  null,
+	                  ' ',
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'badge btn delete-item', title: 'Delete this bucketlist' },
+	                    'Delete'
+	                  )
+	                )
 	              )
 	            )
 	          )
@@ -41143,7 +41147,11 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'bucket-list' },
-	          this.displayAllBucketlists()
+	          _react2.default.createElement(
+	            _reactBootstrap.Accordion,
+	            null,
+	            this.displayAllBucketlists()
+	          )
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -41264,7 +41272,7 @@
 	          return _react2.default.createElement(
 	            'div',
 	            null,
-	            'No items yet.'
+	            'No items yet. Items are displayed within here'
 	          );
 	        };
 	      }
@@ -41335,61 +41343,73 @@
 	      var _this5 = this;
 
 	      return _react2.default.createElement(
-	        'div',
-	        { className: 'row', key: item.id },
+	        _reactBootstrap.ListGroupItem,
+	        null,
 	        _react2.default.createElement(
 	          'div',
-	          { id: item.id, className: 'single-bucketlist-item' },
-	          _react2.default.createElement(
-	            'a',
-	            null,
-	            item.name,
-	            ' '
-	          ),
+	          { className: 'row', key: item.id },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'manage' },
+	            { id: item.id, className: 'single-bucketlist-item' },
 	            _react2.default.createElement(
 	              'a',
-	              { onClick: function onClick() {
-	                  return _this5.handleEditBucketlistItem(bucketlistId, item.id, item.name);
-	                } },
-	              _react2.default.createElement('span', { className: 'glyphicon glyphicon-pencil', title: 'Edit this bucetlist' })
+	              { className: 'item-title' },
+	              item.name,
+	              ' '
 	            ),
 	            _react2.default.createElement(
-	              _reactBootstrap.OverlayTrigger,
-	              {
-	                trigger: 'click',
-	                container: document.body,
-	                placement: 'top',
-	                rootClose: true,
-	                show: this.state.showDeletePopover,
-	                onHide: function onHide() {
-	                  return _this5.setState({ showDeletePopover: false });
-	                },
-	                overlay: _react2.default.createElement(
-	                  _reactBootstrap.Popover,
-	                  { id: bucketlistId, title: 'Do you really want to delete this item?' },
-	                  _react2.default.createElement(
-	                    'a',
-	                    { style: { 'marginLeft': 60, position: 'relative' }, className: 'btn btn-danger', onClick: function onClick() {
-	                        return _this5.deleteBucketlistItem(bucketlistId, item.id);
-	                      } },
-	                    'Yes'
-	                  ),
-	                  _react2.default.createElement(
-	                    'a',
-	                    { style: { 'marginLeft': 30, position: 'relative' }, className: 'btn btn-primary',
-	                      onClick: function onClick() {
-	                        return _this5.hideDeletePopover();
-	                      } },
-	                    'No'
-	                  )
-	                ) },
+	              'div',
+	              { className: 'manage' },
 	              _react2.default.createElement(
 	                'a',
-	                null,
-	                _react2.default.createElement('span', { className: 'glyphicon glyphicon-trash', title: 'Delete this item' })
+	                { onClick: function onClick() {
+	                    return _this5.handleEditBucketlistItem(bucketlistId, item.id, item.name);
+	                  } },
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: 'badge btn edit-item', title: 'Edit this item' },
+	                  'Edit'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _reactBootstrap.OverlayTrigger,
+	                {
+	                  trigger: 'click',
+	                  container: document.body,
+	                  placement: 'top',
+	                  rootClose: true,
+	                  show: this.state.showDeletePopover,
+	                  onHide: function onHide() {
+	                    return _this5.setState({ showDeletePopover: false });
+	                  },
+	                  overlay: _react2.default.createElement(
+	                    _reactBootstrap.Popover,
+	                    { id: bucketlistId, title: 'Do you really want to delete this item?' },
+	                    _react2.default.createElement(
+	                      'a',
+	                      { style: { 'marginLeft': 60, position: 'relative' }, className: 'btn btn-danger', onClick: function onClick() {
+	                          return _this5.deleteBucketlistItem(bucketlistId, item.id);
+	                        } },
+	                      'Yes'
+	                    ),
+	                    _react2.default.createElement(
+	                      'a',
+	                      { style: { 'marginLeft': 30, position: 'relative' }, className: 'btn btn-primary',
+	                        onClick: function onClick() {
+	                          return _this5.hideDeletePopover();
+	                        } },
+	                      'No'
+	                    )
+	                  ) },
+	                _react2.default.createElement(
+	                  'a',
+	                  null,
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'badge btn delete-item', title: 'Delete this item' },
+	                    'Delete'
+	                  )
+	                )
 	              )
 	            )
 	          )
@@ -41409,7 +41429,6 @@
 	        return _react2.default.createElement(
 	          'div',
 	          null,
-	          ' Items for ',
 	          this.props.bucketlistName
 	        );
 	      }
@@ -41433,11 +41452,13 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'bucket-list-item-title' },
-	          ' ',
-	          this.displayBucketlistItemsTitle(props.bucketlistId, props.bucketlistName),
-	          this.displayBucketlistItems(props.bucketlistId, props.items)
+	          _reactBootstrap.Panel,
+	          { header: props.bucketlistName },
+	          _react2.default.createElement(
+	            _reactBootstrap.ListGroup,
+	            { fill: true },
+	            this.displayBucketlistItems(props.bucketlistId, props.items)
+	          )
 	        ),
 	        _react2.default.createElement(_bucketlistItemModal2.default, {
 	          show: this.state.editBucketlistItemForm,
@@ -43379,7 +43400,7 @@
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _register = __webpack_require__(513);
+	var _register = __webpack_require__(512);
 
 	var _register2 = _interopRequireDefault(_register);
 
@@ -49204,8 +49225,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 512 */,
-/* 513 */
+/* 512 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49437,7 +49457,7 @@
 	};
 
 /***/ },
-/* 514 */
+/* 513 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

@@ -729,13 +729,12 @@ textarea {
 
 .bucket-list {
   width: 30%;
-  margin-left: 80px;
-  float: left;
+    margin-left: 20px;
+    float: left;
+}
 }
 .single-bucketlist {
-  background-color: #FFF;
   margin-left: -50px;
-  padding-bottom: 1em;
 }
 
 .single-bucketlist a {
@@ -743,30 +742,56 @@ textarea {
   text-align: left;
   width: 80%;
   border-style:hidden;
-  background-color: #ccc;
 
 }
+
+.single-bucketlist-item .manage {
+  width: 15%;
+  float: right;
+  margin-right: -1em;
+}
+
+.single-bucketlist-item .manage a {
+  margin-right: 0.6em;
+}
+
 .btn-default {
   border-style: none;
 }
 
-.manage {
-  margin-left: auto;
-  float: right;
-  width: 5em;
-}
-.manage a {
+.single-bucketlist .manage a {
   cursor: pointer;
-  text-align: left;
-  width: 100%;
-  background-color: #ccc;
-  padding-left: 0.5em;
+    text-align: left;
+    width: 100%;
+  padding-left: 2.5em;
+}
 
+.delete-item {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+
+.add-item {
+  background-color: darkslategray;
 }
 
 .bucket-list-items {
   margin-left: 50px;
   float: left;
+  width: 60%;
+}
+
+.bucket-list-items .panel-default {
+  border: none;
+}
+
+.bucket-list-items .panel-heading {
+  text-align: center;
+}
+
+.bucket-list-items .item-title {
+  font-size: 18px;
+  padding-left: 0.5em;
 }
 
 .single-bucketlist-item {
@@ -778,6 +803,9 @@ textarea {
   margin-left: 2em;
 }
 
+.single-bucketlist-item {
+
+}
 #login .btn {
   width: 100%;
   height: 2.5em;
@@ -825,4 +853,8 @@ textarea {
 .modal-content {
   width: 35em;
   margin-left: -5em;
+}
+
+.panel-group {
+    margin-bottom: 5px;
 }

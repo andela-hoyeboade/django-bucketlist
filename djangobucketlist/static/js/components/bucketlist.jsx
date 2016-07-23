@@ -18,7 +18,9 @@ import {
     ButtonToolbar,
     OverlayTrigger,
     Overlay,
-    Popover
+    Popover,
+    Accordion,
+    Panel,
 } from 'react-bootstrap';
 
 export default class BucketList extends Component {
@@ -62,6 +64,7 @@ export default class BucketList extends Component {
         this.fetchBucketlistItems(bucketlistId);
       }
     }
+
 
     deleteBucketlist(bucketlistId) {
       if (bucketlistId === '' || bucketlistId === 0 || bucketlistId === undefined) {
@@ -119,7 +122,6 @@ export default class BucketList extends Component {
             this.props.fetchAllBucketlists();
             this.fetchBucketlistItems(bucketlistId)
           } else {
-            //console.log(result.status);
             console.log("error");
           }
         });
@@ -180,7 +182,7 @@ export default class BucketList extends Component {
           return (
             this.props.bucketlists.map((bucketlist) => {
               return (
-                this.displaySingleBucketlist(bucketlist)
+                this.displaySingleBucketlist(bucketlist, (this.props.bucketlists.indexOf(bucketlist)+1).toString())
               );
           })
           );
@@ -199,19 +201,21 @@ export default class BucketList extends Component {
       console.log(this.state.showDeletePopover)
       this.setState({ showDeletePopover: false })
     }
-    displaySingleBucketlist(bucketlist) {
+    displaySingleBucketlist(bucketlist, bucketlistIndex) {
       return (
-          <div className="row"  key={bucketlist.id}>
-            <div className="single-bucketlist">
-              <a className="btn btn-default" onClick={()=>this.onbucketlistClick(bucketlist.id, bucketlist.name)} >{bucketlist.name}<span> ({bucketlist.items.length})</span></a>
-              <div className="manage">
-                <a onClick={()=>this.handleSaveNewBucketlistItem(bucketlist.id, bucketlist.name)}><span className="glyphicon glyphicon-plus" title="Add Items"></span></a>
-                <a onClick={()=>this.handleEditBucketlist(bucketlist.id, bucketlist.name)}><span className="glyphicon glyphicon-pencil" title="Edit this bucetlist"></span></a>
 
+              <Panel header={bucketlist.name + "(" + bucketlist.items.length +")"} eventKey={bucketlistIndex} onClick={()=>this.onbucketlistClick(bucketlist.id, bucketlist.name)} onExit = {this.testexit} onEntering={this.testentered}>
+              <div className="row"  key={bucketlist.id}>
+                <div className="single-bucketlist">
+
+              <div className="manage">
+                <a onClick={()=>this.handleSaveNewBucketlistItem(bucketlist.id, bucketlist.name)}><span className="badge add-item" title="Add Items">Add items</span></a>
+                <a onClick={()=>this.handleEditBucketlist(bucketlist.id, bucketlist.name)}><span className="badge btn edit-item" title="Edit this bucetlist">Edit</span></a>
                 <OverlayTrigger
                   trigger="click"
                   container={document.body}
                   placement="top"
+                  rootClose={true}
                   target={() => ReactDOM.findDOMNode(this.refs.target)}
                   show={this.state.showDeletePopover}
                   onHide={() => this.setState({ showDeletePopover: false })}
@@ -222,13 +226,16 @@ export default class BucketList extends Component {
                       onClick={() => this.hideDeletePopover()}>No</a>
 
                     </Popover>}>
-                    <a> <span className="glyphicon glyphicon-trash" title="Delete this bucketlist"></span></a>
+                    <a> <span className="badge btn delete-item" title="Delete this bucketlist">Delete</span></a>
                 </OverlayTrigger>
 
 
               </div>
+              </div>
             </div>
-          </div>
+              </Panel>
+
+
 
     );
   }
@@ -251,6 +258,7 @@ export default class BucketList extends Component {
           }
         });
     }
+
     render() {
 
       let closeEditBucketlistForm = () => this.setState({ editBucketlistForm: false})
@@ -258,7 +266,9 @@ export default class BucketList extends Component {
       return(
         <div>
           <div className="bucket-list">
+          <Accordion>
             {this.displayAllBucketlists()}
+            </Accordion>
           </div>
 
           <div className="bucket-list-items">

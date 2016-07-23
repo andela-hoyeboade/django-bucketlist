@@ -16,7 +16,10 @@ import {
     ButtonToolbar,
     OverlayTrigger,
     Overlay,
-    Popover
+    Popover,
+    ListGroup,
+    ListGroupItem,
+    Panel
 } from 'react-bootstrap';
 
 export default class BucketListItem extends Component {
@@ -52,6 +55,7 @@ export default class BucketListItem extends Component {
     }
 
     displayBucketlistItems(bucketlistId, items) {
+
       if (!(bucketlistId === 0 || bucketlistId === '' || bucketlistId === undefined)) {
         if (items.length > 0) {
           return (
@@ -65,7 +69,7 @@ export default class BucketListItem extends Component {
         else {
           return (
             <div>
-              No items yet.
+              No items yet. Items are displayed within here
             </div>
         );
         };
@@ -134,11 +138,12 @@ export default class BucketListItem extends Component {
 
   displaySingleBucketlistItem(bucketlistId, item) {
     return (
+      <ListGroupItem>
         <div className="row"  key={item.id}>
           <div id={item.id} className="single-bucketlist-item">
-            <a>{item.name} </a>
+            <a className="item-title">{item.name} </a>
             <div className="manage">
-              <a onClick={()=>this.handleEditBucketlistItem(bucketlistId, item.id, item.name)}><span className="glyphicon glyphicon-pencil" title="Edit this bucetlist"></span></a>
+              <a onClick={()=>this.handleEditBucketlistItem(bucketlistId, item.id, item.name)}><span className="badge btn edit-item" title="Edit this item">Edit</span></a>
               <OverlayTrigger
                 trigger="click"
                 container={document.body}
@@ -153,11 +158,12 @@ export default class BucketListItem extends Component {
                     onClick={() => this.hideDeletePopover()}>No</a>
 
                   </Popover>}>
-                  <a><span className="glyphicon glyphicon-trash" title="Delete this item"></span></a>
+                  <a><span className="badge btn delete-item" title="Delete this item">Delete</span></a>
               </OverlayTrigger>
             </div>
           </div>
         </div>
+        </ListGroupItem>
 
     );
   }
@@ -170,7 +176,9 @@ export default class BucketListItem extends Component {
     }
     else {
       return (
-        <div> Items for {this.props.bucketlistName}
+
+        <div>
+      {this.props.bucketlistName}
         </div>
       )
     }
@@ -186,10 +194,11 @@ export default class BucketListItem extends Component {
     const props = this.props;
     return(
       <div>
-      <div className="bucket-list-item-title"> {this.displayBucketlistItemsTitle(props.bucketlistId, props.bucketlistName)}
+      <Panel header={props.bucketlistName}>
+      <ListGroup fill>
       {this.displayBucketlistItems(props.bucketlistId, props.items)}
-
-      </div>
+      </ListGroup>
+      </Panel>
 
       <BucketListItemModalForm
         show={this.state.editBucketlistItemForm}
