@@ -174,6 +174,7 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      document.title = "Dashboard - MyBucketlists";
 	      this.fetchAllBucketlists();
 	    }
 	  }, {
@@ -41070,7 +41071,6 @@
 	                trigger: 'click',
 	                container: document.body,
 	                placement: 'top',
-	                rootClose: true,
 	                target: function target() {
 	                  return ReactDOM.findDOMNode(_this6.refs.target);
 	                },
@@ -41117,7 +41117,7 @@
 	        if (result.status === 200) {
 	          //console.log("success");
 	          _this7.setState({
-	            items: result.body
+	            items: result.body.items
 	          });
 	        } else {
 	          _this7.setState({
@@ -43417,6 +43417,18 @@
 	  }
 
 	  _createClass(Home, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      if (localStorage.getItem('isAuthenticated') === 'true') {
+	        this.context.router.push('/dashboard');
+	      }
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      document.title = "Home Page - MyBucketlists";
+	    }
+	  }, {
 	    key: 'showSignUpForm',
 	    value: function showSignUpForm() {
 	      this.setState({
@@ -43486,6 +43498,11 @@
 	}(_react.Component);
 
 	exports.default = Home;
+
+
+	Home.contextTypes = {
+	  router: _react2.default.PropTypes.object.isRequired
+	};
 
 /***/ },
 /* 450 */

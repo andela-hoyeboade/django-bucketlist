@@ -29,6 +29,7 @@
     "react": "^15.2.0",
     "react-bootstrap": "^0.29.5",
     "react-bootstrap-navbar": "^1.1.0",
+    "react-document-title": "^2.0.2",
     "react-dom": "^15.2.0",
     "react-router": "^2.5.2",
     "superagent": "^2.0.0"

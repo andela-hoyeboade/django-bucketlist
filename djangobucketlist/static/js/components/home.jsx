@@ -16,6 +16,16 @@ export default class Home extends Component {
         this.showLoginForm = this.showLoginForm.bind(this);
     }
 
+    componentWillMount() {
+      if (localStorage.getItem('isAuthenticated') === 'true') {
+        this.context.router.push('/dashboard');
+      }
+    }
+
+    componentDidMount() {
+      document.title = "Home Page - MyBucketlists";
+    }
+
     showSignUpForm() {
       this.setState({
         registerFormShowStatus: "block",
@@ -53,3 +63,7 @@ export default class Home extends Component {
           );
         }
 }
+
+Home.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};

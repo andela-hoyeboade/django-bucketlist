@@ -55,6 +55,7 @@ export default class Dashboard extends Component {
     }
 
     componentDidMount() {
+      document.title = "Dashboard - MyBucketlists";
         this.fetchAllBucketlists();
     }
 

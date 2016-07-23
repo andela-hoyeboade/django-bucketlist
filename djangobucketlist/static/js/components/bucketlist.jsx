@@ -212,7 +212,6 @@ export default class BucketList extends Component {
                   trigger="click"
                   container={document.body}
                   placement="top"
-                  rootClose={true}
                   target={() => ReactDOM.findDOMNode(this.refs.target)}
                   show={this.state.showDeletePopover}
                   onHide={() => this.setState({ showDeletePopover: false })}
@@ -243,7 +242,7 @@ export default class BucketList extends Component {
           if (result.status === 200) {
             //console.log("success");
             this.setState({
-              items: result.body,
+              items: result.body.items,
             });
           } else {
             this.setState({
