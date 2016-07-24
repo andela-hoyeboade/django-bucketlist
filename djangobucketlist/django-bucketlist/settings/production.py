@@ -7,7 +7,7 @@ import os
 DEBUG = False
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+    'default': dj_database_url.config()
 }
 
 BOWER_PATH = '/app/node_modules/bower'
