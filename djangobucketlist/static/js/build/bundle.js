@@ -116,9 +116,9 @@
 
 	var _superagent2 = _interopRequireDefault(_superagent);
 
-	var _bucketlistEditModal = __webpack_require__(448);
+	var _bucketlistItemModal = __webpack_require__(441);
 
-	var _bucketlistEditModal2 = _interopRequireDefault(_bucketlistEditModal);
+	var _bucketlistItemModal2 = _interopRequireDefault(_bucketlistItemModal);
 
 	var _reactBootstrap = __webpack_require__(36);
 
@@ -41089,7 +41089,7 @@
 	        _reactBootstrap.Panel,
 	        { header: bucketlist.name + "(" + bucketlist.items.length + ")", eventKey: bucketlistIndex, onClick: function onClick() {
 	            return _this7.onbucketlistClick(bucketlist.id, bucketlist.name);
-	          }, onExit: this.testexit, onEntering: this.testentered },
+	          } },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'row', key: bucketlist.id },
@@ -43427,121 +43427,7 @@
 	exports.default = BucketListModalForm;
 
 /***/ },
-/* 448 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(3);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(100);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _dashboard = __webpack_require__(2);
-
-	var _dashboard2 = _interopRequireDefault(_dashboard);
-
-	var _superagent = __webpack_require__(442);
-
-	var _superagent2 = _interopRequireDefault(_superagent);
-
-	var _reactBootstrap = __webpack_require__(36);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var BucketListEditModalForm = function (_Component) {
-	  _inherits(BucketListEditModalForm, _Component);
-
-	  function BucketListEditModalForm() {
-	    _classCallCheck(this, BucketListEditModalForm);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(BucketListEditModalForm).apply(this, arguments));
-	  }
-
-	  _createClass(BucketListEditModalForm, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          _reactBootstrap.Modal,
-	          _extends({}, this.props, { bsSize: 'small', 'aria-labelledby': 'contained-modal-title-sm' }),
-	          _react2.default.createElement(
-	            _reactBootstrap.Modal.Header,
-	            { closeButton: true },
-	            _react2.default.createElement(
-	              _reactBootstrap.Modal.Title,
-	              { id: 'contained-modal-title-sm' },
-	              this.props.formtitle
-	            )
-	          ),
-	          _react2.default.createElement(
-	            _reactBootstrap.Modal.Body,
-	            null,
-	            _react2.default.createElement(
-	              _reactBootstrap.Form,
-	              { action: 'post', onSubmit: this.props.onSave, className: 'buck' },
-	              _react2.default.createElement(
-	                _reactBootstrap.FormGroup,
-	                null,
-	                _react2.default.createElement(
-	                  _reactBootstrap.Col,
-	                  null,
-	                  'Name:'
-	                ),
-	                _react2.default.createElement(_reactBootstrap.FormControl, {
-	                  name: 'bucketlistName', value: this.props.bucketlistName, type: 'text', required: true, placeholder: this.props.placeholder, onChange: this.props.handleFieldChange
-	                })
-	              ),
-	              _react2.default.createElement(
-	                _reactBootstrap.Modal.Footer,
-	                null,
-	                _react2.default.createElement(
-	                  _reactBootstrap.FormGroup,
-	                  null,
-	                  _react2.default.createElement(
-	                    _reactBootstrap.Button,
-	                    { onClick: this.props.onHide },
-	                    'Close'
-	                  ),
-	                  _react2.default.createElement(
-	                    _reactBootstrap.Button,
-	                    { type: 'submit', className: 'btn btn-primary' },
-	                    'Save'
-	                  )
-	                )
-	              )
-	            )
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return BucketListEditModalForm;
-	}(_react.Component);
-
-	exports.default = BucketListEditModalForm;
-
-/***/ },
+/* 448 */,
 /* 449 */
 /***/ function(module, exports, __webpack_require__) {
 

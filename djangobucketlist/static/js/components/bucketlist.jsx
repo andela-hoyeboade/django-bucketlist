@@ -309,7 +309,7 @@ export default class BucketList extends Component {
     displaySingleBucketlist(bucketlist, bucketlistIndex) {
       return (
 
-              <Panel header={bucketlist.name + "(" + bucketlist.items.length +")"} eventKey={bucketlistIndex} onClick={()=>this.onbucketlistClick(bucketlist.id, bucketlist.name)} onExit = {this.testexit} onEntering={this.testentered}>
+              <Panel header={bucketlist.name + "(" + bucketlist.items.length +")"} eventKey={bucketlistIndex} onClick={()=>this.onbucketlistClick(bucketlist.id, bucketlist.name)} >
               <div className="row"  key={bucketlist.id}>
                 <div className="single-bucketlist">
 

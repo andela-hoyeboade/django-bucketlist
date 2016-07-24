@@ -17,22 +17,29 @@ import {
     Modal
 } from 'react-bootstrap';
 
-export default class BucketListEditModalForm extends Component{
-  render(){
+export default class BucketListItemModalForm extends Component {
+  constructor() {
+    super();
+    }
+
+  render() {
     return (
-      <div>
       <Modal {...this.props} bsSize="small" aria-labelledby="contained-modal-title-sm">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-sm">{this.props.formtitle}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Form action="post" onSubmit={this.props.onSave} className="buck">
+          <Form action="post" onSubmit={this.props.onSave} className="buck">
 
-        <FormGroup><Col>Name:</Col>
-        <FormControl
-          name="bucketlistName" value={this.props.bucketlistName} type="text" required = {true} placeholder={this.props.placeholder} onChange={this.props.handleFieldChange}
-        />
-        </FormGroup>
+            <FormGroup><Col>Name:</Col>
+              <FormControl
+                name="itemName" type="text" value = {this.props.itemName} required = {this.props.required} placeholder={this.props.placeholder} onChange={this.props.handleFieldChange}
+              />
+              <FormControl name="itemDoneStatus" type="checkbox" onChange={this.props.handleFieldChange} /><Col>Done</Col>
+
+            </FormGroup>
+
+
 
         <Modal.Footer>
           <FormGroup>
@@ -45,7 +52,6 @@ export default class BucketListEditModalForm extends Component{
         </Modal.Body>
 
       </Modal>
-      </div>
     );
   }
 }

@@ -3,7 +3,7 @@ import Menu from './menu.jsx';
 import BucketList from './bucketlist.jsx';
 import BucketListItem from './bucketlistitem.jsx';
 import request from 'superagent';
-import BucketListModalForm from './bucketlist-edit-modal.jsx';
+import BucketListModalForm from './bucketlist-item-modal.jsx';
 
 import {
     Col,
