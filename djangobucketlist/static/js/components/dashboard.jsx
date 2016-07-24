@@ -32,7 +32,10 @@ export default class Dashboard extends Component {
           newBucketlistForm: false,
           newBucketlistItemForm: false,
           editBucketlistForm: false,
-          items: []
+          items: [],
+          displayFlashMessageStatus: "none",
+          flashMessage: "",
+          messageType: ""
         }
         this.fetchAllBucketlists = this.fetchAllBucketlists.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
@@ -42,7 +45,9 @@ export default class Dashboard extends Component {
         this.saveNewBucketlist = this.saveNewBucketlist.bind(this);
         this.showNewBucketlistForm = this.showNewBucketlistForm.bind(this);
         this.hideNewBucketlistForm = this.hideNewBucketlistForm.bind(this);
-
+        this.handleDisplayMessage = this.handleDisplayMessage.bind(this);
+        this.displayMessage = this.displayMessage.bind(this);
+        this.hideMessage = this.hideMessage.bind(this);
         }
 
 
@@ -104,12 +109,9 @@ export default class Dashboard extends Component {
         .end((err, result) => {
           if (result.status === 201) {
             this.fetchAllBucketlists();
+            this.handleDisplayMessage("Succesful", 3000, "success")
           } else {
-
-            //console.log(result.status);
-            console.log(bucketlistName);
             console.log(result.body.message);
-            console.log(result.body.errors);
           }
         });
     }
@@ -133,11 +135,25 @@ export default class Dashboard extends Component {
         });
     }
 
+    handleDisplayMessage(message, timeout=3000, messageType) {
+      this.displayMessage(message, messageType);
+      setTimeout(this.hideMessage, timeout);
+    }
 
+    hideMessage() {
+      this.setState({displayFlashMessageStatus: "none",
+                    flashMessage: ""
+                  });
+    }
 
-
+    displayMessage(message, messageType) {
+      this.setState({flashMessage: message,
+                    displayFlashMessageStatus: "block",
+                    messageType: messageType
+                  });
+      console.log(this.state.flashMessage);
+    }
     render() {
-      //console.log(this, '%%%');
       let closeNewBucketlistForm = () => this.setState({ newBucketlistForm: false });
 
       return (
@@ -172,6 +188,10 @@ export default class Dashboard extends Component {
           <BucketList
             bucketlists={this.state.bucketlists}
             fetchAllBucketlists={this.fetchAllBucketlists}
+            flashMessage={this.state.flashMessage}
+            messageType={this.state.messageType}
+            displayFlashMessageStatus={this.state.displayFlashMessageStatus}
+
           />
 
           <BucketListModalForm

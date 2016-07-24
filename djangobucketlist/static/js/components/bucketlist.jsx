@@ -21,6 +21,7 @@ import {
     Popover,
     Accordion,
     Panel,
+    Alert
 } from 'react-bootstrap';
 
 export default class BucketList extends Component {
@@ -48,7 +49,11 @@ export default class BucketList extends Component {
           bucketlistId: 0,
           itemName: '',
           showDeletePopover: false,
-          itemDoneStatus: false
+          itemDoneStatus: false,
+          flashMessage: "",
+          messageType: "success",
+          displayFlashMessageStatus: "none"
+
         }
     }
 
@@ -146,7 +151,6 @@ export default class BucketList extends Component {
       this.setState({ editBucketlistForm: false });
     }
 
-        // Why is the state the same with the function here?
     handleUpdateBucketlist(event) {
       event.preventDefault();
       this.updateBucketlist(this.state.bucketlistId, this.state.bucketlistName);
@@ -169,13 +173,6 @@ export default class BucketList extends Component {
           }
         });
     }
-
-
-    /**
-    componentWillUnMount() {
-      this.setState({bucketlists: this.props.bucketlists});
-    }
-    **/
 
     displayAllBucketlists() {
         if (this.props.bucketlists.length > 0) {
@@ -247,7 +244,6 @@ export default class BucketList extends Component {
               .getItem('token'))))
         .end((err, result) => {
           if (result.status === 200) {
-            //console.log("success");
             this.setState({
               items: result.body.items,
             });
@@ -265,14 +261,20 @@ export default class BucketList extends Component {
       let closeNewBucketistItemForm = () => this.setState({ newBucketlistItemForm: false });
       return(
         <div>
+
           <div className="bucket-list">
+          <div style={{display:this.props.displayFlashMessageStatus}}>
+          <Alert bsStyle={this.props.messageType}>
+            {this.props.flashMessage}
+          </Alert>
+          </div>
           <Accordion>
             {this.displayAllBucketlists()}
             </Accordion>
           </div>
 
           <div className="bucket-list-items">
-            <BucketListItem bucketlistId = {this.state.bucketlistId} bucketlistName = {this.state.bucketlistName} items={this.state.items} fetchAllBucketlists={this.props.fetchAllBucketlists} fetchBucketlistItems={this.fetchBucketlistItems}/>
+            <BucketListItem bucketlistId = {this.state.bucketlistId} bucketlistName = {this.state.bucketlistName} items={this.state.items} fetchAllBucketlists={this.props.fetchAllBucketlists} fetchBucketlistItems={this.fetchBucketlistItems} handleDisplayMessage={this.props.handleDisplayMessage}/>
           </div>
 
           <BucketListItemModalForm

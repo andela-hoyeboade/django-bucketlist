@@ -789,9 +789,11 @@ textarea {
   text-align: center;
 }
 
-.bucket-list-items .item-title {
+.bucket-list-items .item-name {
   font-size: 18px;
   padding-left: 0.5em;
+  word-break: break-all;
+  cursor: pointer;
 }
 
 .single-bucketlist-item {

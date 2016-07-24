@@ -42,7 +42,8 @@ export default class BucketListItem extends Component {
           bucketlistId: 0,
           itemId: 0,
           itemName: '',
-          showDeletePopover: false
+          showDeletePopover: false,
+          showEditDeleteButton: "none"
         }
     }
     handleFieldChange(event) {
@@ -135,13 +136,12 @@ export default class BucketListItem extends Component {
         }
       });
   }
-
   displaySingleBucketlistItem(bucketlistId, item) {
     return (
-      <ListGroupItem>
+      <ListGroupItem onMouseEnter={this.mousenter}>
         <div className="row"  key={item.id}>
           <div id={item.id} className="single-bucketlist-item">
-            <a className="item-title">{item.name} </a>
+            <a className="item-name">{item.name} </a>
             <div className="manage">
               <a onClick={()=>this.handleEditBucketlistItem(bucketlistId, item.id, item.name)}><span className="badge btn edit-item" title="Edit this item">Edit</span></a>
               <OverlayTrigger
