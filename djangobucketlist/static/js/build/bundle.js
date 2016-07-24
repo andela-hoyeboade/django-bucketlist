@@ -43681,7 +43681,7 @@
 	    value: function loginUser(username, password) {
 	      var _this2 = this;
 
-	      _superagent2.default.post('/api/v1/auth/login').send({ 'username': username, 'password': password }).end(function (err, result) {
+	      _superagent2.default.post('/api/v1/auth/login').type('form').send({ 'username': username, 'password': password }).end(function (err, result) {
 	        if (result.status === 200) {
 	          _this2.setState({
 	            token: result.body.token
