@@ -1,12 +1,16 @@
 language: python
 python:
   - "2.7"
+
 install:
   - pip install -r requirements.txt
+
 script:
   - cd djangobucketlist && python manage.py test
+
 after_success:
   - coveralls
+
 deploy:
   provider: heroku
   buildpack: python
