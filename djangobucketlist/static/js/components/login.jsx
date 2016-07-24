@@ -75,6 +75,7 @@ export default class LoginForm extends Component {
     loginUser(username, password) {
       request
         .post('/api/v1/auth/login')
+        .type('form')
         .send({'username': username, 'password': password })
         .end((err, result) => {
             if (result.status === 200) {
