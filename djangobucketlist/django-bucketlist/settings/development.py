@@ -22,3 +22,5 @@ else:
             'PORT': '5432',
         }
     }
+
+DEBUG = True
