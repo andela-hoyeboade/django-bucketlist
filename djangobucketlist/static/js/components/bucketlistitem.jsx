@@ -37,6 +37,9 @@ export default class BucketListItem extends Component {
         this.updateBucketlistItem = this.updateBucketlistItem.bind(this);
         this.showEditBucketlistItemForm = this.showEditBucketlistItemForm.bind(this);
         this.hideEditBucketlistItemForm = this.hideEditBucketlistItemForm.bind(this);
+        this.handleDisplayMessage = this.handleDisplayMessage.bind(this);
+        this.hideMessage = this.hideMessage.bind(this);
+        this.displayMessage = this.displayMessage.bind(this);
         //this.displayAllBucketlistItems = this.displayAllBucketlistItems.bind(this);
         this.state = {
           items: [],
@@ -44,7 +47,11 @@ export default class BucketListItem extends Component {
           itemId: 0,
           itemName: '',
           showDeletePopover: false,
-          showEditDeleteButton: "none"
+          showEditDeleteButton: "none",
+          flashMessage: "",
+          messageType: "success",
+          displayFlashMessageStatus: "none",
+
         }
     }
     handleFieldChange(event) {
@@ -100,6 +107,24 @@ export default class BucketListItem extends Component {
     this.hideEditBucketlistItemForm();
   }
 
+  handleDisplayMessage(message, timeout=3000, messageType) {
+    this.displayMessage(message, messageType);
+    setTimeout(this.hideMessage, timeout);
+  }
+
+  hideMessage() {
+    this.setState({displayFlashMessageStatus: "none",
+                  flashMessage: ""
+                });
+  }
+
+  displayMessage(message, messageType) {
+    this.setState({flashMessage: message,
+                  displayFlashMessageStatus: "block",
+                  messageType: messageType
+                });
+  }
+
   updateBucketlistItem(bucketlistId, itemId, itemName) {
     if (itemName === '') {
       return;
@@ -112,7 +137,14 @@ export default class BucketListItem extends Component {
       .end((err, result) => {
         if (result.status === 200) {
           this.props.fetchBucketlistItems(bucketlistId);
+          this.handleDisplayMessage("Succesfully updated", 3000, "success")
         } else {
+          var message = "Unable to update item. Please try again"
+          if (!(result.body.message) === undefined);
+          {
+            message = result.body.message
+          }
+          this.handleDisplayMessage(message, 3000, "danger" )
         }
       });
   }
@@ -130,10 +162,16 @@ export default class BucketListItem extends Component {
             .getItem('token'))))
       .end((err, result) => {
         if (result.status === 204) {
-          console.log("Success");
           this.props.fetchAllBucketlists();
           this.props.fetchBucketlistItems(bucketlistId);
+          this.handleDisplayMessage("Succesfully deleted", 3000, "success")
         } else {
+          var message = "Unable to delete item. Please try again"
+          if (!(result.body.message) === undefined);
+          {
+            message = result.body.message
+          }
+          this.handleDisplayMessage(message, 3000, "danger" )
         }
       });
   }
@@ -186,7 +224,6 @@ export default class BucketListItem extends Component {
   }
 
   hideDeletePopover() {
-    console.log(this.state.showDeletePopover)
     this.setState({ showDeletePopover: false })
   }
 
@@ -198,6 +235,11 @@ export default class BucketListItem extends Component {
       <div style={{display:this.props.displayNewItemMessageStatus}}>
       <Alert bsStyle={this.props.newItemMessageType}>
         {this.props.newItemFlashMessage}
+      </Alert>
+      </div>
+      <div style={{display:this.state.displayFlashMessageStatus}}>
+      <Alert bsStyle={this.state.messageType}>
+        {this.state.flashMessage}
       </Alert>
       </div>
       <Panel header={props.bucketlistName}>

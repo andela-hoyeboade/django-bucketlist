@@ -104,9 +104,10 @@ export default class BucketList extends Component {
       }
       request
         .post('/api/v1/bucketlists/')
+        .type('form')
         .set('Authorization', 'Token ' + (JSON.parse(localStorage
               .getItem('token'))))
-        .send({"name": bucketlistName, "items": [] })
+        .send({"name": bucketlistName})
         .end((err, result) => {
           if (result.status === 201) {
             this.props.fetchAllBucketlists();

@@ -79,7 +79,7 @@ export default class Dashboard extends Component {
 
     handleSearch(event) {
       event.preventDefault();
-      search_term = this.state.search;
+      search = this.state.search;
     }
 
     handleLogout() {

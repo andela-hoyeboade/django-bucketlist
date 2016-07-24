@@ -197,7 +197,7 @@
 	    key: 'handleSearch',
 	    value: function handleSearch(event) {
 	      event.preventDefault();
-	      search_term = this.state.search;
+	      search = this.state.search;
 	    }
 	  }, {
 	    key: 'handleLogout',
@@ -40869,7 +40869,7 @@
 	      if (bucketlistName === '') {
 	        return;
 	      }
-	      _superagent2.default.post('/api/v1/bucketlists/').set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": bucketlistName, "items": [] }).end(function (err, result) {
+	      _superagent2.default.post('/api/v1/bucketlists/').type('form').set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": bucketlistName }).end(function (err, result) {
 	        if (result.status === 201) {
 	          _this2.props.fetchAllBucketlists();
 	          _this2.handleDisplayMessage("Succesfully created", 3000, "success");
@@ -41336,6 +41336,9 @@
 	    _this.updateBucketlistItem = _this.updateBucketlistItem.bind(_this);
 	    _this.showEditBucketlistItemForm = _this.showEditBucketlistItemForm.bind(_this);
 	    _this.hideEditBucketlistItemForm = _this.hideEditBucketlistItemForm.bind(_this);
+	    _this.handleDisplayMessage = _this.handleDisplayMessage.bind(_this);
+	    _this.hideMessage = _this.hideMessage.bind(_this);
+	    _this.displayMessage = _this.displayMessage.bind(_this);
 	    //this.displayAllBucketlistItems = this.displayAllBucketlistItems.bind(this);
 	    _this.state = {
 	      items: [],
@@ -41343,7 +41346,11 @@
 	      itemId: 0,
 	      itemName: '',
 	      showDeletePopover: false,
-	      showEditDeleteButton: "none"
+	      showEditDeleteButton: "none",
+	      flashMessage: "",
+	      messageType: "success",
+	      displayFlashMessageStatus: "none"
+
 	    };
 	    return _this;
 	  }
@@ -41403,6 +41410,30 @@
 	      this.hideEditBucketlistItemForm();
 	    }
 	  }, {
+	    key: 'handleDisplayMessage',
+	    value: function handleDisplayMessage(message) {
+	      var timeout = arguments.length <= 1 || arguments[1] === undefined ? 3000 : arguments[1];
+	      var messageType = arguments[2];
+
+	      this.displayMessage(message, messageType);
+	      setTimeout(this.hideMessage, timeout);
+	    }
+	  }, {
+	    key: 'hideMessage',
+	    value: function hideMessage() {
+	      this.setState({ displayFlashMessageStatus: "none",
+	        flashMessage: ""
+	      });
+	    }
+	  }, {
+	    key: 'displayMessage',
+	    value: function displayMessage(message, messageType) {
+	      this.setState({ flashMessage: message,
+	        displayFlashMessageStatus: "block",
+	        messageType: messageType
+	      });
+	    }
+	  }, {
 	    key: 'updateBucketlistItem',
 	    value: function updateBucketlistItem(bucketlistId, itemId, itemName) {
 	      var _this3 = this;
@@ -41413,7 +41444,15 @@
 	      _superagent2.default.put('/api/v1/bucketlists/' + bucketlistId + '/items/' + itemId).set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": itemName }).end(function (err, result) {
 	        if (result.status === 200) {
 	          _this3.props.fetchBucketlistItems(bucketlistId);
-	        } else {}
+	          _this3.handleDisplayMessage("Succesfully updated", 3000, "success");
+	        } else {
+	          var message = "Unable to update item. Please try again";
+	          if (!result.body.message === undefined) ;
+	          {
+	            message = result.body.message;
+	          }
+	          _this3.handleDisplayMessage(message, 3000, "danger");
+	        }
 	      });
 	    }
 	  }, {
@@ -41429,10 +41468,17 @@
 	      }
 	      _superagent2.default.delete('/api/v1/bucketlists/' + bucketlistId + '/items/' + itemId).set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).end(function (err, result) {
 	        if (result.status === 204) {
-	          console.log("Success");
 	          _this4.props.fetchAllBucketlists();
 	          _this4.props.fetchBucketlistItems(bucketlistId);
-	        } else {}
+	          _this4.handleDisplayMessage("Succesfully deleted", 3000, "success");
+	        } else {
+	          var message = "Unable to delete item. Please try again";
+	          if (!result.body.message === undefined) ;
+	          {
+	            message = result.body.message;
+	          }
+	          _this4.handleDisplayMessage(message, 3000, "danger");
+	        }
 	      });
 	    }
 	  }, {
@@ -41534,7 +41580,6 @@
 	  }, {
 	    key: 'hideDeletePopover',
 	    value: function hideDeletePopover() {
-	      console.log(this.state.showDeletePopover);
 	      this.setState({ showDeletePopover: false });
 	    }
 	  }, {
@@ -41556,6 +41601,15 @@
 	            _reactBootstrap.Alert,
 	            { bsStyle: this.props.newItemMessageType },
 	            this.props.newItemFlashMessage
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { style: { display: this.state.displayFlashMessageStatus } },
+	          _react2.default.createElement(
+	            _reactBootstrap.Alert,
+	            { bsStyle: this.state.messageType },
+	            this.state.flashMessage
 	          )
 	        ),
 	        _react2.default.createElement(
