@@ -1,6 +1,5 @@
 *.sqlite3
 node_modules/
-*.sh
 staticfiles/
 cover/
 .coverage
