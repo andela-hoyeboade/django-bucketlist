@@ -158,6 +158,6 @@ STATIC_URL = '/static/'
 
 APPEND_SLASH = False
 
-#STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = 'staticfiles'
 
-#STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
