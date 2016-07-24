@@ -23,7 +23,7 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-      document.title = "Home Page - MyBucketlists";
+      document.title = "Home Page - MyBucketlist";
     }
 
     showSignUpForm() {
