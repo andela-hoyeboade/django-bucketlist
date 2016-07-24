@@ -24,9 +24,6 @@ h1, h2, h3, h4 {
   letter-spacing: 2px;
 }
 
-/* ==========================================================================
-navigation section
-========================================================================== */
 
 /* ==========================================================================
 home section
@@ -391,101 +388,6 @@ pricing section
   background-color: #3B3B3B;
 }
 
-
-/* ==========================================================================
-contact section
-========================================================================== */
-#contact {
-  background: #3B3B3B url('../images/contact-bg.jpg') no-repeat center center;
-  background-size: cover;
-  color: #ffffff;
-}
-#contact h2 {
-  padding-bottom: 20px;
-}
-#contact h3 {
-  font-size: 16px;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-#contact .medium-icon {
-  padding-top: 10px;
-  padding-right: 10px;
-}
-#contact .contact-info div {
-  padding-top: 14px;
-  padding-bottom: 14px;
-}
-#contact form {
-  padding-top: 60px;
-}
-#contact .form-control {
-  border: 2px solid #ffffff;
-  border-radius: 0;
-  box-shadow: none;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  transition: all 0.4s ease-in-out;
-}
-#contact input {
-  height: 40px;
-}
-#contact input[type="submit"] {
-  background: #00c6d7;
-  border: 3px solid #00c6d7;
-  letter-spacing: 1px;
-  margin-top: 18px;
-  height: 50px;
-  color: #ffffff;
-}
-#contact input[type="submit"]:hover {
-  color: #000000;
-}
-
-
-/* ==========================================================================
-footer section
-========================================================================== */
-footer {
-  text-align: center;
-  padding-top: 60px;
-  padding-bottom: 60px;
-}
-footer p {
-  padding-top: 20px;
-}
-.social-icon {
-  padding: 0;
-  margin: 0;
-}
-.social-icon li {
-  list-style: none;
-  display: inline-block;
-  padding: 6px;
-}
-.social-icon li a {
-  box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.09);
-  color: #808080;
-  font-size: 20px;
-  width: 56px;
-  height: 56px;
-  line-height: 60px;
-  text-align: center;
-  text-decoration: none;
-  transition: all 0.4s ease-in-out;
-}
-.social-icon li a:hover {
-  color: #00c6d7;
-}
-
-@media screen and (min-width: 992px) {
-  @-moz-document url-prefix() {
-    #portfolio .col-lg-4,
-    #portfolio .col-md-4 {
-      width: 33.333%;
-    }
-  }
-}
 
 /* ==========================================================================
 media quires for mobile
