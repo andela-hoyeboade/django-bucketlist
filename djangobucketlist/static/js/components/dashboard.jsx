@@ -35,19 +35,13 @@ export default class Dashboard extends Component {
           items: [],
           displayFlashMessageStatus: "none",
           flashMessage: "",
-          messageType: ""
+          messageType: "success"
         }
         this.fetchAllBucketlists = this.fetchAllBucketlists.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
-        this.handleSaveNewBucketlist = this.handleSaveNewBucketlist.bind(this);
-        this.saveNewBucketlist = this.saveNewBucketlist.bind(this);
-        this.showNewBucketlistForm = this.showNewBucketlistForm.bind(this);
-        this.hideNewBucketlistForm = this.hideNewBucketlistForm.bind(this);
-        this.handleDisplayMessage = this.handleDisplayMessage.bind(this);
-        this.displayMessage = this.displayMessage.bind(this);
-        this.hideMessage = this.hideMessage.bind(this);
+
         }
 
 
@@ -82,39 +76,6 @@ export default class Dashboard extends Component {
         });
     }
 
-    showNewBucketlistForm(event) {
-      event.preventDefault();
-      return this.setState({ newBucketlistForm: true });
-    }
-
-    hideNewBucketlistForm() {
-      this.setState({ newBucketlistForm: false });
-    }
-
-    handleSaveNewBucketlist(event) {
-      event.preventDefault();
-      this.saveNewBucketlist(this.state.bucketlistName);
-      this.hideNewBucketlistForm();
-    }
-
-    saveNewBucketlist(bucketlistName) {
-      if (bucketlistName === '') {
-        return;
-      }
-      request
-        .post('/api/v1/bucketlists/')
-        .set('Authorization', 'Token ' + (JSON.parse(localStorage
-              .getItem('token'))))
-        .send({"name": bucketlistName, "items": [] })
-        .end((err, result) => {
-          if (result.status === 201) {
-            this.fetchAllBucketlists();
-            this.handleDisplayMessage("Succesful", 3000, "success")
-          } else {
-            console.log(result.body.message);
-          }
-        });
-    }
 
     handleSearch(event) {
       event.preventDefault();
@@ -135,26 +96,8 @@ export default class Dashboard extends Component {
         });
     }
 
-    handleDisplayMessage(message, timeout=3000, messageType) {
-      this.displayMessage(message, messageType);
-      setTimeout(this.hideMessage, timeout);
-    }
 
-    hideMessage() {
-      this.setState({displayFlashMessageStatus: "none",
-                    flashMessage: ""
-                  });
-    }
-
-    displayMessage(message, messageType) {
-      this.setState({flashMessage: message,
-                    displayFlashMessageStatus: "block",
-                    messageType: messageType
-                  });
-      console.log(this.state.flashMessage);
-    }
     render() {
-      let closeNewBucketlistForm = () => this.setState({ newBucketlistForm: false });
 
       return (
         <div>
@@ -165,12 +108,7 @@ export default class Dashboard extends Component {
 
           <div className="container">
             <div className="row">
-              <div id="new-bucket-list" className="col-sm-4">
-                <button type="button" className="btn btn-success new-bucket-list" onClick={this.showNewBucketlistForm} title="Create New Bucketlist">
-                  Create New Bucketlist
-                </button>
-              </div>
-              <div id="search-bucket-list" className="col-sm-4 search-bucket-list">
+              <div className="col-sm-6 search-bucket-list">
                 <Form action="post" onSubmit={this.handleSearch}>
                   <FormGroup>
                     <FormControl
@@ -194,14 +132,7 @@ export default class Dashboard extends Component {
 
           />
 
-          <BucketListModalForm
-            show={this.state.newBucketlistForm}
-            onHide={closeNewBucketlistForm}
-            handleFieldChange={this.handleFieldChange}
-            onSave={this.handleSaveNewBucketlist}
-            formtitle="Add Bucketlist"
-            placeholder="Enter bucketlist name"
-          />
+
 
       </div>
       );

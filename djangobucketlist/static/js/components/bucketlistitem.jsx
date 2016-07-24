@@ -19,7 +19,8 @@ import {
     Popover,
     ListGroup,
     ListGroupItem,
-    Panel
+    Panel,
+    Alert
 } from 'react-bootstrap';
 
 export default class BucketListItem extends Component {
@@ -194,6 +195,11 @@ export default class BucketListItem extends Component {
     const props = this.props;
     return(
       <div>
+      <div style={{display:this.props.displayNewItemMessageStatus}}>
+      <Alert bsStyle={this.props.newItemMessageType}>
+        {this.props.newItemFlashMessage}
+      </Alert>
+      </div>
       <Panel header={props.bucketlistName}>
       <ListGroup fill>
       {this.displayBucketlistItems(props.bucketlistId, props.items)}

@@ -41,10 +41,21 @@ export default class BucketList extends Component {
         this.handleEditBucketlist = this.handleEditBucketlist.bind(this);
         this.handleUpdateBucketlist = this.handleUpdateBucketlist.bind(this);
         this.updateBucketlist = this.updateBucketlist.bind(this);
+        this.handleSaveNewBucketlist = this.handleSaveNewBucketlist.bind(this);
+        this.saveNewBucketlist = this.saveNewBucketlist.bind(this);
+        this.showNewBucketlistForm = this.showNewBucketlistForm.bind(this);
+        this.hideNewBucketlistForm = this.hideNewBucketlistForm.bind(this);
+        this.handleDisplayMessage = this.handleDisplayMessage.bind(this);
+        this.displayMessage = this.displayMessage.bind(this);
+        this.hideMessage = this.hideMessage.bind(this);
         this.hideDeletePopover = this.hideDeletePopover.bind(this);
+        this.handleDisplayNewItemMessage = this.handleDisplayNewItemMessage.bind(this);
+        this.displayNewItemMessage = this.displayNewItemMessage.bind(this);
+        this.hideNewItemMessage = this.hideNewItemMessage.bind(this);
         this.state = {
           items: [],
           bucketlists: [],
+          newBucketListName: '',
           bucketlistName: '',
           bucketlistId: 0,
           itemName: '',
@@ -52,8 +63,10 @@ export default class BucketList extends Component {
           itemDoneStatus: false,
           flashMessage: "",
           messageType: "success",
-          displayFlashMessageStatus: "none"
-
+          displayFlashMessageStatus: "none",
+          displayNewItemMessageStatus: "none",
+          newItemFlashMessage: "",
+          newItemMessageType: "success",
         }
     }
 
@@ -70,6 +83,79 @@ export default class BucketList extends Component {
       }
     }
 
+    showNewBucketlistForm(event) {
+      event.preventDefault();
+      return this.setState({ newBucketlistForm: true });
+    }
+
+    hideNewBucketlistForm() {
+      this.setState({ newBucketlistForm: false });
+    }
+
+    handleSaveNewBucketlist(event) {
+      event.preventDefault();
+      this.saveNewBucketlist(this.state.newBucketListName);
+      this.hideNewBucketlistForm();
+    }
+
+    saveNewBucketlist(bucketlistName) {
+      if (bucketlistName === '') {
+        return;
+      }
+      request
+        .post('/api/v1/bucketlists/')
+        .set('Authorization', 'Token ' + (JSON.parse(localStorage
+              .getItem('token'))))
+        .send({"name": bucketlistName, "items": [] })
+        .end((err, result) => {
+          if (result.status === 201) {
+            this.props.fetchAllBucketlists();
+            this.handleDisplayMessage("Succesfully created", 3000, "success")
+          } else {
+            var message = "Unable to create a new bucketlist. Please try again"
+            if (!(result.body.message) === undefined);
+            {
+              message = result.body.message
+            }
+            this.handleDisplayMessage(message, 3000, "danger" )
+          }
+        });
+    }
+    handleDisplayMessage(message, timeout=3000, messageType) {
+      this.displayMessage(message, messageType);
+      setTimeout(this.hideMessage, timeout);
+    }
+
+    hideMessage() {
+      this.setState({displayFlashMessageStatus: "none",
+                    flashMessage: ""
+                  });
+    }
+
+    displayMessage(message, messageType) {
+      this.setState({flashMessage: message,
+                    displayFlashMessageStatus: "block",
+                    messageType: messageType
+                  });
+    }
+
+    handleDisplayNewItemMessage(message, timeout=3000, messageType) {
+      this.displayNewItemMessage(message, messageType);
+      setTimeout(this.hideNewItemMessage, timeout);
+    }
+
+    displayNewItemMessage(message, messageType) {
+      this.setState({newItemFlashMessage: message,
+                      displayNewItemMessageStatus: "block",
+                    newItemMessageType: messageType});
+
+    }
+
+    hideNewItemMessage() {
+      this.setState({displayNewItemMessageStatus: "none",
+                    newItemFlashMessage: ""
+                  });
+    }
 
     deleteBucketlist(bucketlistId) {
       if (bucketlistId === '' || bucketlistId === 0 || bucketlistId === undefined) {
@@ -82,7 +168,14 @@ export default class BucketList extends Component {
         .end((err, result) => {
           if (result.status === 204) {
             this.props.fetchAllBucketlists();
+            this.handleDisplayMessage("Succesfully deleted", 3000, "success")
           } else {
+            var message = "Unable to delete. Please try again"
+            if (!(result.body.message) === undefined);
+            {
+              message = result.body.message
+            }
+            this.handleDisplayMessage(message, 3000, "danger" )
           }
         });
     }
@@ -125,9 +218,15 @@ export default class BucketList extends Component {
         .end((err, result) => {
           if (result.status === 201) {
             this.props.fetchAllBucketlists();
-            this.fetchBucketlistItems(bucketlistId)
+            this.fetchBucketlistItems(bucketlistId);
+            this.handleDisplayNewItemMessage("Sucessfully created", 3000, "success")
           } else {
-            console.log("error");
+            var message = "Unable to create item. Please try again"
+            if (!(result.body.message) === undefined);
+            {
+              message = result.body.message
+            }
+            this.handleDisplayNewItemMessage(message, 3000, "danger" )
           }
         });
     }
@@ -163,13 +262,21 @@ export default class BucketList extends Component {
       }
       request
         .put('/api/v1/bucketlists/'+bucketlistId)
+        .type('form')
         .set('Authorization', 'Token ' + (JSON.parse(localStorage
               .getItem('token'))))
-        .send({"name": bucketlistName, "items": []})
+        .send({"name": bucketlistName})
         .end((err, result) => {
           if (result.status === 200) {
             this.props.fetchAllBucketlists();
+            this.handleDisplayMessage("Succesfully updated", 3000, "success")
           } else {
+            var message = "Unable to update your bucketlist. Please try again"
+            if (!(result.body.message) === undefined);
+            {
+              message = result.body.message
+            }
+            this.handleDisplayMessage(message, 3000, "danger" )
           }
         });
     }
@@ -259,13 +366,15 @@ export default class BucketList extends Component {
 
       let closeEditBucketlistForm = () => this.setState({ editBucketlistForm: false})
       let closeNewBucketistItemForm = () => this.setState({ newBucketlistItemForm: false });
+      let closeNewBucketlistForm = () => this.setState({ newBucketlistForm: false });
+
       return(
         <div>
-
+        <div><a className="new-bucket-list" onClick={this.showNewBucketlistForm} title="Create New Bucketlist"><span className="glyphicon glyphicon-plus-sign"></span></a></div>
           <div className="bucket-list">
-          <div style={{display:this.props.displayFlashMessageStatus}}>
-          <Alert bsStyle={this.props.messageType}>
-            {this.props.flashMessage}
+          <div style={{display:this.state.displayFlashMessageStatus}}>
+          <Alert bsStyle={this.state.messageType}>
+            {this.state.flashMessage}
           </Alert>
           </div>
           <Accordion>
@@ -274,8 +383,27 @@ export default class BucketList extends Component {
           </div>
 
           <div className="bucket-list-items">
-            <BucketListItem bucketlistId = {this.state.bucketlistId} bucketlistName = {this.state.bucketlistName} items={this.state.items} fetchAllBucketlists={this.props.fetchAllBucketlists} fetchBucketlistItems={this.fetchBucketlistItems} handleDisplayMessage={this.props.handleDisplayMessage}/>
+            <BucketListItem
+            bucketlistId = {this.state.bucketlistId}
+            bucketlistName = {this.state.bucketlistName}
+            items={this.state.items}
+            fetchAllBucketlists={this.props.fetchAllBucketlists}
+            fetchBucketlistItems={this.fetchBucketlistItems}
+            newItemMessageType={this.state.newItemMessageType}
+            newItemFlashMessage={this.state.newItemFlashMessage}
+            displayNewItemMessageStatus={this.state.displayNewItemMessageStatus} />
           </div>
+
+          <BucketListModalForm
+            show={this.state.newBucketlistForm}
+            onHide={closeNewBucketlistForm}
+            handleFieldChange={this.handleFieldChange}
+            onSave={this.handleSaveNewBucketlist}
+            formName="newBucketListName"
+            formtitle="Add Bucketlist"
+            placeholder="Enter bucketlist name"
+          />
+
 
           <BucketListItemModalForm
             show={this.state.newBucketlistItemForm}
@@ -295,6 +423,7 @@ export default class BucketList extends Component {
             bucketlistName = {this.state.bucketlistName}
             handleFieldChange={this.handleFieldChange}
             onSave={this.handleUpdateBucketlist}
+            formName="bucketlistName"
             formtitle="Edit Bucketlist"
           />
 

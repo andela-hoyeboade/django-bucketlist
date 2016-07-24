@@ -711,20 +711,29 @@ textarea {
   background-color: cadetblue;
 }
 
+/**
 .new-bucket-list {
   margin-left: 15em;
   margin-top: 2em;
   background-color: cadetblue;
 }
-
+**/
+.glyphicon-plus-sign {
+  font-size: 3em;
+    margin-left: 8.5em;
+    color: black;
+    cursor: pointer
+}
 .search {
-  margin-left: 27em;
+  margin-left: 45em;
   margin-top: -4em;
+
 }
 
 .search-bucket-list {
-  margin-left: 15em;
+  margin-left: 12em;
   margin-top: 2em;
+  float: left;
 }
 
 .bucket-list {

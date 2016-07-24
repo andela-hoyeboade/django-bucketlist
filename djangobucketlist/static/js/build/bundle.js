@@ -153,19 +153,13 @@
 	      items: [],
 	      displayFlashMessageStatus: "none",
 	      flashMessage: "",
-	      messageType: ""
+	      messageType: "success"
 	    };
 	    _this.fetchAllBucketlists = _this.fetchAllBucketlists.bind(_this);
 	    _this.handleLogout = _this.handleLogout.bind(_this);
 	    _this.handleFieldChange = _this.handleFieldChange.bind(_this);
 	    _this.handleSearch = _this.handleSearch.bind(_this);
-	    _this.handleSaveNewBucketlist = _this.handleSaveNewBucketlist.bind(_this);
-	    _this.saveNewBucketlist = _this.saveNewBucketlist.bind(_this);
-	    _this.showNewBucketlistForm = _this.showNewBucketlistForm.bind(_this);
-	    _this.hideNewBucketlistForm = _this.hideNewBucketlistForm.bind(_this);
-	    _this.handleDisplayMessage = _this.handleDisplayMessage.bind(_this);
-	    _this.displayMessage = _this.displayMessage.bind(_this);
-	    _this.hideMessage = _this.hideMessage.bind(_this);
+
 	    return _this;
 	  }
 
@@ -200,41 +194,6 @@
 	      });
 	    }
 	  }, {
-	    key: 'showNewBucketlistForm',
-	    value: function showNewBucketlistForm(event) {
-	      event.preventDefault();
-	      return this.setState({ newBucketlistForm: true });
-	    }
-	  }, {
-	    key: 'hideNewBucketlistForm',
-	    value: function hideNewBucketlistForm() {
-	      this.setState({ newBucketlistForm: false });
-	    }
-	  }, {
-	    key: 'handleSaveNewBucketlist',
-	    value: function handleSaveNewBucketlist(event) {
-	      event.preventDefault();
-	      this.saveNewBucketlist(this.state.bucketlistName);
-	      this.hideNewBucketlistForm();
-	    }
-	  }, {
-	    key: 'saveNewBucketlist',
-	    value: function saveNewBucketlist(bucketlistName) {
-	      var _this3 = this;
-
-	      if (bucketlistName === '') {
-	        return;
-	      }
-	      _superagent2.default.post('/api/v1/bucketlists/').set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": bucketlistName, "items": [] }).end(function (err, result) {
-	        if (result.status === 201) {
-	          _this3.fetchAllBucketlists();
-	          _this3.handleDisplayMessage("Succesful", 3000, "success");
-	        } else {
-	          console.log(result.body.message);
-	        }
-	      });
-	    }
-	  }, {
 	    key: 'handleSearch',
 	    value: function handleSearch(event) {
 	      event.preventDefault();
@@ -255,38 +214,8 @@
 	      this.setState(_defineProperty({}, key, value));
 	    }
 	  }, {
-	    key: 'handleDisplayMessage',
-	    value: function handleDisplayMessage(message) {
-	      var timeout = arguments.length <= 1 || arguments[1] === undefined ? 3000 : arguments[1];
-	      var messageType = arguments[2];
-
-	      this.displayMessage(message, messageType);
-	      setTimeout(this.hideMessage, timeout);
-	    }
-	  }, {
-	    key: 'hideMessage',
-	    value: function hideMessage() {
-	      this.setState({ displayFlashMessageStatus: "none",
-	        flashMessage: ""
-	      });
-	    }
-	  }, {
-	    key: 'displayMessage',
-	    value: function displayMessage(message, messageType) {
-	      this.setState({ flashMessage: message,
-	        displayFlashMessageStatus: "block",
-	        messageType: messageType
-	      });
-	      console.log(this.state.flashMessage);
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this4 = this;
-
-	      var closeNewBucketlistForm = function closeNewBucketlistForm() {
-	        return _this4.setState({ newBucketlistForm: false });
-	      };
 
 	      return _react2.default.createElement(
 	        'div',
@@ -303,16 +232,7 @@
 	            { className: 'row' },
 	            _react2.default.createElement(
 	              'div',
-	              { id: 'new-bucket-list', className: 'col-sm-4' },
-	              _react2.default.createElement(
-	                'button',
-	                { type: 'button', className: 'btn btn-success new-bucket-list', onClick: this.showNewBucketlistForm, title: 'Create New Bucketlist' },
-	                'Create New Bucketlist'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { id: 'search-bucket-list', className: 'col-sm-4 search-bucket-list' },
+	              { className: 'col-sm-6 search-bucket-list' },
 	              _react2.default.createElement(
 	                _reactBootstrap.Form,
 	                { action: 'post', onSubmit: this.handleSearch },
@@ -339,14 +259,6 @@
 	          messageType: this.state.messageType,
 	          displayFlashMessageStatus: this.state.displayFlashMessageStatus
 
-	        }),
-	        _react2.default.createElement(_bucketlistEditModal2.default, {
-	          show: this.state.newBucketlistForm,
-	          onHide: closeNewBucketlistForm,
-	          handleFieldChange: this.handleFieldChange,
-	          onSave: this.handleSaveNewBucketlist,
-	          formtitle: 'Add Bucketlist',
-	          placeholder: 'Enter bucketlist name'
 	        })
 	      );
 	    }
@@ -40888,10 +40800,21 @@
 	    _this.handleEditBucketlist = _this.handleEditBucketlist.bind(_this);
 	    _this.handleUpdateBucketlist = _this.handleUpdateBucketlist.bind(_this);
 	    _this.updateBucketlist = _this.updateBucketlist.bind(_this);
+	    _this.handleSaveNewBucketlist = _this.handleSaveNewBucketlist.bind(_this);
+	    _this.saveNewBucketlist = _this.saveNewBucketlist.bind(_this);
+	    _this.showNewBucketlistForm = _this.showNewBucketlistForm.bind(_this);
+	    _this.hideNewBucketlistForm = _this.hideNewBucketlistForm.bind(_this);
+	    _this.handleDisplayMessage = _this.handleDisplayMessage.bind(_this);
+	    _this.displayMessage = _this.displayMessage.bind(_this);
+	    _this.hideMessage = _this.hideMessage.bind(_this);
 	    _this.hideDeletePopover = _this.hideDeletePopover.bind(_this);
+	    _this.handleDisplayNewItemMessage = _this.handleDisplayNewItemMessage.bind(_this);
+	    _this.displayNewItemMessage = _this.displayNewItemMessage.bind(_this);
+	    _this.hideNewItemMessage = _this.hideNewItemMessage.bind(_this);
 	    _this.state = {
 	      items: [],
 	      bucketlists: [],
+	      newBucketListName: '',
 	      bucketlistName: '',
 	      bucketlistId: 0,
 	      itemName: '',
@@ -40899,8 +40822,10 @@
 	      itemDoneStatus: false,
 	      flashMessage: "",
 	      messageType: "success",
-	      displayFlashMessageStatus: "none"
-
+	      displayFlashMessageStatus: "none",
+	      displayNewItemMessageStatus: "none",
+	      newItemFlashMessage: "",
+	      newItemMessageType: "success"
 	    };
 	    return _this;
 	  }
@@ -40919,17 +40844,112 @@
 	      }
 	    }
 	  }, {
+	    key: 'showNewBucketlistForm',
+	    value: function showNewBucketlistForm(event) {
+	      event.preventDefault();
+	      return this.setState({ newBucketlistForm: true });
+	    }
+	  }, {
+	    key: 'hideNewBucketlistForm',
+	    value: function hideNewBucketlistForm() {
+	      this.setState({ newBucketlistForm: false });
+	    }
+	  }, {
+	    key: 'handleSaveNewBucketlist',
+	    value: function handleSaveNewBucketlist(event) {
+	      event.preventDefault();
+	      this.saveNewBucketlist(this.state.newBucketListName);
+	      this.hideNewBucketlistForm();
+	    }
+	  }, {
+	    key: 'saveNewBucketlist',
+	    value: function saveNewBucketlist(bucketlistName) {
+	      var _this2 = this;
+
+	      if (bucketlistName === '') {
+	        return;
+	      }
+	      _superagent2.default.post('/api/v1/bucketlists/').set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": bucketlistName, "items": [] }).end(function (err, result) {
+	        if (result.status === 201) {
+	          _this2.props.fetchAllBucketlists();
+	          _this2.handleDisplayMessage("Succesfully created", 3000, "success");
+	        } else {
+	          var message = "Unable to create a new bucketlist. Please try again";
+	          if (!result.body.message === undefined) ;
+	          {
+	            message = result.body.message;
+	          }
+	          _this2.handleDisplayMessage(message, 3000, "danger");
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'handleDisplayMessage',
+	    value: function handleDisplayMessage(message) {
+	      var timeout = arguments.length <= 1 || arguments[1] === undefined ? 3000 : arguments[1];
+	      var messageType = arguments[2];
+
+	      this.displayMessage(message, messageType);
+	      setTimeout(this.hideMessage, timeout);
+	    }
+	  }, {
+	    key: 'hideMessage',
+	    value: function hideMessage() {
+	      this.setState({ displayFlashMessageStatus: "none",
+	        flashMessage: ""
+	      });
+	    }
+	  }, {
+	    key: 'displayMessage',
+	    value: function displayMessage(message, messageType) {
+	      this.setState({ flashMessage: message,
+	        displayFlashMessageStatus: "block",
+	        messageType: messageType
+	      });
+	    }
+	  }, {
+	    key: 'handleDisplayNewItemMessage',
+	    value: function handleDisplayNewItemMessage(message) {
+	      var timeout = arguments.length <= 1 || arguments[1] === undefined ? 3000 : arguments[1];
+	      var messageType = arguments[2];
+
+	      this.displayNewItemMessage(message, messageType);
+	      setTimeout(this.hideNewItemMessage, timeout);
+	    }
+	  }, {
+	    key: 'displayNewItemMessage',
+	    value: function displayNewItemMessage(message, messageType) {
+	      this.setState({ newItemFlashMessage: message,
+	        displayNewItemMessageStatus: "block",
+	        newItemMessageType: messageType });
+	    }
+	  }, {
+	    key: 'hideNewItemMessage',
+	    value: function hideNewItemMessage() {
+	      this.setState({ displayNewItemMessageStatus: "none",
+	        newItemFlashMessage: ""
+	      });
+	    }
+	  }, {
 	    key: 'deleteBucketlist',
 	    value: function deleteBucketlist(bucketlistId) {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      if (bucketlistId === '' || bucketlistId === 0 || bucketlistId === undefined) {
 	        return;
 	      }
 	      _superagent2.default.delete('/api/v1/bucketlists/' + bucketlistId).set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).end(function (err, result) {
 	        if (result.status === 204) {
-	          _this2.props.fetchAllBucketlists();
-	        } else {}
+	          _this3.props.fetchAllBucketlists();
+	          _this3.handleDisplayMessage("Succesfully deleted", 3000, "success");
+	        } else {
+	          var message = "Unable to delete. Please try again";
+	          if (!result.body.message === undefined) ;
+	          {
+	            message = result.body.message;
+	          }
+	          _this3.handleDisplayMessage(message, 3000, "danger");
+	        }
 	      });
 	    }
 	  }, {
@@ -40964,17 +40984,23 @@
 	  }, {
 	    key: 'saveNewBucketlistItem',
 	    value: function saveNewBucketlistItem(bucketlistId, itemName) {
-	      var _this3 = this;
+	      var _this4 = this;
 
 	      if (itemName === '') {
 	        return;
 	      }
 	      _superagent2.default.post('/api/v1/bucketlists/' + bucketlistId + '/items/').set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": itemName }).end(function (err, result) {
 	        if (result.status === 201) {
-	          _this3.props.fetchAllBucketlists();
-	          _this3.fetchBucketlistItems(bucketlistId);
+	          _this4.props.fetchAllBucketlists();
+	          _this4.fetchBucketlistItems(bucketlistId);
+	          _this4.handleDisplayNewItemMessage("Sucessfully created", 3000, "success");
 	        } else {
-	          console.log("error");
+	          var message = "Unable to create item. Please try again";
+	          if (!result.body.message === undefined) ;
+	          {
+	            message = result.body.message;
+	          }
+	          _this4.handleDisplayNewItemMessage(message, 3000, "danger");
 	        }
 	      });
 	    }
@@ -41012,25 +41038,33 @@
 	  }, {
 	    key: 'updateBucketlist',
 	    value: function updateBucketlist(bucketlistId, bucketlistName) {
-	      var _this4 = this;
+	      var _this5 = this;
 
 	      if (bucketlistName === '') {
 	        return;
 	      }
-	      _superagent2.default.put('/api/v1/bucketlists/' + bucketlistId).set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": bucketlistName, "items": [] }).end(function (err, result) {
+	      _superagent2.default.put('/api/v1/bucketlists/' + bucketlistId).type('form').set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": bucketlistName }).end(function (err, result) {
 	        if (result.status === 200) {
-	          _this4.props.fetchAllBucketlists();
-	        } else {}
+	          _this5.props.fetchAllBucketlists();
+	          _this5.handleDisplayMessage("Succesfully updated", 3000, "success");
+	        } else {
+	          var message = "Unable to update your bucketlist. Please try again";
+	          if (!result.body.message === undefined) ;
+	          {
+	            message = result.body.message;
+	          }
+	          _this5.handleDisplayMessage(message, 3000, "danger");
+	        }
 	      });
 	    }
 	  }, {
 	    key: 'displayAllBucketlists',
 	    value: function displayAllBucketlists() {
-	      var _this5 = this;
+	      var _this6 = this;
 
 	      if (this.props.bucketlists.length > 0) {
 	        return this.props.bucketlists.map(function (bucketlist) {
-	          return _this5.displaySingleBucketlist(bucketlist, (_this5.props.bucketlists.indexOf(bucketlist) + 1).toString());
+	          return _this6.displaySingleBucketlist(bucketlist, (_this6.props.bucketlists.indexOf(bucketlist) + 1).toString());
 	        });
 	      } else {
 	        return _react2.default.createElement(
@@ -41049,12 +41083,12 @@
 	  }, {
 	    key: 'displaySingleBucketlist',
 	    value: function displaySingleBucketlist(bucketlist, bucketlistIndex) {
-	      var _this6 = this;
+	      var _this7 = this;
 
 	      return _react2.default.createElement(
 	        _reactBootstrap.Panel,
 	        { header: bucketlist.name + "(" + bucketlist.items.length + ")", eventKey: bucketlistIndex, onClick: function onClick() {
-	            return _this6.onbucketlistClick(bucketlist.id, bucketlist.name);
+	            return _this7.onbucketlistClick(bucketlist.id, bucketlist.name);
 	          }, onExit: this.testexit, onEntering: this.testentered },
 	        _react2.default.createElement(
 	          'div',
@@ -41068,7 +41102,7 @@
 	              _react2.default.createElement(
 	                'a',
 	                { onClick: function onClick() {
-	                    return _this6.handleSaveNewBucketlistItem(bucketlist.id, bucketlist.name);
+	                    return _this7.handleSaveNewBucketlistItem(bucketlist.id, bucketlist.name);
 	                  } },
 	                _react2.default.createElement(
 	                  'span',
@@ -41079,7 +41113,7 @@
 	              _react2.default.createElement(
 	                'a',
 	                { onClick: function onClick() {
-	                    return _this6.handleEditBucketlist(bucketlist.id, bucketlist.name);
+	                    return _this7.handleEditBucketlist(bucketlist.id, bucketlist.name);
 	                  } },
 	                _react2.default.createElement(
 	                  'span',
@@ -41095,11 +41129,11 @@
 	                  placement: 'top',
 	                  rootClose: true,
 	                  target: function target() {
-	                    return ReactDOM.findDOMNode(_this6.refs.target);
+	                    return ReactDOM.findDOMNode(_this7.refs.target);
 	                  },
 	                  show: this.state.showDeletePopover,
 	                  onHide: function onHide() {
-	                    return _this6.setState({ showDeletePopover: false });
+	                    return _this7.setState({ showDeletePopover: false });
 	                  },
 	                  overlay: _react2.default.createElement(
 	                    _reactBootstrap.Popover,
@@ -41107,7 +41141,7 @@
 	                    _react2.default.createElement(
 	                      'a',
 	                      { style: { 'marginLeft': 60, position: 'relative' }, className: 'btn btn-danger', onClick: function onClick() {
-	                          return _this6.deleteBucketlist(bucketlist.id);
+	                          return _this7.deleteBucketlist(bucketlist.id);
 	                        } },
 	                      'Yes'
 	                    ),
@@ -41115,7 +41149,7 @@
 	                      'a',
 	                      { style: { 'marginLeft': 30, position: 'relative' }, className: 'btn btn-primary',
 	                        onClick: function onClick() {
-	                          return _this6.hideDeletePopover();
+	                          return _this7.hideDeletePopover();
 	                        } },
 	                      'No'
 	                    )
@@ -41139,15 +41173,15 @@
 	  }, {
 	    key: 'fetchBucketlistItems',
 	    value: function fetchBucketlistItems(bucketlistId) {
-	      var _this7 = this;
+	      var _this8 = this;
 
 	      _superagent2.default.get('/api/v1/bucketlists/' + bucketlistId).set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).end(function (err, result) {
 	        if (result.status === 200) {
-	          _this7.setState({
+	          _this8.setState({
 	            items: result.body.items
 	          });
 	        } else {
-	          _this7.setState({
+	          _this8.setState({
 	            items: []
 	          });
 	        }
@@ -41156,27 +41190,40 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this8 = this;
+	      var _this9 = this;
 
 	      var closeEditBucketlistForm = function closeEditBucketlistForm() {
-	        return _this8.setState({ editBucketlistForm: false });
+	        return _this9.setState({ editBucketlistForm: false });
 	      };
 	      var closeNewBucketistItemForm = function closeNewBucketistItemForm() {
-	        return _this8.setState({ newBucketlistItemForm: false });
+	        return _this9.setState({ newBucketlistItemForm: false });
 	      };
+	      var closeNewBucketlistForm = function closeNewBucketlistForm() {
+	        return _this9.setState({ newBucketlistForm: false });
+	      };
+
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(
 	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'a',
+	            { className: 'new-bucket-list', onClick: this.showNewBucketlistForm, title: 'Create New Bucketlist' },
+	            _react2.default.createElement('span', { className: 'glyphicon glyphicon-plus-sign' })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
 	          { className: 'bucket-list' },
 	          _react2.default.createElement(
 	            'div',
-	            { style: { display: this.props.displayFlashMessageStatus } },
+	            { style: { display: this.state.displayFlashMessageStatus } },
 	            _react2.default.createElement(
 	              _reactBootstrap.Alert,
-	              { bsStyle: this.props.messageType },
-	              this.props.flashMessage
+	              { bsStyle: this.state.messageType },
+	              this.state.flashMessage
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -41188,8 +41235,25 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'bucket-list-items' },
-	          _react2.default.createElement(_bucketlistitem2.default, { bucketlistId: this.state.bucketlistId, bucketlistName: this.state.bucketlistName, items: this.state.items, fetchAllBucketlists: this.props.fetchAllBucketlists, fetchBucketlistItems: this.fetchBucketlistItems, handleDisplayMessage: this.props.handleDisplayMessage })
+	          _react2.default.createElement(_bucketlistitem2.default, {
+	            bucketlistId: this.state.bucketlistId,
+	            bucketlistName: this.state.bucketlistName,
+	            items: this.state.items,
+	            fetchAllBucketlists: this.props.fetchAllBucketlists,
+	            fetchBucketlistItems: this.fetchBucketlistItems,
+	            newItemMessageType: this.state.newItemMessageType,
+	            newItemFlashMessage: this.state.newItemFlashMessage,
+	            displayNewItemMessageStatus: this.state.displayNewItemMessageStatus })
 	        ),
+	        _react2.default.createElement(_bucketlistModal2.default, {
+	          show: this.state.newBucketlistForm,
+	          onHide: closeNewBucketlistForm,
+	          handleFieldChange: this.handleFieldChange,
+	          onSave: this.handleSaveNewBucketlist,
+	          formName: 'newBucketListName',
+	          formtitle: 'Add Bucketlist',
+	          placeholder: 'Enter bucketlist name'
+	        }),
 	        _react2.default.createElement(_bucketlistItemModal2.default, {
 	          show: this.state.newBucketlistItemForm,
 	          onHide: closeNewBucketistItemForm,
@@ -41205,6 +41269,7 @@
 	          bucketlistName: this.state.bucketlistName,
 	          handleFieldChange: this.handleFieldChange,
 	          onSave: this.handleUpdateBucketlist,
+	          formName: 'bucketlistName',
 	          formtitle: 'Edit Bucketlist'
 	        })
 	      );
@@ -41484,6 +41549,15 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { style: { display: this.props.displayNewItemMessageStatus } },
+	          _react2.default.createElement(
+	            _reactBootstrap.Alert,
+	            { bsStyle: this.props.newItemMessageType },
+	            this.props.newItemFlashMessage
+	          )
+	        ),
 	        _react2.default.createElement(
 	          _reactBootstrap.Panel,
 	          { header: props.bucketlistName },
@@ -43266,7 +43340,7 @@
 	                'Name:'
 	              ),
 	              _react2.default.createElement(_reactBootstrap.FormControl, {
-	                name: 'bucketlistName', value: this.props.bucketlistName, type: 'text', required: true, placeholder: this.props.placeholder, onChange: this.props.handleFieldChange
+	                name: this.props.formName, value: this.props.bucketlistName, type: 'text', required: true, placeholder: this.props.placeholder, onChange: this.props.handleFieldChange
 	              })
 	            ),
 	            _react2.default.createElement(

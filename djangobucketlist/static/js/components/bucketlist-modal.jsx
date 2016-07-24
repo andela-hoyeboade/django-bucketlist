@@ -29,7 +29,7 @@ export default class BucketListModalForm extends Component{
 
         <FormGroup><Col>Name:</Col>
         <FormControl
-          name="bucketlistName" value={this.props.bucketlistName} type="text" required = {true} placeholder={this.props.placeholder} onChange={this.props.handleFieldChange}
+          name={this.props.formName} value={this.props.bucketlistName} type="text" required = {true} placeholder={this.props.placeholder} onChange={this.props.handleFieldChange}
         />
         </FormGroup>
 
