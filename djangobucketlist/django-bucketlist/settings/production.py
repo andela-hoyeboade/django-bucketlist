@@ -7,9 +7,10 @@ import os
 DEBUG = False
 
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': dj_database_url.config(default=os.environ["HEROKU_POSTGRESQL_BROWN_URL"])
 }
-
+#DATABASES['default'] =  dj_database_url.config()
+DATABASES['default']['ENGINE'] = 'django_postgrespool'
 BOWER_PATH = '/app/node_modules/bower'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
