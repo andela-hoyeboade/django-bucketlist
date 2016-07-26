@@ -315,7 +315,7 @@ export default class BucketList extends Component {
 
               <div className="manage">
                 <a onClick={()=>this.handleSaveNewBucketlistItem(bucketlist.id, bucketlist.name)}><span className="badge add-item" title="Add Items">Add items</span></a>
-                <a onClick={()=>this.handleEditBucketlist(bucketlist.id, bucketlist.name)}><span className="badge btn edit-item" title="Edit this bucetlist">Edit</span></a>
+                <a onClick={()=>this.handleEditBucketlist(bucketlist.id, bucketlist.name)}><span className="badge edit-item" title="Edit this bucetlist">Edit</span></a>
                 <OverlayTrigger
                   trigger="click"
                   container={document.body}
@@ -407,19 +407,6 @@ export default class BucketList extends Component {
             placeholder="Enter bucketlist name"
           />
 
-
-          <BucketListItemModalForm
-            show={this.state.newBucketlistItemForm}
-            onHide={closeNewBucketistItemForm}
-            handleFieldChange={this.handleFieldChange}
-            onSave={this.submitNewBucketlistItem}
-            formtitle={"Add an item to " + this.state.bucketlistName}
-            placeholder="Enter item name"
-            required={true}
-          />
-
-
-
           <BucketListModalForm
             show={this.state.editBucketlistForm}
             onHide={closeEditBucketlistForm}
@@ -430,6 +417,17 @@ export default class BucketList extends Component {
             formtitle="Edit Bucketlist"
           />
 
+          <BucketListItemModalForm
+            show={this.state.newBucketlistItemForm}
+            onHide={closeNewBucketistItemForm}
+            handleFieldChange={this.handleFieldChange}
+            onSave={this.submitNewBucketlistItem}
+            formtitle={"Add an item to " + this.state.bucketlistName}
+            placeholder="Enter item name"
+            required={true}
+            displayEditItemFieldStatus="none"
+          />
+          
         </div>
       );
     }

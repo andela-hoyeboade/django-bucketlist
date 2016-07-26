@@ -303,6 +303,7 @@ textarea {
   width: 15%;
   float: right;
   margin-right: -5em;
+  margin-top: 0.2em;
 }
 
 .single-bucketlist-item .manage a {
@@ -315,8 +316,8 @@ textarea {
 
 .single-bucketlist .manage a {
   cursor: pointer;
-    text-align: left;
-    width: 100%;
+  text-align: left;
+  width: 100%;
   padding-left: 2.5em;
 }
 
@@ -422,4 +423,15 @@ textarea {
 
 .panel-group {
     margin-bottom: 5px;
+}
+
+.form-control {
+  display: inline-block;
+  width: 85%;
+  margin-left: 0.9em;
+}
+
+.btn-change-item-status {
+  margin-left: 1em;
+  margin-top: -0.2em;
 }

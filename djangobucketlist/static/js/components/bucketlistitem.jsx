@@ -40,6 +40,7 @@ export default class BucketListItem extends Component {
         this.handleDisplayMessage = this.handleDisplayMessage.bind(this);
         this.hideMessage = this.hideMessage.bind(this);
         this.displayMessage = this.displayMessage.bind(this);
+        this.changeItemDoneStatus = this.changeItemDoneStatus.bind(this);
         //this.displayAllBucketlistItems = this.displayAllBucketlistItems.bind(this);
         this.state = {
           items: [],
@@ -51,6 +52,7 @@ export default class BucketListItem extends Component {
           flashMessage: "",
           messageType: "success",
           displayFlashMessageStatus: "none",
+          itemDoneStatus: false
 
         }
     }
@@ -61,6 +63,15 @@ export default class BucketListItem extends Component {
       this.setState({
           [key]: value
       });
+    }
+
+    changeItemDoneStatus() {
+      if (this.state.itemDoneStatus === true) {
+        this.setState({itemDoneStatus: false})
+      }
+      else {
+        this.setState({itemDoneStatus: true})
+      }
     }
 
     displayBucketlistItems(bucketlistId, items) {
@@ -85,12 +96,14 @@ export default class BucketListItem extends Component {
       }
     }
 
-  handleEditBucketlistItem(bucketlistId, itemId, itemName) {
+  handleEditBucketlistItem(bucketlistId, itemId, itemName, itemDoneStatus) {
     this.setState({
       bucketlistId: bucketlistId,
       itemId: itemId,
-      itemName: itemName
+      itemName: itemName,
+      itemDoneStatus: itemDoneStatus
     });
+
     this.showEditBucketlistItemForm();
   }
   showEditBucketlistItemForm() {
@@ -103,7 +116,8 @@ export default class BucketListItem extends Component {
 
   handleUpdateBucketlistItem(event) {
     event.preventDefault();
-    this.updateBucketlistItem(this.state.bucketlistId, this.state.itemId, this.state.itemName);
+    this.updateBucketlistItem(this.state.bucketlistId, 
+      this.state.itemId, this.state.itemName, this.state.itemDoneStatus);
     this.hideEditBucketlistItemForm();
   }
 
@@ -125,7 +139,7 @@ export default class BucketListItem extends Component {
                 });
   }
 
-  updateBucketlistItem(bucketlistId, itemId, itemName) {
+  updateBucketlistItem(bucketlistId, itemId, itemName, itemDoneStatus) {
     if (itemName === '') {
       return;
     }
@@ -133,7 +147,7 @@ export default class BucketListItem extends Component {
       .put('/api/v1/bucketlists/'+bucketlistId+'/items/'+itemId)
       .set('Authorization', 'Token ' + (JSON.parse(localStorage
             .getItem('token'))))
-      .send({"name": itemName})
+      .send({"name": itemName, "done": itemDoneStatus})
       .end((err, result) => {
         if (result.status === 200) {
           this.props.fetchBucketlistItems(bucketlistId);
@@ -182,13 +196,13 @@ export default class BucketListItem extends Component {
           <div id={item.id} className="single-bucketlist-item">
             <a className="item-name">{item.name} </a>
             <div className="manage">
-              <a onClick={()=>this.handleEditBucketlistItem(bucketlistId, item.id, item.name)}><span className="glyphicon glyphicon-pencil" title="Edit this item"></span></a>
+              <a onClick={()=>this.handleEditBucketlistItem(bucketlistId, item.id, item.name, item.done)}><span className="glyphicon glyphicon-pencil" title="Edit this item"></span></a>
               <OverlayTrigger
                 trigger="click"
                 container={document.body}
                 placement="top"
                 rootClose={true}
-                show={this.state.showDeletePopover}
+                show={this.state.showDeletePopover} 
                 onHide={() => this.setState({ showDeletePopover: false })}
                   overlay={
                   <Popover id = {bucketlistId} title="Do you really want to delete this item?">
@@ -253,9 +267,12 @@ export default class BucketListItem extends Component {
         onHide={closeEditBucketlistItemForm}
         handleFieldChange={this.handleFieldChange}
         onSave={this.handleUpdateBucketlistItem}
-        formtitle={"Edit this item"}
+        formtitle="Edit this item"
         required={false}
         itemName={this.state.itemName}
+        itemDoneStatus={this.state.itemDoneStatus}
+        changeItemDoneStatus={this.changeItemDoneStatus}
+        displayEditItemFieldStatus="inline-block"
       />
       </div>
 
