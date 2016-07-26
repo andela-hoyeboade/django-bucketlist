@@ -23,7 +23,6 @@ export default class Dashboard extends Component {
     constructor() {
         super();
         this.state = {
-          search: '',
           bucketlists: [],
           bucketlistId: 0,
           bucketlistName: '',
@@ -40,12 +39,7 @@ export default class Dashboard extends Component {
         this.fetchAllBucketlists = this.fetchAllBucketlists.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
-        this.handleSearch = this.handleSearch.bind(this);
-
-        }
-
-
-
+    }
 
     componentWillMount() {
       if (!(localStorage.getItem('isAuthenticated') === 'true')) {
@@ -76,12 +70,6 @@ export default class Dashboard extends Component {
         });
     }
 
-
-    handleSearch(event) {
-      event.preventDefault();
-      search = this.state.search;
-    }
-
     handleLogout() {
       localStorage.clear();
       this.context.router.push('/');
@@ -106,34 +94,13 @@ export default class Dashboard extends Component {
             handleLogout={this.handleLogout} menustyle={{display:"block"}}
           />
 
-          <div className="container">
-            <div className="row">
-              <div className="col-sm-6 search-bucket-list">
-                <Form action="post" onSubmit={this.handleSearch}>
-                  <FormGroup>
-                    <FormControl
-                      name="username" type="text" required = {true} placeholder="Search My Bucketlists" onChange={this.handleFieldChange}
-                    />
-                    <button type="submit" className="btn btn-default search" title="Search Bucketlists">
-                      Search
-                    </button>
-                  </FormGroup>
-                </Form>
-              </div>
-            </div>
-
-          </div>
           <BucketList
             bucketlists={this.state.bucketlists}
             fetchAllBucketlists={this.fetchAllBucketlists}
             flashMessage={this.state.flashMessage}
             messageType={this.state.messageType}
             displayFlashMessageStatus={this.state.displayFlashMessageStatus}
-
           />
-
-
-
       </div>
       );
     }

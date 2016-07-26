@@ -6,8 +6,10 @@ import { Router, Route, browserHistory, hashHistory, IndexRoute } from 'react-ro
 import { render } from 'react-dom';
 
 const routes = (<Router history={browserHistory}>
-  <Route path="/" component={Home}/>
-  <Route path="dashboard" component={Dashboard}/>
-  </Router>)
+                  <Route path="/" component={Main}>
+                      <IndexRoute component={Home} history={browserHistory}/>
+                      <Route path="dashboard" component={Dashboard}/>
+                  </Route>
+                </Router>);
 
 render(routes, document.getElementById('app'));
