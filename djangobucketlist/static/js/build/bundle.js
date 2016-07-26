@@ -76,10 +76,14 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var routes = _react2.default.createElement(
-	  _reactRouter.Router,
-	  { history: _reactRouter.browserHistory },
-	  _react2.default.createElement(_reactRouter.Route, { path: '/', component: _home2.default }),
-	  _react2.default.createElement(_reactRouter.Route, { path: 'dashboard', component: _dashboard2.default })
+	    _reactRouter.Router,
+	    { history: _reactRouter.browserHistory },
+	    _react2.default.createElement(
+	        _reactRouter.Route,
+	        { path: '/', component: _main2.default },
+	        _react2.default.createElement(_reactRouter.IndexRoute, { component: _home2.default, history: _reactRouter.browserHistory }),
+	        _react2.default.createElement(_reactRouter.Route, { path: 'dashboard', component: _dashboard2.default })
+	    )
 	);
 
 	(0, _reactDom.render)(routes, document.getElementById('app'));
@@ -141,7 +145,6 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Dashboard).call(this));
 
 	    _this.state = {
-	      search: '',
 	      bucketlists: [],
 	      bucketlistId: 0,
 	      bucketlistName: '',
@@ -158,8 +161,6 @@
 	    _this.fetchAllBucketlists = _this.fetchAllBucketlists.bind(_this);
 	    _this.handleLogout = _this.handleLogout.bind(_this);
 	    _this.handleFieldChange = _this.handleFieldChange.bind(_this);
-	    _this.handleSearch = _this.handleSearch.bind(_this);
-
 	    return _this;
 	  }
 
@@ -194,12 +195,6 @@
 	      });
 	    }
 	  }, {
-	    key: 'handleSearch',
-	    value: function handleSearch(event) {
-	      event.preventDefault();
-	      search = this.state.search;
-	    }
-	  }, {
 	    key: 'handleLogout',
 	    value: function handleLogout() {
 	      localStorage.clear();
@@ -224,41 +219,12 @@
 	          username: JSON.parse(localStorage.getItem('username')),
 	          handleLogout: this.handleLogout, menustyle: { display: "block" }
 	        }),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'container' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'row' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-sm-6 search-bucket-list' },
-	              _react2.default.createElement(
-	                _reactBootstrap.Form,
-	                { action: 'post', onSubmit: this.handleSearch },
-	                _react2.default.createElement(
-	                  _reactBootstrap.FormGroup,
-	                  null,
-	                  _react2.default.createElement(_reactBootstrap.FormControl, {
-	                    name: 'username', type: 'text', required: true, placeholder: 'Search My Bucketlists', onChange: this.handleFieldChange
-	                  }),
-	                  _react2.default.createElement(
-	                    'button',
-	                    { type: 'submit', className: 'btn btn-default search', title: 'Search Bucketlists' },
-	                    'Search'
-	                  )
-	                )
-	              )
-	            )
-	          )
-	        ),
 	        _react2.default.createElement(_bucketlist2.default, {
 	          bucketlists: this.state.bucketlists,
 	          fetchAllBucketlists: this.fetchAllBucketlists,
 	          flashMessage: this.state.flashMessage,
 	          messageType: this.state.messageType,
 	          displayFlashMessageStatus: this.state.displayFlashMessageStatus
-
 	        })
 	      );
 	    }
@@ -41069,8 +41035,8 @@
 	      } else {
 	        return _react2.default.createElement(
 	          'div',
-	          null,
-	          'No bucketlist yet. Click the Create New bucketlist to start creating a bucketlist'
+	          { className: 'no-bucketlist' },
+	          'No bucketlist yet. Click the + sign above to start creating your bucketlist'
 	        );
 	      };
 	    }
@@ -41227,9 +41193,13 @@
 	            )
 	          ),
 	          _react2.default.createElement(
-	            _reactBootstrap.Accordion,
-	            null,
-	            this.displayAllBucketlists()
+	            _reactBootstrap.Panel,
+	            { header: 'My Bucketlists' },
+	            _react2.default.createElement(
+	              _reactBootstrap.Accordion,
+	              null,
+	              this.displayAllBucketlists()
+	            )
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -41376,7 +41346,7 @@
 	        } else {
 	          return _react2.default.createElement(
 	            'div',
-	            null,
+	            { className: 'no-item' },
 	            'No items yet. Items are displayed within here'
 	          );
 	        };
@@ -41509,11 +41479,7 @@
 	                { onClick: function onClick() {
 	                    return _this5.handleEditBucketlistItem(bucketlistId, item.id, item.name);
 	                  } },
-	                _react2.default.createElement(
-	                  'span',
-	                  { className: 'badge btn edit-item', title: 'Edit this item' },
-	                  'Edit'
-	                )
+	                _react2.default.createElement('span', { className: 'glyphicon glyphicon-pencil', title: 'Edit this item' })
 	              ),
 	              _react2.default.createElement(
 	                _reactBootstrap.OverlayTrigger,
@@ -41548,11 +41514,7 @@
 	                _react2.default.createElement(
 	                  'a',
 	                  null,
-	                  _react2.default.createElement(
-	                    'span',
-	                    { className: 'badge btn delete-item', title: 'Delete this item' },
-	                    'Delete'
-	                  )
+	                  _react2.default.createElement('span', { className: 'glyphicon glyphicon-trash', title: 'Delete this item' })
 	                )
 	              )
 	            )

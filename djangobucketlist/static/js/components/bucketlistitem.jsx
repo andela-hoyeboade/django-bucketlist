@@ -77,7 +77,7 @@ export default class BucketListItem extends Component {
         }
         else {
           return (
-            <div>
+            <div className="no-item">
               No items yet. Items are displayed within here
             </div>
         );
@@ -182,7 +182,7 @@ export default class BucketListItem extends Component {
           <div id={item.id} className="single-bucketlist-item">
             <a className="item-name">{item.name} </a>
             <div className="manage">
-              <a onClick={()=>this.handleEditBucketlistItem(bucketlistId, item.id, item.name)}><span className="badge btn edit-item" title="Edit this item">Edit</span></a>
+              <a onClick={()=>this.handleEditBucketlistItem(bucketlistId, item.id, item.name)}><span className="glyphicon glyphicon-pencil" title="Edit this item"></span></a>
               <OverlayTrigger
                 trigger="click"
                 container={document.body}
@@ -197,7 +197,7 @@ export default class BucketListItem extends Component {
                     onClick={() => this.hideDeletePopover()}>No</a>
 
                   </Popover>}>
-                  <a><span className="badge btn delete-item" title="Delete this item">Delete</span></a>
+                  <a><span className="glyphicon glyphicon-trash" title="Delete this item"></span></a>
               </OverlayTrigger>
             </div>
           </div>

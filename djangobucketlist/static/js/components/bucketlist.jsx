@@ -294,9 +294,9 @@ export default class BucketList extends Component {
         }
         else {
           return (
-            <div>
-              No bucketlist yet. Click the Create New bucketlist
-               to start creating a bucketlist
+            <div className="no-bucketlist">
+              No bucketlist yet. Click the + sign above
+               to start creating your bucketlist
             </div>
         );
         };
@@ -378,9 +378,11 @@ export default class BucketList extends Component {
             {this.state.flashMessage}
           </Alert>
           </div>
+           <Panel header="My Bucketlists">
           <Accordion>
             {this.displayAllBucketlists()}
             </Accordion>
+            </Panel>
           </div>
 
           <div className="bucket-list-items">
