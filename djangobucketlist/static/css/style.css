@@ -424,3 +424,14 @@ textarea {
 .panel-group {
     margin-bottom: 5px;
 }
+
+.form-control {
+  display: inline-block;
+  width: 85%;
+  margin-left: 0.9em;
+}
+
+.btn-change-item-status {
+  margin-left: 1em;
+  margin-top: -0.2em;
+}

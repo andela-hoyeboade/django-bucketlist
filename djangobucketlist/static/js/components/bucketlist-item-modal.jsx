@@ -20,38 +20,57 @@ import {
 export default class BucketListItemModalForm extends Component {
   constructor() {
     super();
+    this.getDoneStatusValue = this.getDoneStatusValue.bind(this);
     }
+
+  getDoneStatusValue(itemDoneStatus) {
+    if (itemDoneStatus === undefined) {
+      return;
+    }
+    else if (itemDoneStatus.toString().toLowerCase() === "true") {
+      return ("Done")
+    }
+    else {
+      return("Not done")
+    }
+  }
 
   render() {
     return (
-      <Modal {...this.props} bsSize="small" aria-labelledby="contained-modal-title-sm">
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-sm">{this.props.formtitle}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form action="post" onSubmit={this.props.onSave} className="buck">
+      <div className="item-modal-form">
+        <Modal {...this.props} bsSize="small" aria-labelledby="contained-modal-title-sm">
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-sm">{this.props.formtitle}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form action="post" onSubmit={this.props.onSave} className="buck">
 
-            <FormGroup><Col>Name:</Col>
+              <FormGroup>
+              <Col><strong>Name:</strong>
               <FormControl
-                name="itemName" type="text" value = {this.props.itemName} required = {this.props.required} placeholder={this.props.placeholder} onChange={this.props.handleFieldChange}
-              />
-              <FormControl name="itemDoneStatus" type="checkbox" onChange={this.props.handleFieldChange} /><Col>Done</Col>
-
+                  name="itemName" type="text" value = {this.props.itemName} required = {this.props.required} placeholder={this.props.placeholder} onChange={this.props.handleFieldChange}
+                />
+              </Col>
+              </FormGroup>
+                <div style={{display: this.props.displayEditItemFieldStatus}}>
+                  <FormGroup >
+                    <Col><strong>Status: &nbsp;</strong> {this.getDoneStatusValue(this.props.itemDoneStatus)}
+                      <Button className="badge btn-change-item-status" onClick={() => this.props.changeItemDoneStatus()}>Change</Button>
+                    </Col>
+                  </FormGroup>
+                </div>
+          <Modal.Footer>
+            <FormGroup>
+            <Button onClick={this.props.onHide}>Close</Button>
+            <Button type="submit" className="btn btn-primary">Save</Button>
             </FormGroup>
 
+          </Modal.Footer>
+          </Form>
+          </Modal.Body>
 
-
-        <Modal.Footer>
-          <FormGroup>
-          <Button onClick={this.props.onHide}>Close</Button>
-          <Button type="submit" className="btn btn-primary">Save</Button>
-          </FormGroup>
-
-        </Modal.Footer>
-        </Form>
-        </Modal.Body>
-
-      </Modal>
+        </Modal>
+      </div>
     );
   }
 }

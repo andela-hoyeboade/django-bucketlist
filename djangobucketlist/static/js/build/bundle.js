@@ -41083,7 +41083,7 @@
 	                  } },
 	                _react2.default.createElement(
 	                  'span',
-	                  { className: 'badge btn edit-item', title: 'Edit this bucetlist' },
+	                  { className: 'badge edit-item', title: 'Edit this bucetlist' },
 	                  'Edit'
 	                )
 	              ),
@@ -41224,15 +41224,6 @@
 	          formtitle: 'Add Bucketlist',
 	          placeholder: 'Enter bucketlist name'
 	        }),
-	        _react2.default.createElement(_bucketlistItemModal2.default, {
-	          show: this.state.newBucketlistItemForm,
-	          onHide: closeNewBucketistItemForm,
-	          handleFieldChange: this.handleFieldChange,
-	          onSave: this.submitNewBucketlistItem,
-	          formtitle: "Add an item to " + this.state.bucketlistName,
-	          placeholder: 'Enter item name',
-	          required: true
-	        }),
 	        _react2.default.createElement(_bucketlistModal2.default, {
 	          show: this.state.editBucketlistForm,
 	          onHide: closeEditBucketlistForm,
@@ -41241,6 +41232,16 @@
 	          onSave: this.handleUpdateBucketlist,
 	          formName: 'bucketlistName',
 	          formtitle: 'Edit Bucketlist'
+	        }),
+	        _react2.default.createElement(_bucketlistItemModal2.default, {
+	          show: this.state.newBucketlistItemForm,
+	          onHide: closeNewBucketistItemForm,
+	          handleFieldChange: this.handleFieldChange,
+	          onSave: this.submitNewBucketlistItem,
+	          formtitle: "Add an item to " + this.state.bucketlistName,
+	          placeholder: 'Enter item name',
+	          required: true,
+	          displayEditItemFieldStatus: 'none'
 	        })
 	      );
 	    }
@@ -41309,6 +41310,7 @@
 	    _this.handleDisplayMessage = _this.handleDisplayMessage.bind(_this);
 	    _this.hideMessage = _this.hideMessage.bind(_this);
 	    _this.displayMessage = _this.displayMessage.bind(_this);
+	    _this.changeItemDoneStatus = _this.changeItemDoneStatus.bind(_this);
 	    //this.displayAllBucketlistItems = this.displayAllBucketlistItems.bind(this);
 	    _this.state = {
 	      items: [],
@@ -41319,7 +41321,8 @@
 	      showEditDeleteButton: "none",
 	      flashMessage: "",
 	      messageType: "success",
-	      displayFlashMessageStatus: "none"
+	      displayFlashMessageStatus: "none",
+	      itemDoneStatus: false
 
 	    };
 	    return _this;
@@ -41332,6 +41335,15 @@
 	      var key = event.target.name;
 	      var value = event.target.value;
 	      this.setState(_defineProperty({}, key, value));
+	    }
+	  }, {
+	    key: 'changeItemDoneStatus',
+	    value: function changeItemDoneStatus() {
+	      if (this.state.itemDoneStatus === true) {
+	        this.setState({ itemDoneStatus: false });
+	      } else {
+	        this.setState({ itemDoneStatus: true });
+	      }
 	    }
 	  }, {
 	    key: 'displayBucketlistItems',
@@ -41354,12 +41366,14 @@
 	    }
 	  }, {
 	    key: 'handleEditBucketlistItem',
-	    value: function handleEditBucketlistItem(bucketlistId, itemId, itemName) {
+	    value: function handleEditBucketlistItem(bucketlistId, itemId, itemName, itemDoneStatus) {
 	      this.setState({
 	        bucketlistId: bucketlistId,
 	        itemId: itemId,
-	        itemName: itemName
+	        itemName: itemName,
+	        itemDoneStatus: itemDoneStatus
 	      });
+
 	      this.showEditBucketlistItemForm();
 	    }
 	  }, {
@@ -41376,7 +41390,7 @@
 	    key: 'handleUpdateBucketlistItem',
 	    value: function handleUpdateBucketlistItem(event) {
 	      event.preventDefault();
-	      this.updateBucketlistItem(this.state.bucketlistId, this.state.itemId, this.state.itemName);
+	      this.updateBucketlistItem(this.state.bucketlistId, this.state.itemId, this.state.itemName, this.state.itemDoneStatus);
 	      this.hideEditBucketlistItemForm();
 	    }
 	  }, {
@@ -41405,13 +41419,13 @@
 	    }
 	  }, {
 	    key: 'updateBucketlistItem',
-	    value: function updateBucketlistItem(bucketlistId, itemId, itemName) {
+	    value: function updateBucketlistItem(bucketlistId, itemId, itemName, itemDoneStatus) {
 	      var _this3 = this;
 
 	      if (itemName === '') {
 	        return;
 	      }
-	      _superagent2.default.put('/api/v1/bucketlists/' + bucketlistId + '/items/' + itemId).set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": itemName }).end(function (err, result) {
+	      _superagent2.default.put('/api/v1/bucketlists/' + bucketlistId + '/items/' + itemId).set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": itemName, "done": itemDoneStatus }).end(function (err, result) {
 	        if (result.status === 200) {
 	          _this3.props.fetchBucketlistItems(bucketlistId);
 	          _this3.handleDisplayMessage("Succesfully updated", 3000, "success");
@@ -41477,7 +41491,7 @@
 	              _react2.default.createElement(
 	                'a',
 	                { onClick: function onClick() {
-	                    return _this5.handleEditBucketlistItem(bucketlistId, item.id, item.name);
+	                    return _this5.handleEditBucketlistItem(bucketlistId, item.id, item.name, item.done);
 	                  } },
 	                _react2.default.createElement('span', { className: 'glyphicon glyphicon-pencil', title: 'Edit this item' })
 	              ),
@@ -41588,9 +41602,12 @@
 	          onHide: closeEditBucketlistItemForm,
 	          handleFieldChange: this.handleFieldChange,
 	          onSave: this.handleUpdateBucketlistItem,
-	          formtitle: "Edit this item",
+	          formtitle: 'Edit this item',
 	          required: false,
-	          itemName: this.state.itemName
+	          itemName: this.state.itemName,
+	          itemDoneStatus: this.state.itemDoneStatus,
+	          changeItemDoneStatus: this.changeItemDoneStatus,
+	          displayEditItemFieldStatus: 'inline-block'
 	        })
 	      );
 	    }
@@ -41647,63 +41664,107 @@
 	  function BucketListItemModalForm() {
 	    _classCallCheck(this, BucketListItemModalForm);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(BucketListItemModalForm).call(this));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(BucketListItemModalForm).call(this));
+
+	    _this.getDoneStatusValue = _this.getDoneStatusValue.bind(_this);
+	    return _this;
 	  }
 
 	  _createClass(BucketListItemModalForm, [{
+	    key: 'getDoneStatusValue',
+	    value: function getDoneStatusValue(itemDoneStatus) {
+	      if (itemDoneStatus === undefined) {
+	        return;
+	      } else if (itemDoneStatus.toString().toLowerCase() === "true") {
+	        return "Done";
+	      } else {
+	        return "Not done";
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      return _react2.default.createElement(
-	        _reactBootstrap.Modal,
-	        _extends({}, this.props, { bsSize: 'small', 'aria-labelledby': 'contained-modal-title-sm' }),
+	        'div',
+	        { className: 'item-modal-form' },
 	        _react2.default.createElement(
-	          _reactBootstrap.Modal.Header,
-	          { closeButton: true },
+	          _reactBootstrap.Modal,
+	          _extends({}, this.props, { bsSize: 'small', 'aria-labelledby': 'contained-modal-title-sm' }),
 	          _react2.default.createElement(
-	            _reactBootstrap.Modal.Title,
-	            { id: 'contained-modal-title-sm' },
-	            this.props.formtitle
-	          )
-	        ),
-	        _react2.default.createElement(
-	          _reactBootstrap.Modal.Body,
-	          null,
+	            _reactBootstrap.Modal.Header,
+	            { closeButton: true },
+	            _react2.default.createElement(
+	              _reactBootstrap.Modal.Title,
+	              { id: 'contained-modal-title-sm' },
+	              this.props.formtitle
+	            )
+	          ),
 	          _react2.default.createElement(
-	            _reactBootstrap.Form,
-	            { action: 'post', onSubmit: this.props.onSave, className: 'buck' },
+	            _reactBootstrap.Modal.Body,
+	            null,
 	            _react2.default.createElement(
-	              _reactBootstrap.FormGroup,
-	              null,
-	              _react2.default.createElement(
-	                _reactBootstrap.Col,
-	                null,
-	                'Name:'
-	              ),
-	              _react2.default.createElement(_reactBootstrap.FormControl, {
-	                name: 'itemName', type: 'text', value: this.props.itemName, required: this.props.required, placeholder: this.props.placeholder, onChange: this.props.handleFieldChange
-	              }),
-	              _react2.default.createElement(_reactBootstrap.FormControl, { name: 'itemDoneStatus', type: 'checkbox', onChange: this.props.handleFieldChange }),
-	              _react2.default.createElement(
-	                _reactBootstrap.Col,
-	                null,
-	                'Done'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              _reactBootstrap.Modal.Footer,
-	              null,
+	              _reactBootstrap.Form,
+	              { action: 'post', onSubmit: this.props.onSave, className: 'buck' },
 	              _react2.default.createElement(
 	                _reactBootstrap.FormGroup,
 	                null,
 	                _react2.default.createElement(
-	                  _reactBootstrap.Button,
-	                  { onClick: this.props.onHide },
-	                  'Close'
-	                ),
+	                  _reactBootstrap.Col,
+	                  null,
+	                  _react2.default.createElement(
+	                    'strong',
+	                    null,
+	                    'Name:'
+	                  ),
+	                  _react2.default.createElement(_reactBootstrap.FormControl, {
+	                    name: 'itemName', type: 'text', value: this.props.itemName, required: this.props.required, placeholder: this.props.placeholder, onChange: this.props.handleFieldChange
+	                  })
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { style: { display: this.props.displayEditItemFieldStatus } },
 	                _react2.default.createElement(
-	                  _reactBootstrap.Button,
-	                  { type: 'submit', className: 'btn btn-primary' },
-	                  'Save'
+	                  _reactBootstrap.FormGroup,
+	                  null,
+	                  _react2.default.createElement(
+	                    _reactBootstrap.Col,
+	                    null,
+	                    _react2.default.createElement(
+	                      'strong',
+	                      null,
+	                      'Status:  '
+	                    ),
+	                    ' ',
+	                    this.getDoneStatusValue(this.props.itemDoneStatus),
+	                    _react2.default.createElement(
+	                      _reactBootstrap.Button,
+	                      { className: 'badge btn-change-item-status', onClick: function onClick() {
+	                          return _this2.props.changeItemDoneStatus();
+	                        } },
+	                      'Change'
+	                    )
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _reactBootstrap.Modal.Footer,
+	                null,
+	                _react2.default.createElement(
+	                  _reactBootstrap.FormGroup,
+	                  null,
+	                  _react2.default.createElement(
+	                    _reactBootstrap.Button,
+	                    { onClick: this.props.onHide },
+	                    'Close'
+	                  ),
+	                  _react2.default.createElement(
+	                    _reactBootstrap.Button,
+	                    { type: 'submit', className: 'btn btn-primary' },
+	                    'Save'
+	                  )
 	                )
 	              )
 	            )
@@ -43353,11 +43414,15 @@
 	              _react2.default.createElement(
 	                _reactBootstrap.Col,
 	                null,
-	                'Name:'
-	              ),
-	              _react2.default.createElement(_reactBootstrap.FormControl, {
-	                name: this.props.formName, value: this.props.bucketlistName, type: 'text', required: true, placeholder: this.props.placeholder, onChange: this.props.handleFieldChange
-	              })
+	                _react2.default.createElement(
+	                  'strong',
+	                  null,
+	                  'Name: '
+	                ),
+	                _react2.default.createElement(_reactBootstrap.FormControl, {
+	                  name: this.props.formName, value: this.props.bucketlistName, type: 'text', required: true, placeholder: this.props.placeholder, onChange: this.props.handleFieldChange
+	                })
+	              )
 	            ),
 	            _react2.default.createElement(
 	              _reactBootstrap.Modal.Footer,
