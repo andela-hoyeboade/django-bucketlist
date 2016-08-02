@@ -116,7 +116,7 @@ export default class BucketListItem extends Component {
 
   handleUpdateBucketlistItem(event) {
     event.preventDefault();
-    this.updateBucketlistItem(this.state.bucketlistId, 
+    this.updateBucketlistItem(this.state.bucketlistId,
       this.state.itemId, this.state.itemName, this.state.itemDoneStatus);
     this.hideEditBucketlistItemForm();
   }
@@ -150,7 +150,7 @@ export default class BucketListItem extends Component {
       .send({"name": itemName, "done": itemDoneStatus})
       .end((err, result) => {
         if (result.status === 200) {
-          this.props.fetchBucketlistItems(bucketlistId);
+          //this.props.fetchBucketlistItems(bucketlistId);
           this.handleDisplayMessage("Succesfully updated", 3000, "success")
         } else {
           var message = "Unable to update item. Please try again"
@@ -177,7 +177,7 @@ export default class BucketListItem extends Component {
       .end((err, result) => {
         if (result.status === 204) {
           this.props.fetchAllBucketlists();
-          this.props.fetchBucketlistItems(bucketlistId);
+          //this.props.fetchBucketlistItems(bucketlistId);
           this.handleDisplayMessage("Succesfully deleted", 3000, "success")
         } else {
           var message = "Unable to delete item. Please try again"
@@ -202,7 +202,7 @@ export default class BucketListItem extends Component {
                 container={document.body}
                 placement="top"
                 rootClose={true}
-                show={this.state.showDeletePopover} 
+                show={this.state.showDeletePopover}
                 onHide={() => this.setState({ showDeletePopover: false })}
                   overlay={
                   <Popover id = {bucketlistId} title="Do you really want to delete this item?">

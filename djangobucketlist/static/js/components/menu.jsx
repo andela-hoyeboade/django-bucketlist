@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
-import { Col, form, Form, FormGroup,
-    FormControl,
-    Control,
-    ControlLabel,
-    Checkbox,
-    Button,
-    Tab,
-    Tabs,
-    SplitButton,
+import {
     MenuItem,
-    DropdownButton,
-    ButtonGroup,
     Navbar,
     Nav,
     NavItem,
@@ -18,31 +8,27 @@ import { Col, form, Form, FormGroup,
 } from 'react-bootstrap';
 
 
-
 export default class Menu extends Component {
-   constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 
-    render() {
-        return (
-          <div className="menu">
-            <Navbar staticTop={true}>
-              <Navbar.Header>
-                <Navbar.Brand>
-                  <a href="#">MyBucketlists</a>
-                </Navbar.Brand>
-            </Navbar.Header>
-            <div style={this.props.menustyle}>
-            <Nav pullRight>
-              <NavDropdown eventKey={3} title={this.props.username || ""} id="basic-nav-dropdown">
-                <MenuItem onClick={this.props.handleLogout} eventKey={3.1}>Logout</MenuItem>
-              </NavDropdown>
-            </Nav>
-            </div>
-            </Navbar>
-            </div>
-
+  render() {
+    return (
+      <Navbar staticTop={true}>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href="#">MyBucketlists</a>
+          </Navbar.Brand>
+        </Navbar.Header>
+        <div style={this.props.menustyle}>
+          <Nav pullRight>
+            <NavDropdown eventKey={3} title={this.props.username || ""} id="basic-nav-dropdown">
+              <MenuItem onClick={this.props.handleLogout} eventKey={3.1}>Logout</MenuItem>
+            </NavDropdown>
+          </Nav>
+          </div>
+      </Navbar>
         );
     }
 }

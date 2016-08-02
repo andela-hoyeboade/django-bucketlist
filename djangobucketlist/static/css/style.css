@@ -71,7 +71,9 @@ a:hover {
 .form {
   background: rgba(19, 35, 47, 0.9);
   padding: 30px;
-  max-width: 40%;
+  max-width: 100%;
+  width: 34em;
+  height: 40em;
   margin: 30px auto;
   border-radius: 4px;
   box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
@@ -428,10 +430,20 @@ textarea {
 .form-control {
   display: inline-block;
   width: 85%;
-  margin-left: 0.9em;
+  margin-left: 0.9em
 }
 
 .btn-change-item-status {
   margin-left: 1em;
   margin-top: -0.2em;
+}
+
+#signup .form-control {
+  margin-left: 0em;
+  width: 100%;
+}
+
+#login .form-control {
+  margin-left: 0em;
+  width: 100%;
 }
