@@ -46741,6 +46741,7 @@
 	    _this.hideEditBucketlistItemForm = _this.hideEditBucketlistItemForm.bind(_this);
 	    _this.displayFlashMessage = _this.displayFlashMessage.bind(_this);
 	    _this.changeItemDoneStatus = _this.changeItemDoneStatus.bind(_this);
+	    _this.displayDoneTips = _this.displayDoneTips.bind(_this);
 	    //this.displayAllBucketlistItems = this.displayAllBucketlistItems.bind(this);
 	    _this.state = {
 	      items: [],
@@ -46773,6 +46774,32 @@
 	        this.setState({ itemDoneStatus: false });
 	      } else {
 	        this.setState({ itemDoneStatus: true });
+	      }
+	    }
+	  }, {
+	    key: 'displayDoneTips',
+	    value: function displayDoneTips(itemLength) {
+	      if (itemLength > 0) {
+	        return _react2.default.createElement(
+	          _reactBootstrap.Well,
+	          { bsSize: 'small' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'done-tips' },
+	            _react2.default.createElement('div', { className: 'green-circle' }),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'done' },
+	              '  Done'
+	            ),
+	            _react2.default.createElement('div', { className: 'grey-circle' }),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'not-done' },
+	              '  Not done'
+	            )
+	          )
+	        );
 	      }
 	    }
 	  }, {
@@ -46881,6 +46908,14 @@
 	      });
 	    }
 	  }, {
+	    key: 'displayItemDoneStatus',
+	    value: function displayItemDoneStatus(itemDoneStatus) {
+	      if (itemDoneStatus === true) {
+	        return _react2.default.createElement('a', { className: 'green-circle' });
+	      }
+	      return _react2.default.createElement('a', { className: 'grey-circle' });
+	    }
+	  }, {
 	    key: 'displaySingleBucketlistItem',
 	    value: function displaySingleBucketlistItem(bucketlistId, item) {
 	      var _this5 = this;
@@ -46894,6 +46929,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { id: item.id, className: 'single-bucketlist-item' },
+	            this.displayItemDoneStatus(item.done),
 	            _react2.default.createElement(
 	              'a',
 	              { className: 'item-name' },
@@ -46992,7 +47028,8 @@
 	          _react2.default.createElement(
 	            _reactBootstrap.ListGroup,
 	            { fill: true },
-	            this.displayBucketlistItems(props.bucketlistId, props.items)
+	            this.displayBucketlistItems(props.bucketlistId, props.items),
+	            this.displayDoneTips(props.items.length)
 	          )
 	        ),
 	        _react2.default.createElement(_bucketlistItemModal2.default, {

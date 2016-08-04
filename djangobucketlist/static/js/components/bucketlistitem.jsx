@@ -20,7 +20,8 @@ import {
     ListGroup,
     ListGroupItem,
     Panel,
-    Alert
+    Alert,
+    Well
 } from 'react-bootstrap';
 
 export default class BucketListItem extends Component {
@@ -38,6 +39,7 @@ export default class BucketListItem extends Component {
         this.hideEditBucketlistItemForm = this.hideEditBucketlistItemForm.bind(this);
         this.displayFlashMessage = this.displayFlashMessage.bind(this);
         this.changeItemDoneStatus = this.changeItemDoneStatus.bind(this);
+        this.displayDoneTips = this.displayDoneTips.bind(this);
         //this.displayAllBucketlistItems = this.displayAllBucketlistItems.bind(this);
         this.state = {
           items: [],
@@ -68,6 +70,21 @@ export default class BucketListItem extends Component {
       }
       else {
         this.setState({itemDoneStatus: true})
+      }
+    }
+
+    displayDoneTips(itemLength) {
+      if (itemLength > 0) {
+        return (
+          <Well  bsSize="small">
+          <div className="done-tips">
+          <div className="green-circle"></div>
+          <div className="done">&nbsp;&nbsp;Done</div>
+          <div className="grey-circle"></div>
+          <div className="not-done">&nbsp;&nbsp;Not done</div>
+          </div>
+          </Well>
+        )
       }
     }
 
@@ -177,11 +194,23 @@ export default class BucketListItem extends Component {
       });
   }
 
+  displayItemDoneStatus(itemDoneStatus) {
+      if (itemDoneStatus === true) {
+        return (
+          <a className="green-circle"></a>
+        )
+      }
+      return (
+        <a className="grey-circle"></a>
+      )
+  }
+
   displaySingleBucketlistItem(bucketlistId, item) {
     return (
       <ListGroupItem onMouseEnter={this.mousenter}>
         <div className="row"  key={item.id}>
           <div id={item.id} className="single-bucketlist-item">
+            {this.displayItemDoneStatus(item.done)}
             <a className="item-name">{item.name} </a>
             <div className="manage">
               <a onClick={()=>this.handleEditBucketlistItem(bucketlistId, item.id, item.name, item.done)}><span className="glyphicon glyphicon-pencil" title="Edit this item"></span></a>
@@ -231,8 +260,10 @@ export default class BucketListItem extends Component {
       <Panel header={props.bucketlistName}>
       <ListGroup fill>
       {this.displayBucketlistItems(props.bucketlistId, props.items)}
+      {this.displayDoneTips(props.items.length)}
       </ListGroup>
       </Panel>
+
 
       <BucketListItemModalForm
         show={this.state.editBucketlistItemForm}

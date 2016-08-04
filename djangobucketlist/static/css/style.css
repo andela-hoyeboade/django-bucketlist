@@ -363,6 +363,7 @@ textarea {
   padding-left: 0.5em;
   word-break: break-all;
   text-decoration: none;
+  color: black;
 }
 
 .single-bucketlist-item {
@@ -447,4 +448,73 @@ textarea {
 #login .form-control {
   margin-left: 0em;
   width: 100%;
+}
+
+.single-bucketlist-item .green-circle {
+  width: 10px;
+  height: 10px;
+  background: green;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  float: left;
+  margin-left: 0.4em;
+  margin-top: 0.4em;
+}
+
+.single-bucketlist-item .grey-circle {
+  width: 10px;
+  height: 10px;
+  background: grey;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  float: left;
+  margin-left: 0.4em;
+  margin-top: 0.4em;
+}
+
+
+.done-tips .green-circle {
+  width: 10px;
+  height: 10px;
+  background: green;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  float: left;
+}
+
+.done-tips .grey-circle {
+  width: 10px;
+  height: 10px;
+  background: grey;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  float: left;
+  margin-left: 2em;
+}
+
+.done {
+  float: left;
+  margin-top: -0.35em;
+}
+
+.not-done {
+  float: left;
+  margin-top: -0.35em;
+}
+
+.done-tips {
+  background-color: none;
+  margin-top: 0.1em;
+  margin-bottom: 0.6em;
+}
+
+.well {
+  border-radius: 0px;
+}
+
+.item-detail {
 }
