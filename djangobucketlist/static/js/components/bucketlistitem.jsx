@@ -37,9 +37,7 @@ export default class BucketListItem extends Component {
         this.updateBucketlistItem = this.updateBucketlistItem.bind(this);
         this.showEditBucketlistItemForm = this.showEditBucketlistItemForm.bind(this);
         this.hideEditBucketlistItemForm = this.hideEditBucketlistItemForm.bind(this);
-        this.handleDisplayMessage = this.handleDisplayMessage.bind(this);
-        this.hideMessage = this.hideMessage.bind(this);
-        this.displayMessage = this.displayMessage.bind(this);
+        this.displayFlashMessage = this.displayFlashMessage.bind(this);
         this.changeItemDoneStatus = this.changeItemDoneStatus.bind(this);
         //this.displayAllBucketlistItems = this.displayAllBucketlistItems.bind(this);
         this.state = {
@@ -121,22 +119,16 @@ export default class BucketListItem extends Component {
     this.hideEditBucketlistItemForm();
   }
 
-  handleDisplayMessage(message, timeout=3000, messageType) {
-    this.displayMessage(message, messageType);
-    setTimeout(this.hideMessage, timeout);
-  }
-
-  hideMessage() {
-    this.setState({displayFlashMessageStatus: "none",
-                  flashMessage: ""
-                });
-  }
-
-  displayMessage(message, messageType) {
+  displayFlashMessage(message, messageType) {
     this.setState({flashMessage: message,
                   displayFlashMessageStatus: "block",
                   messageType: messageType
                 });
+    setTimeout(function() {
+      this.setState({displayFlashMessageStatus: "none",
+                    flashMessage: ""
+                  });
+    }.bind(this), 3000);
   }
 
   updateBucketlistItem(bucketlistId, itemId, itemName, itemDoneStatus) {
@@ -149,17 +141,15 @@ export default class BucketListItem extends Component {
             .getItem('token'))))
       .send({"name": itemName, "done": itemDoneStatus})
       .end((err, result) => {
-        if (result.status === 200) {
-          //this.props.fetchBucketlistItems(bucketlistId);
-          this.handleDisplayMessage("Succesfully updated", 3000, "success")
-        } else {
-          var message = "Unable to update item. Please try again"
-          if (!(result.body.message) === undefined);
-          {
-            message = result.body.message
+        if (result) {
+          if (result.status === 200) {
+            this.props.fetchBucketlistItems(bucketlistId);
+            return this.displayFlashMessage("Succesfully updated", "success")
           }
-          this.handleDisplayMessage(message, 3000, "danger" )
+          var message = (("message" in result.body) && !(result.body.message === '')) ? result.body.message : "Unable to update item"
+          return this.displayFlashMessage(message, "danger")
         }
+        return this.displayFlashMessage("An error occured", "danger")
       });
   }
 
@@ -175,20 +165,19 @@ export default class BucketListItem extends Component {
       .set('Authorization', 'Token ' + (JSON.parse(localStorage
             .getItem('token'))))
       .end((err, result) => {
-        if (result.status === 204) {
-          this.props.fetchAllBucketlists();
-          //this.props.fetchBucketlistItems(bucketlistId);
-          this.handleDisplayMessage("Succesfully deleted", 3000, "success")
-        } else {
-          var message = "Unable to delete item. Please try again"
-          if (!(result.body.message) === undefined);
-          {
-            message = result.body.message
+        if (result) {
+          if (result.status === 204) {
+            this.props.fetchAllBucketlists();
+            this.props.fetchBucketlistItems(bucketlistId);
+            return this.displayFlashMessage("Succesfully deleted", "success")
           }
-          this.handleDisplayMessage(message, 3000, "danger" )
+          var message = (("message" in result.body) && !(result.body.message === '')) ? result.body.message : "Unable to delete item"
+          return this.displayFlashMessage(message, "danger")
         }
+        return this.displayFlashMessage("An error occured", "danger")
       });
   }
+
   displaySingleBucketlistItem(bucketlistId, item) {
     return (
       <ListGroupItem onMouseEnter={this.mousenter}>

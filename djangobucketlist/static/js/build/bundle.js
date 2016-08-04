@@ -46301,23 +46301,16 @@
 	      if (bucketlistName === '') {
 	        return;
 	      }
-	      _superagent2.default.post('/api/v1/bucketlits/').type('form').set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": bucketlistName }).end(function (err, result) {
-	        var message;
-	        var messageType;
+	      _superagent2.default.post('/api/v1/bucketlists/').type('form').set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": bucketlistName }).end(function (err, result) {
 	        if (result) {
 	          if (result.status === 201) {
 	            _this2.props.fetchAllBucketlists();
-	            message = "Succesfully created";
-	            messageType = "success";
-	          } else {
-	            message = result.body.message === undefined ? "Unable to create a new bucketlist." : result.body.message;
-	            messageType = "danger";
+	            return _this2.displayFlashMessage("Succesfully created", "success");
 	          }
-	        } else {
-	          message = "Unable to create a new bucketlist";
-	          messageType = "danger";
+	          var message = "message" in result.body && !(result.body.message === '') ? result.body.message : "Unable to create a new bucketlist";
+	          return _this2.displayFlashMessage(message, "danger");
 	        }
-	        _this2.displayFlashMessage(message, messageType);
+	        return _this2.displayFlashMessage("An error occured", "danger");
 	      });
 	    }
 	  }, {
@@ -46354,17 +46347,15 @@
 	        return;
 	      }
 	      _superagent2.default.delete('/api/v1/bucketlists/' + bucketlistId).set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).end(function (err, result) {
-	        if (result.status === 204) {
-	          _this3.props.fetchAllBucketlists();
-	          _this3.handleDisplayMessage("Succesfully deleted", 3000, "success");
-	        } else {
-	          var message = "Unable to delete. Please try again";
-	          if (!result.body.message === undefined) ;
-	          {
-	            message = result.body.message;
+	        if (result) {
+	          if (result.status === 204) {
+	            _this3.props.fetchAllBucketlists();
+	            return _this3.displayFlashMessage("Succesfully deleted", "success");
 	          }
-	          _this3.handleDisplayMessage(message, 3000, "danger");
+	          var message = "message" in result.body && !(result.body.message === '') ? result.body.message : "Unable to delete bucketlist";
+	          return _this3.displayFlashMessage(message, "danger");
 	        }
+	        return _this3.displayFlashMessage("An error occured", "danger");
 	      });
 	    }
 	  }, {
@@ -46405,18 +46396,16 @@
 	        return;
 	      }
 	      _superagent2.default.post('/api/v1/bucketlists/' + bucketlistId + '/items/').set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": itemName }).end(function (err, result) {
-	        if (result.status === 201) {
-	          _this4.props.fetchAllBucketlists();
-	          _this4.fetchBucketlistItems(bucketlistId);
-	          _this4.displayNewItemFlashMessage("Sucessfully created", "success");
-	        } else {
-	          var message = "Unable to create item. Please try again";
-	          if (!result.body.message === undefined) ;
-	          {
-	            message = result.body.message;
+	        if (result) {
+	          if (result.status === 201) {
+	            _this4.props.fetchAllBucketlists();
+	            _this4.fetchBucketlistItems(bucketlistId);
+	            return _this4.displayNewItemFlashMessage("Succesfully created", "success");
 	          }
-	          _this4.displayNewItemFlashMessage(message, "danger");
+	          var message = "message" in result.body && !(result.body.message === '') ? result.body.message : "Unable to create item";
+	          return _this4.displayNewItemFlashMessage(message, "danger");
 	        }
+	        return _this4.displayNewItemFlashMessage("An error occured", "danger");
 	      });
 	    }
 	  }, {
@@ -46459,17 +46448,15 @@
 	        return;
 	      }
 	      _superagent2.default.put('/api/v1/bucketlists/' + bucketlistId).type('form').set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": bucketlistName }).end(function (err, result) {
-	        if (result.status === 200) {
-	          _this5.props.fetchAllBucketlists();
-	          _this5.handleDisplayMessage("Succesfully updated", "success");
-	        } else {
-	          var message = "Unable to update your bucketlist. Please try again";
-	          if (!result.body.message === undefined) ;
-	          {
-	            message = result.body.message;
+	        if (result) {
+	          if (result.status === 200) {
+	            _this5.props.fetchAllBucketlists();
+	            return _this5.displayFlashMessage("Succesfully updated", "success");
 	          }
-	          _this5.handleDisplayMessage(message, "danger");
+	          var message = "message" in result.body && !(result.body.message === '') ? result.body.message : "Unable to update bucketlist";
+	          return _this5.displayFlashMessage(message, "danger");
 	        }
+	        return _this5.displayFlashMessage("An error occured", "danger");
 	      });
 	    }
 	  }, {
@@ -46753,9 +46740,7 @@
 	    _this.updateBucketlistItem = _this.updateBucketlistItem.bind(_this);
 	    _this.showEditBucketlistItemForm = _this.showEditBucketlistItemForm.bind(_this);
 	    _this.hideEditBucketlistItemForm = _this.hideEditBucketlistItemForm.bind(_this);
-	    _this.handleDisplayMessage = _this.handleDisplayMessage.bind(_this);
-	    _this.hideMessage = _this.hideMessage.bind(_this);
-	    _this.displayMessage = _this.displayMessage.bind(_this);
+	    _this.displayFlashMessage = _this.displayFlashMessage.bind(_this);
 	    _this.changeItemDoneStatus = _this.changeItemDoneStatus.bind(_this);
 	    //this.displayAllBucketlistItems = this.displayAllBucketlistItems.bind(this);
 	    _this.state = {
@@ -46840,28 +46825,17 @@
 	      this.hideEditBucketlistItemForm();
 	    }
 	  }, {
-	    key: 'handleDisplayMessage',
-	    value: function handleDisplayMessage(message) {
-	      var timeout = arguments.length <= 1 || arguments[1] === undefined ? 3000 : arguments[1];
-	      var messageType = arguments[2];
-
-	      this.displayMessage(message, messageType);
-	      setTimeout(this.hideMessage, timeout);
-	    }
-	  }, {
-	    key: 'hideMessage',
-	    value: function hideMessage() {
-	      this.setState({ displayFlashMessageStatus: "none",
-	        flashMessage: ""
-	      });
-	    }
-	  }, {
-	    key: 'displayMessage',
-	    value: function displayMessage(message, messageType) {
+	    key: 'displayFlashMessage',
+	    value: function displayFlashMessage(message, messageType) {
 	      this.setState({ flashMessage: message,
 	        displayFlashMessageStatus: "block",
 	        messageType: messageType
 	      });
+	      setTimeout(function () {
+	        this.setState({ displayFlashMessageStatus: "none",
+	          flashMessage: ""
+	        });
+	      }.bind(this), 3000);
 	    }
 	  }, {
 	    key: 'updateBucketlistItem',
@@ -46872,17 +46846,15 @@
 	        return;
 	      }
 	      _superagent2.default.put('/api/v1/bucketlists/' + bucketlistId + '/items/' + itemId).set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": itemName, "done": itemDoneStatus }).end(function (err, result) {
-	        if (result.status === 200) {
-	          //this.props.fetchBucketlistItems(bucketlistId);
-	          _this3.handleDisplayMessage("Succesfully updated", 3000, "success");
-	        } else {
-	          var message = "Unable to update item. Please try again";
-	          if (!result.body.message === undefined) ;
-	          {
-	            message = result.body.message;
+	        if (result) {
+	          if (result.status === 200) {
+	            _this3.props.fetchBucketlistItems(bucketlistId);
+	            return _this3.displayFlashMessage("Succesfully updated", "success");
 	          }
-	          _this3.handleDisplayMessage(message, 3000, "danger");
+	          var message = "message" in result.body && !(result.body.message === '') ? result.body.message : "Unable to update item";
+	          return _this3.displayFlashMessage(message, "danger");
 	        }
+	        return _this3.displayFlashMessage("An error occured", "danger");
 	      });
 	    }
 	  }, {
@@ -46897,18 +46869,16 @@
 	        return;
 	      }
 	      _superagent2.default.delete('/api/v1/bucketlists/' + bucketlistId + '/items/' + itemId).set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).end(function (err, result) {
-	        if (result.status === 204) {
-	          _this4.props.fetchAllBucketlists();
-	          //this.props.fetchBucketlistItems(bucketlistId);
-	          _this4.handleDisplayMessage("Succesfully deleted", 3000, "success");
-	        } else {
-	          var message = "Unable to delete item. Please try again";
-	          if (!result.body.message === undefined) ;
-	          {
-	            message = result.body.message;
+	        if (result) {
+	          if (result.status === 204) {
+	            _this4.props.fetchAllBucketlists();
+	            _this4.props.fetchBucketlistItems(bucketlistId);
+	            return _this4.displayFlashMessage("Succesfully deleted", "success");
 	          }
-	          _this4.handleDisplayMessage(message, 3000, "danger");
+	          var message = "message" in result.body && !(result.body.message === '') ? result.body.message : "Unable to delete item";
+	          return _this4.displayFlashMessage(message, "danger");
 	        }
+	        return _this4.displayFlashMessage("An error occured", "danger");
 	      });
 	    }
 	  }, {
