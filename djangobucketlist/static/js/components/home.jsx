@@ -3,6 +3,7 @@ import LoginForm from './login.jsx';
 import RegisterForm from './register.jsx';
 import Menu from './menu.jsx';
 import {Jumbotron, Button} from 'react-bootstrap';
+
 export default class Home extends Component {
     constructor() {
         super();
@@ -51,10 +52,10 @@ export default class Home extends Component {
           />
             <div className="form">
             <ul className="tab-group">
-              <li className={"tab " + this.state.signUpTab}><a onClick={()=>this.showSignUpForm()}>Sign Up</a></li>
-              <li className={"tab " + this.state.loginTab}><a onClick={()=>this.showLoginForm()}>Log In</a></li>
-            </ul>
 
+              <li className={"tab " + this.state.signUpTab}><a onClick={this.showSignUpForm}>Sign Up</a></li>
+              <li className={"tab " + this.state.loginTab}><a onClick={this.showLoginForm}>Log In</a></li>
+            </ul>
 
             <LoginForm  menustyle={{display:this.state.loginFormShowStatus}} />
             <RegisterForm menustyle={{display:this.state.registerFormShowStatus}} />

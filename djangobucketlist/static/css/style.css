@@ -71,7 +71,8 @@ a:hover {
 .form {
   background: rgba(19, 35, 47, 0.9);
   padding: 30px;
-  max-width: 40%;
+  max-width: 100%;
+  width: 34em;
   margin: 30px auto;
   border-radius: 4px;
   box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
@@ -361,6 +362,8 @@ textarea {
   font-size: 18px;
   padding-left: 0.5em;
   word-break: break-all;
+  text-decoration: none;
+  color: black;
 }
 
 .single-bucketlist-item {
@@ -404,6 +407,7 @@ textarea {
 .navbar-default {
   background-color: gainsboro;
 }
+
 .navbar-default .navbar-brand {
     color: #000000;
 }
@@ -428,10 +432,89 @@ textarea {
 .form-control {
   display: inline-block;
   width: 85%;
-  margin-left: 0.9em;
+  margin-left: 0.9em
 }
 
 .btn-change-item-status {
   margin-left: 1em;
   margin-top: -0.2em;
+}
+
+#signup .form-control {
+  margin-left: 0em;
+  width: 100%;
+}
+
+#login .form-control {
+  margin-left: 0em;
+  width: 100%;
+}
+
+.single-bucketlist-item .green-circle {
+  width: 10px;
+  height: 10px;
+  background: green;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  float: left;
+  margin-left: 0.4em;
+  margin-top: 0.65em;
+}
+
+.single-bucketlist-item .grey-circle {
+  width: 10px;
+  height: 10px;
+  background: grey;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  float: left;
+  margin-left: 0.4em;
+  margin-top: 0.65em;
+}
+
+
+.done-tips .green-circle {
+  width: 10px;
+  height: 10px;
+  background: green;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  float: left;
+}
+
+.done-tips .grey-circle {
+  width: 10px;
+  height: 10px;
+  background: grey;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  float: left;
+  margin-left: 2em;
+}
+
+.done {
+  float: left;
+  margin-top: -0.35em;
+}
+
+.not-done {
+  float: left;
+  margin-top: -0.35em;
+}
+
+.done-tips {
+  margin-top: 0.1em;
+  margin-bottom: 0.6em;
+  margin-left: -0.3em;
+}
+
+.well {
+  border-radius: 0px;
+}
+
+.item-detail {
 }

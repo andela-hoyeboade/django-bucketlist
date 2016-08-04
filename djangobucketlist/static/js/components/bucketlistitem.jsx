@@ -20,7 +20,8 @@ import {
     ListGroup,
     ListGroupItem,
     Panel,
-    Alert
+    Alert,
+    Well
 } from 'react-bootstrap';
 
 export default class BucketListItem extends Component {
@@ -29,7 +30,6 @@ export default class BucketListItem extends Component {
         this.deleteBucketlistItem = this.deleteBucketlistItem.bind(this);
         this.displayBucketlistItems = this.displayBucketlistItems.bind(this);
         this.displaySingleBucketlistItem = this.displaySingleBucketlistItem.bind(this);
-        this.displayBucketlistItemsTitle = this.displayBucketlistItemsTitle.bind(this);
         this.handleEditBucketlistItem = this.handleEditBucketlistItem.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
         this.handleUpdateBucketlistItem = this.handleUpdateBucketlistItem.bind(this);
@@ -37,11 +37,8 @@ export default class BucketListItem extends Component {
         this.updateBucketlistItem = this.updateBucketlistItem.bind(this);
         this.showEditBucketlistItemForm = this.showEditBucketlistItemForm.bind(this);
         this.hideEditBucketlistItemForm = this.hideEditBucketlistItemForm.bind(this);
-        this.handleDisplayMessage = this.handleDisplayMessage.bind(this);
-        this.hideMessage = this.hideMessage.bind(this);
-        this.displayMessage = this.displayMessage.bind(this);
+        this.displayFlashMessage = this.displayFlashMessage.bind(this);
         this.changeItemDoneStatus = this.changeItemDoneStatus.bind(this);
-        //this.displayAllBucketlistItems = this.displayAllBucketlistItems.bind(this);
         this.state = {
           items: [],
           bucketlistId: 0,
@@ -71,6 +68,21 @@ export default class BucketListItem extends Component {
       }
       else {
         this.setState({itemDoneStatus: true})
+      }
+    }
+
+    displayDoneTips(itemLength) {
+      if (itemLength > 0) {
+        return (
+          <Well  bsSize="small">
+          <div className="done-tips">
+          <div className="green-circle"></div>
+          <div className="done">&nbsp;&nbsp;Done</div>
+          <div className="grey-circle"></div>
+          <div className="not-done">&nbsp;&nbsp;Not done</div>
+          </div>
+          </Well>
+        )
       }
     }
 
@@ -116,50 +128,40 @@ export default class BucketListItem extends Component {
 
   handleUpdateBucketlistItem(event) {
     event.preventDefault();
-    this.updateBucketlistItem(this.state.bucketlistId, 
+    this.updateBucketlistItem(this.state.bucketlistId,
       this.state.itemId, this.state.itemName, this.state.itemDoneStatus);
     this.hideEditBucketlistItemForm();
   }
 
-  handleDisplayMessage(message, timeout=3000, messageType) {
-    this.displayMessage(message, messageType);
-    setTimeout(this.hideMessage, timeout);
-  }
-
-  hideMessage() {
-    this.setState({displayFlashMessageStatus: "none",
-                  flashMessage: ""
-                });
-  }
-
-  displayMessage(message, messageType) {
+  displayFlashMessage(message, messageType) {
     this.setState({flashMessage: message,
                   displayFlashMessageStatus: "block",
                   messageType: messageType
                 });
+    setTimeout(function() {
+      this.setState({displayFlashMessageStatus: "none",
+                    flashMessage: ""
+                  });
+    }.bind(this), 3000);
   }
 
   updateBucketlistItem(bucketlistId, itemId, itemName, itemDoneStatus) {
-    if (itemName === '') {
-      return;
-    }
     request
       .put('/api/v1/bucketlists/'+bucketlistId+'/items/'+itemId)
       .set('Authorization', 'Token ' + (JSON.parse(localStorage
             .getItem('token'))))
+      .type('form')
       .send({"name": itemName, "done": itemDoneStatus})
       .end((err, result) => {
-        if (result.status === 200) {
-          this.props.fetchBucketlistItems(bucketlistId);
-          this.handleDisplayMessage("Succesfully updated", 3000, "success")
-        } else {
-          var message = "Unable to update item. Please try again"
-          if (!(result.body.message) === undefined);
-          {
-            message = result.body.message
+        if (result) {
+          if (result.status === 200) {
+            this.props.fetchBucketlistItems(bucketlistId);
+            return this.displayFlashMessage("Succesfully updated", "success")
           }
-          this.handleDisplayMessage(message, 3000, "danger" )
+          var message = (("message" in result.body) && !(result.body.message === '')) ? result.body.message : "Unable to update item"
+          return this.displayFlashMessage(message, "danger")
         }
+        return this.displayFlashMessage("An error occured", "danger")
       });
   }
 
@@ -175,25 +177,36 @@ export default class BucketListItem extends Component {
       .set('Authorization', 'Token ' + (JSON.parse(localStorage
             .getItem('token'))))
       .end((err, result) => {
-        if (result.status === 204) {
-          this.props.fetchAllBucketlists();
-          this.props.fetchBucketlistItems(bucketlistId);
-          this.handleDisplayMessage("Succesfully deleted", 3000, "success")
-        } else {
-          var message = "Unable to delete item. Please try again"
-          if (!(result.body.message) === undefined);
-          {
-            message = result.body.message
+        if (result) {
+          if (result.status === 204) {
+            this.props.fetchAllBucketlists();
+            this.props.fetchBucketlistItems(bucketlistId);
+            return this.displayFlashMessage("Succesfully deleted", "success")
           }
-          this.handleDisplayMessage(message, 3000, "danger" )
+          var message = (("message" in result.body) && !(result.body.message === '')) ? result.body.message : "Unable to delete item"
+          return this.displayFlashMessage(message, "danger")
         }
+        return this.displayFlashMessage("An error occured", "danger")
       });
   }
+
+  displayItemDoneStatus(itemDoneStatus) {
+      if (itemDoneStatus === true) {
+        return (
+          <a className="green-circle"></a>
+        )
+      }
+      return (
+        <a className="grey-circle"></a>
+      )
+  }
+
   displaySingleBucketlistItem(bucketlistId, item) {
     return (
       <ListGroupItem onMouseEnter={this.mousenter}>
         <div className="row"  key={item.id}>
           <div id={item.id} className="single-bucketlist-item">
+            {this.displayItemDoneStatus(item.done)}
             <a className="item-name">{item.name} </a>
             <div className="manage">
               <a onClick={()=>this.handleEditBucketlistItem(bucketlistId, item.id, item.name, item.done)}><span className="glyphicon glyphicon-pencil" title="Edit this item"></span></a>
@@ -202,7 +215,7 @@ export default class BucketListItem extends Component {
                 container={document.body}
                 placement="top"
                 rootClose={true}
-                show={this.state.showDeletePopover} 
+                show={this.state.showDeletePopover}
                 onHide={() => this.setState({ showDeletePopover: false })}
                   overlay={
                   <Popover id = {bucketlistId} title="Do you really want to delete this item?">
@@ -219,22 +232,6 @@ export default class BucketListItem extends Component {
         </ListGroupItem>
 
     );
-  }
-
-  displayBucketlistItemsTitle(bucketlistId, bucketlistName) {
-    if (bucketlistId === 0 || bucketlistId === '' || bucketlistId === undefined) {
-        return (
-          <div> No bucketlist selected. </div>
-        )
-    }
-    else {
-      return (
-
-        <div>
-      {this.props.bucketlistName}
-        </div>
-      )
-    }
   }
 
   hideDeletePopover() {
@@ -259,8 +256,10 @@ export default class BucketListItem extends Component {
       <Panel header={props.bucketlistName}>
       <ListGroup fill>
       {this.displayBucketlistItems(props.bucketlistId, props.items)}
+      {this.displayDoneTips(props.items.length)}
       </ListGroup>
       </Panel>
+
 
       <BucketListItemModalForm
         show={this.state.editBucketlistItemForm}

@@ -7,11 +7,9 @@ export default class Main extends Component {
 
     render() {
         return (
-            <div>
                 <div>
                     {this.props.children}
                 </div>
-            </div>
         );
     }
 }

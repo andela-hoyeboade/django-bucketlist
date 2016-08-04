@@ -16,13 +16,16 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from rest_framework.urlpatterns import format_suffix_patterns
-import api_v1.urls
+
 import account.urls
+import api_v1.urls
 import settings
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/', include(api_v1.urls)),
     url(r'^', include(account.urls)),
-    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT})
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.STATIC_ROOT})
 
 ]

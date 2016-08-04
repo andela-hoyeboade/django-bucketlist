@@ -3,8 +3,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api_v1.serializers import BucketListSerializer, BucketListItemSerializer
+from api_v1.serializers import BucketListItemSerializer, BucketListSerializer
 from bucketlist.models import BucketList, BucketListItem
+
 
 class BucketListView(APIView):
 
@@ -36,20 +37,22 @@ class BucketListView(APIView):
         name = request.data.get('name')
         if not name:
             return Response({'message':
-                                 'Please provide a name.'},
-                                status=status.HTTP_400_BAD_REQUEST)
+                             'Please provide a name.'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         if BucketList.objects.filter(name=name, owner=self.request.user):
             return Response({'message':
-                                 'Bucketlist already exist.'},
-                                status=status.HTTP_400_BAD_REQUEST)
+                             'Bucketlist already exist.'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         serializer = BucketListSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(owner=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({'message':
-                              serializer.errors},  status=status.HTTP_400_BAD_REQUEST)
+                         serializer.errors},
+                        status=status.HTTP_400_BAD_REQUEST)
+
 
 class BucketListDetailView(APIView):
 
@@ -96,15 +99,16 @@ class BucketListDetailView(APIView):
         if bucketlist.name != name:
             if BucketList.objects.filter(name=name, owner=self.request.user):
                 return Response({'message':
-                                     'This bucketlist already exist.'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                                 'This bucketlist already exist.'},
+                                status=status.HTTP_400_BAD_REQUEST)
 
         serializer = BucketListSerializer(bucketlist, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response({'message':
-                              serializer.errors},  status=status.HTTP_400_BAD_REQUEST)
+                         serializer.errors},
+                        status=status.HTTP_400_BAD_REQUEST)
 
     # Delete a bucketlist
     def delete(self, request, bucketlist_id):
@@ -153,19 +157,20 @@ class BucketListItemView(APIView):
         name = request.data.get('name')
         if not name:
             return Response({'message':
-                                 'Please provide a name for your item.'},
-                                status=status.HTTP_400_BAD_REQUEST)
+                             'Please provide a name for your item.'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         if BucketListItem.objects.filter(name=name, bucketlist=bucketlist):
             return Response({'message':
-                                 'This item already exist.'},
-                                status=status.HTTP_400_BAD_REQUEST)
+                             'This item already exist.'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         serializer = BucketListItemSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(bucketlist=bucketlist)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class BucketListItemDetailView(APIView):
 
@@ -206,17 +211,21 @@ class BucketListItemDetailView(APIView):
         bucketlist_item = self.get_object(bucketlist_id, item_id)
         name = request.data.get('name')
         done = request.data.get('done')
-
+        mutable = request.data._mutable
+        request.data._mutable = True
         request.data['name'] = bucketlist_item.name if not name else name
-        request.data['done'] == True if str(done).lower() == "true" else False
+        request.data['done'] = True if str(done).lower() == "true" else False
+        request.data._mutable = mutable
 
         if bucketlist_item.name != name:
-            if BucketListItem.objects.filter(name=name, bucketlist=bucketlist_item.bucketlist):
+            if BucketListItem.objects.filter(name=name,
+                                             bucketlist=bucketlist_item.bucketlist):
                 return Response({'message':
-                                     'This item already exist.'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                                 'This item already exist.'},
+                                status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = BucketListItemSerializer(bucketlist_item, data=request.data)
+        serializer = BucketListItemSerializer(
+            bucketlist_item, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

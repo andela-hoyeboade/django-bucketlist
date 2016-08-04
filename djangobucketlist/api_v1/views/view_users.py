@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from api_v1.serializers import UserSerializer
 
@@ -47,53 +47,55 @@ class RegisterView(ObtainAuthToken):
         confirm_password = data.get('confirm_password')
         if not username:
             return Response({'message':
-                                     'Username not provided.'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                             'Username not provided.'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         if len(username) < 6:
             return Response({'message':
-                                     'Username is too short (Minimum is 6 characters)'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                             'Username is too short '
+                             '(Minimum is 6 characters)'},
+                            status=status.HTTP_400_BAD_REQUEST)
         if not password:
             return Response({'message':
-                                     'Password not provided.'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                             'Password not provided.'},
+                            status=status.HTTP_400_BAD_REQUEST)
         if not confirm_password:
             return Response({'message':
-                                     'Please confirm your password.'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                             'Please confirm your password.'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         if len(password) < 6 or len(confirm_password) < 6:
             return Response({'message':
-                                     'Password is too short (Minimum is 6 characters)'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                             'Password is too short '
+                             '(Minimum is 6 characters)'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         if password != confirm_password:
             return Response({'message': 'The passwords do not match'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_400_BAD_REQUEST)
 
         if User.objects.filter(username=username):
             return Response({'message':
-                                     'Username already exist.'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                             'Username already exist.'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         if not email:
             return Response({'message':
-                                     'Email not provided.'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                             'Email not provided.'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         serializer = UserSerializer(data=data)
         #import ipdb;
-        #ipdb.set_trace()
+        # ipdb.set_trace()
         if serializer.is_valid():
             User.objects.create_user(username=username, password=password,
-            email=email)
+                                     email=email)
             return super(RegisterView, self).post(request)
         else:
             return Response({'message':
-                                     'Unable to register. Plese ensure ' \
-                                     'you provide a valid email'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                             'Unable to register. Plese ensure '
+                             'you provide a valid email'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginView(ObtainAuthToken):
@@ -118,24 +120,25 @@ class LoginView(ObtainAuthToken):
               type: string
               paramType: form
         """
-        username, password = request.data.get('username'), request.data.get('password')
+        username, password = request.data.get(
+            'username'), request.data.get('password')
         if not username:
             return Response({'message':
-                                     'Username not provided.'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                             'Username not provided.'},
+                            status=status.HTTP_400_BAD_REQUEST)
         if not password:
             return Response({'message':
-                                     'Password not provided.'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                             'Password not provided.'},
+                            status=status.HTTP_400_BAD_REQUEST)
         if not User.objects.filter(username=username):
             return Response({'message':
-                                     'Username does not exist.'},
-                                    status=status.HTTP_400_BAD_REQUEST)
-        #if not User.objects.filter(username=username, password=password):
+                             'Username does not exist.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        # if not User.objects.filter(username=username, password=password):
         #    return Response({'message': 'Password incorrect.'},
         #                            status=status.HTTP_400_BAD_REQUEST)
         try:
             return super(LoginView, self).post(request)
         except:
             return Response({'message': 'Password incorrect.'},
-                status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_400_BAD_REQUEST)
