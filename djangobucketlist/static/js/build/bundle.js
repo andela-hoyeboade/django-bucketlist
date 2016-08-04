@@ -46741,8 +46741,6 @@
 	    _this.hideEditBucketlistItemForm = _this.hideEditBucketlistItemForm.bind(_this);
 	    _this.displayFlashMessage = _this.displayFlashMessage.bind(_this);
 	    _this.changeItemDoneStatus = _this.changeItemDoneStatus.bind(_this);
-	    _this.displayDoneTips = _this.displayDoneTips.bind(_this);
-	    //this.displayAllBucketlistItems = this.displayAllBucketlistItems.bind(this);
 	    _this.state = {
 	      items: [],
 	      bucketlistId: 0,
@@ -46868,10 +46866,7 @@
 	    value: function updateBucketlistItem(bucketlistId, itemId, itemName, itemDoneStatus) {
 	      var _this3 = this;
 
-	      if (itemName === '') {
-	        return;
-	      }
-	      _superagent2.default.put('/api/v1/bucketlists/' + bucketlistId + '/items/' + itemId).set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).send({ "name": itemName, "done": itemDoneStatus }).end(function (err, result) {
+	      _superagent2.default.put('/api/v1/bucketlists/' + bucketlistId + '/items/' + itemId).set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).type('form').send({ "name": itemName, "done": itemDoneStatus }).end(function (err, result) {
 	        if (result) {
 	          if (result.status === 200) {
 	            _this3.props.fetchBucketlistItems(bucketlistId);

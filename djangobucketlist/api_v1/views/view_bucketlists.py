@@ -211,9 +211,11 @@ class BucketListItemDetailView(APIView):
         bucketlist_item = self.get_object(bucketlist_id, item_id)
         name = request.data.get('name')
         done = request.data.get('done')
-
+        mutable = request.data._mutable
+        request.data._mutable = True
         request.data['name'] = bucketlist_item.name if not name else name
-        request.data['done'] == True if str(done).lower() == "true" else False
+        request.data['done'] = True if str(done).lower() == "true" else False
+        request.data._mutable = mutable
 
         if bucketlist_item.name != name:
             if BucketListItem.objects.filter(name=name,

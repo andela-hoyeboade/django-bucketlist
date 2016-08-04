@@ -39,8 +39,6 @@ export default class BucketListItem extends Component {
         this.hideEditBucketlistItemForm = this.hideEditBucketlistItemForm.bind(this);
         this.displayFlashMessage = this.displayFlashMessage.bind(this);
         this.changeItemDoneStatus = this.changeItemDoneStatus.bind(this);
-        this.displayDoneTips = this.displayDoneTips.bind(this);
-        //this.displayAllBucketlistItems = this.displayAllBucketlistItems.bind(this);
         this.state = {
           items: [],
           bucketlistId: 0,
@@ -148,13 +146,11 @@ export default class BucketListItem extends Component {
   }
 
   updateBucketlistItem(bucketlistId, itemId, itemName, itemDoneStatus) {
-    if (itemName === '') {
-      return;
-    }
     request
       .put('/api/v1/bucketlists/'+bucketlistId+'/items/'+itemId)
       .set('Authorization', 'Token ' + (JSON.parse(localStorage
             .getItem('token'))))
+      .type('form')
       .send({"name": itemName, "done": itemDoneStatus})
       .end((err, result) => {
         if (result) {

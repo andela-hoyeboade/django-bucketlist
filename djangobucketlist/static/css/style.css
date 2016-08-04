@@ -459,7 +459,7 @@ textarea {
   border-radius: 50px;
   float: left;
   margin-left: 0.4em;
-  margin-top: 0.4em;
+  margin-top: 0.65em;
 }
 
 .single-bucketlist-item .grey-circle {
@@ -471,7 +471,7 @@ textarea {
   border-radius: 50px;
   float: left;
   margin-left: 0.4em;
-  margin-top: 0.4em;
+  margin-top: 0.65em;
 }
 
 
@@ -507,9 +507,9 @@ textarea {
 }
 
 .done-tips {
-  background-color: none;
   margin-top: 0.1em;
   margin-bottom: 0.6em;
+  margin-left: -0.3em;
 }
 
 .well {
