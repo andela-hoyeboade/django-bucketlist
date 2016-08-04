@@ -46732,7 +46732,6 @@
 	    _this.deleteBucketlistItem = _this.deleteBucketlistItem.bind(_this);
 	    _this.displayBucketlistItems = _this.displayBucketlistItems.bind(_this);
 	    _this.displaySingleBucketlistItem = _this.displaySingleBucketlistItem.bind(_this);
-	    _this.displayBucketlistItemsTitle = _this.displayBucketlistItemsTitle.bind(_this);
 	    _this.handleEditBucketlistItem = _this.handleEditBucketlistItem.bind(_this);
 	    _this.handleFieldChange = _this.handleFieldChange.bind(_this);
 	    _this.handleUpdateBucketlistItem = _this.handleUpdateBucketlistItem.bind(_this);
@@ -46951,23 +46950,6 @@
 	          )
 	        )
 	      );
-	    }
-	  }, {
-	    key: 'displayBucketlistItemsTitle',
-	    value: function displayBucketlistItemsTitle(bucketlistId, bucketlistName) {
-	      if (bucketlistId === 0 || bucketlistId === '' || bucketlistId === undefined) {
-	        return _react2.default.createElement(
-	          'div',
-	          null,
-	          ' No bucketlist selected. '
-	        );
-	      } else {
-	        return _react2.default.createElement(
-	          'div',
-	          null,
-	          this.props.bucketlistName
-	        );
-	      }
 	    }
 	  }, {
 	    key: 'hideDeletePopover',

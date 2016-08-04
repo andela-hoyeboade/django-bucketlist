@@ -29,7 +29,6 @@ export default class BucketListItem extends Component {
         this.deleteBucketlistItem = this.deleteBucketlistItem.bind(this);
         this.displayBucketlistItems = this.displayBucketlistItems.bind(this);
         this.displaySingleBucketlistItem = this.displaySingleBucketlistItem.bind(this);
-        this.displayBucketlistItemsTitle = this.displayBucketlistItemsTitle.bind(this);
         this.handleEditBucketlistItem = this.handleEditBucketlistItem.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
         this.handleUpdateBucketlistItem = this.handleUpdateBucketlistItem.bind(this);
@@ -208,22 +207,6 @@ export default class BucketListItem extends Component {
         </ListGroupItem>
 
     );
-  }
-
-  displayBucketlistItemsTitle(bucketlistId, bucketlistName) {
-    if (bucketlistId === 0 || bucketlistId === '' || bucketlistId === undefined) {
-        return (
-          <div> No bucketlist selected. </div>
-        )
-    }
-    else {
-      return (
-
-        <div>
-      {this.props.bucketlistName}
-        </div>
-      )
-    }
   }
 
   hideDeletePopover() {
