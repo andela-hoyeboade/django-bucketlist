@@ -112,8 +112,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'django-bucketlist.wsgi.application'
 
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
@@ -146,7 +144,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+APPEND_SLASH = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 STATICFILES_DIRS = (

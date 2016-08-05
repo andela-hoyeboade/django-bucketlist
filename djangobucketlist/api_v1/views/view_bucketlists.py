@@ -1,14 +1,49 @@
 from django.http import Http404
-from rest_framework import status
+from rest_framework import generics, status
+from rest_framework.exceptions import ParseError
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from api_v1.permissions import IsOwner
 from api_v1.serializers import BucketListItemSerializer, BucketListSerializer
 from bucketlist.models import BucketList, BucketListItem
 
 
-class BucketListView(APIView):
+class BucketListView(generics.ListCreateAPIView):
+    """
+    Get all bucketlist, or create a new bucketlist.
+    """
+    serializer_class = BucketListSerializer
+    permission_classes = (IsAuthenticated,)
 
+    def perform_create(self, serializer):
+        """
+        Overrides the default perform_create method
+        Ensure bucketlist does not exist already for user"""
+        name = serializer.validated_data.get("name")
+        if BucketList.objects.filter(name=name, owner=self.request.user):
+            raise ParseError(detail="This bucketlist already exist")
+        return serializer.save(owner=self.request.user)
+
+    def get_queryset(self):
+        """
+        Overrides the default get_queryset method
+        Return bucketlists belonging to a particular user only"""
+        return BucketList.objects.filter(owner=self.request.user)
+
+
+class BucketListDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, Update or delete a bucketlist
+    """
+    serializer_class = BucketListSerializer
+    queryset = BucketList.objects.all()
+    permission_classes = (IsAuthenticated, IsOwner)
+    lookup_field = 'id'
+
+
+class BucketListView2(APIView):
     """
     Get all bucketlist, or create a new bucketlist.
     """
@@ -54,7 +89,7 @@ class BucketListView(APIView):
                         status=status.HTTP_400_BAD_REQUEST)
 
 
-class BucketListDetailView(APIView):
+class BucketListDetailView2(APIView):
 
     """
     Retrieve, Update or delete a bucketlist

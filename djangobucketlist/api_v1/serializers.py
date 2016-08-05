@@ -1,6 +1,8 @@
-from rest_framework import serializers
 from django.contrib.auth.models import User
+from rest_framework import serializers
+
 from bucketlist.models import BucketList, BucketListItem
+
 
 class UserSerializer(serializers.ModelSerializer):
     bucketlist = serializers.PrimaryKeyRelatedField(
