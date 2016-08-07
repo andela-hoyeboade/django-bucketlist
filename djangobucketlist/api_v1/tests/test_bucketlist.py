@@ -27,19 +27,19 @@ class BucketListTest(APITestCase):
                                     data=new_bucketlist_data, format='multipart')
         bucketlist_id = response.data.get('id')
         self.bucketlist_detail_url = reverse('bucketlist_detail_api',
-                                             kwargs={'bucketlist_id': bucketlist_id})
+                                             kwargs={'pk': bucketlist_id})
 
     def create_new_bucketlist_item(self):
         response = self.client.post(bucketlist_url, data=new_bucketlist_data,
                                     format='multipart')
         bucketlist_id = response.data.get('id')
         self.bucketlist_item_url = (reverse('bucketlist_item_api',
-                                            kwargs={'bucketlist_id': bucketlist_id}))
+                                            kwargs={'pk': bucketlist_id}))
         response = self.client.post(self.bucketlist_item_url,
                                     data=new_bucketlist_item_data, format='multipart')
         item_id = response.data.get('id')
         self.bucketlist_detail_url = reverse('bucketlist_item_detail_api',
-                                             kwargs={'bucketlist_id': bucketlist_id, 'item_id': item_id})
+                                             kwargs={'bucketlist': bucketlist_id, 'pk': item_id})
 
     def test_create_bucketlist_with_valid_name(self):
         """
@@ -125,8 +125,6 @@ class BucketListTest(APITestCase):
             bucketlist_url, data=new_bucketlist_data, format='multipart')
         response = self.client.get(bucketlist_url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data[0].get(
-            'name'), new_bucketlist_data['name'])
 
     def test_retrieve_single_bucketlist(self):
         """
@@ -159,7 +157,7 @@ class BucketListTest(APITestCase):
 
         # Asserting TRUE access
         response = self.client.get(
-            reverse('bucketlist_detail_api', kwargs={'bucketlist_id': 190}))
+            reverse('bucketlist_detail_api', kwargs={'pk': 190}))
         self.assertEqual(response.status_code, 404)
 
     def test_update_bucketlist(self):
@@ -182,7 +180,7 @@ class BucketListTest(APITestCase):
 
     def test_update_bucketlist_without_name(self):
         """
-        Ensure user can update their bucketlist without specifying name
+        Ensure user can not update their bucketlist without supplying name
         """
         # Test access without authentication
         plain_response = self.client.get(bucketlist_url)
@@ -195,13 +193,11 @@ class BucketListTest(APITestCase):
         self.create_new_bucketlist()
         response = self.client.put(
             self.bucketlist_detail_url, data={'name': ''})
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data.get('name'),
-                         new_bucketlist_data['name'])
+        self.assertEqual(response.status_code, 400)
 
     def test_update_bucketlist_with_invalid_name(self):
         """
-        Ensure user can update their bucketlist without specifying name
+        Ensure user can not update their bucketlist without supplying valid name
         """
         # Test access without authentication
         plain_response = self.client.get(bucketlist_url)
@@ -248,7 +244,7 @@ class BucketListTest(APITestCase):
                                     format='multipart')
         bucketlist_id = response.data.get('id')
         bucketlist_item_url = (reverse('bucketlist_item_api',
-                                       kwargs={'bucketlist_id': bucketlist_id}))
+                                       kwargs={'pk': bucketlist_id}))
         response = self.client.post(
             bucketlist_item_url, data=new_bucketlist_data, format='multipart')
         self.assertEqual(response.status_code, 201)
@@ -271,7 +267,7 @@ class BucketListTest(APITestCase):
                                     format='multipart')
         bucketlist_id = response.data.get('id')
         bucketlist_item_url = (reverse('bucketlist_item_api',
-                                       kwargs={'bucketlist_id': bucketlist_id}))
+                                       kwargs={'pk': bucketlist_id}))
         response = self.client.post(bucketlist_item_url, data={
                                     'name': ''}, format='multipart')
         self.assertEqual(response.status_code, 400)
@@ -292,7 +288,7 @@ class BucketListTest(APITestCase):
                                     format='multipart')
         bucketlist_id = response.data.get('id')
         bucketlist_item_url = (reverse('bucketlist_item_api',
-                                       kwargs={'bucketlist_id': bucketlist_id}))
+                                       kwargs={'pk': bucketlist_id}))
         response = self.client.post(bucketlist_item_url, data={
                                     'name': ('Bucketlist' * 25)}, format='multipart')
         self.assertEqual(response.status_code, 400)
@@ -313,7 +309,7 @@ class BucketListTest(APITestCase):
         response = self.client.post(bucketlist_url, data=new_bucketlist_data,
                                     format='multipart')
         bucketlist_item_url = (reverse('bucketlist_item_api',
-                                       kwargs={'bucketlist_id': 1010}))
+                                       kwargs={'pk': 1010}))
         response = self.client.post(bucketlist_item_url, data={
                                     'name': 'Item1'}, format='multipart')
         self.assertEqual(response.status_code, 404)
@@ -404,6 +400,6 @@ class BucketListTest(APITestCase):
 
         # Asserting TRUE access
         response = self.client.delete(reverse('bucketlist_item_detail_api',
-                                              kwargs={'bucketlist_id': 45,
-                                                      'item_id': 786}))
+                                              kwargs={'bucketlist': 45,
+                                                      'pk': 786}))
         self.assertEqual(response.status_code, 404)

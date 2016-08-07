@@ -1,11 +1,15 @@
 from __future__ import unicode_literals
 
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+
+
 # Create your models here.
 """
 Models for bucketlist app
 """
+
+
 class Base(models.Model):
     name = models.CharField(max_length=200, null=False)
     date_created = models.DateTimeField(
@@ -19,7 +23,8 @@ class Base(models.Model):
 
 
 class BucketList(Base):
-    owner = models.ForeignKey(User, related_name='bucketlist', on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        User, related_name='bucketlist', on_delete=models.CASCADE)
 
     class Meta(Base.Meta):
         db_table = 'bucketlist'
@@ -29,7 +34,8 @@ class BucketList(Base):
 
 
 class BucketListItem(Base):
-    bucketlist = models.ForeignKey(BucketList, related_name='items', on_delete=models.CASCADE)
+    bucketlist = models.ForeignKey(
+        BucketList, related_name='items', on_delete=models.CASCADE)
     done = models.BooleanField(default=False)
 
     class Meta(Base.Meta):
