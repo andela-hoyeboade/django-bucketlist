@@ -2,11 +2,9 @@ from django.http import Http404
 from rest_framework import generics, status
 from rest_framework.exceptions import ParseError
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from api_v1.mixins import MultipleFieldLookupMixin
-from api_v1.permissions import IsBucketlistOwner, IsOwner
+from api_v1.permissions import IsBucketlistOwner, IsItemOwner
 from api_v1.serializers import BucketListItemSerializer, BucketListSerializer
 from bucketlist.models import BucketList, BucketListItem
 
@@ -40,7 +38,7 @@ class BucketListDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     serializer_class = BucketListSerializer
     queryset = BucketList.objects.all()
-    permission_classes = (IsAuthenticated, IsOwner)
+    permission_classes = (IsAuthenticated, IsBucketlistOwner)
 
     def perform_update(self, serializer):
         # Ensure users does not have two bucketlist with same name
@@ -85,8 +83,8 @@ class BucketListItemDetailView(MultipleFieldLookupMixin, generics.RetrieveUpdate
     """
     serializer_class = BucketListItemSerializer
     queryset = BucketListItem.objects.all()
-    permission_classes = (IsAuthenticated, IsBucketlistOwner)
-    lookup_fields = ('bucketlist', 'pk')
+    permission_classes = (IsAuthenticated, IsItemOwner)
+    lookup_fields = ('pk', 'bucketlist')
 
     def perform_update(self, serializer):
         # Ensure users does not have two bucketlist items with same name

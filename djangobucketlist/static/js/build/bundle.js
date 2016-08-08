@@ -26821,7 +26821,7 @@
 	      _superagent2.default.get('/api/v1/bucketlists/').set('Authorization', 'Token ' + JSON.parse(localStorage.getItem('token'))).end(function (err, result) {
 	        if (result.status === 200) {
 	          _this2.setState({
-	            bucketlists: result.body
+	            bucketlists: result.body.results
 	          });
 	        } else {
 	          _this2.setState({

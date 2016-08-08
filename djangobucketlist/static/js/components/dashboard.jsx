@@ -34,6 +34,8 @@ export default class Dashboard extends Component {
   }
 
   fetchAllBucketlists() {
+    console.log(JSON.parse(localStorage
+          .getItem('token')))
     request
       .get('/api/v1/bucketlists/')
       .set('Authorization', 'Token ' + (JSON.parse(localStorage
@@ -41,7 +43,7 @@ export default class Dashboard extends Component {
       .end((err, result) => {
         if (result.status === 200) {
           this.setState({
-            bucketlists: result.body,
+            bucketlists: result.body.results,
           });
         } else {
           this.setState({
