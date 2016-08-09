@@ -49460,12 +49460,12 @@
 	                _reactBootstrap.FormGroup,
 	                null,
 	                _react2.default.createElement(
-	                  Button,
+	                  _reactBootstrap.Button,
 	                  { onClick: this.props.onHide },
 	                  'Close'
 	                ),
 	                _react2.default.createElement(
-	                  Button,
+	                  _reactBootstrap.Button,
 	                  { type: 'submit', className: 'btn btn-primary' },
 	                  'Save'
 	                )
