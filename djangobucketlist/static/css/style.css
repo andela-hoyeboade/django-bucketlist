@@ -270,7 +270,8 @@ textarea {
   font-size: 3em;
     margin-left: 8.7em;
     color: #f5f5f5;
-    cursor: pointer
+    cursor: pointer;
+    margin-top: -0.3em;
 }
 .search {
   margin-left: 45em;
@@ -524,4 +525,8 @@ textarea {
 }
 
 .item-detail {
+}
+
+.pagination {
+  margin-top: -0.5em;
 }
