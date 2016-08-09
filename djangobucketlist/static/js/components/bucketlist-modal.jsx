@@ -1,21 +1,5 @@
-import React,  { Component } from 'react';
-import ReactDOM from 'react-dom';
-import Dashboard from './dashboard.jsx';
-import request from 'superagent';
-import {
-    Col,
-    form,
-    Form,
-    FormGroup,
-    FormControl,
-    Control,
-    ControlLabel,
-    Checkbox,
-    Button,
-    Tab,
-    Tabs,
-    Modal
-} from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Col, Form, FormGroup, FormControl, Modal } from 'react-bootstrap';
 
 export default class BucketListModalForm extends Component{
   render(){
@@ -32,7 +16,7 @@ export default class BucketListModalForm extends Component{
             <FormControl
               name={this.props.formName} value={this.props.bucketlistName} type="text" required = {true} placeholder={this.props.placeholder} onChange={this.props.handleFieldChange}
             />
-          </Col>        
+          </Col>
         </FormGroup>
 
         <Modal.Footer>

@@ -2,20 +2,7 @@ import React, { Component } from 'react';
 import BucketListItemModalForm from './bucketlist-item-modal.jsx';
 import request from 'superagent';
 import {
-    Col,
-    form,
-    Form,
-    FormGroup,
-    FormControl,
-    Control,
-    ControlLabel,
-    Checkbox,
-    Button,
-    Tab,
-    Tabs,
-    ButtonToolbar,
     OverlayTrigger,
-    Overlay,
     Popover,
     ListGroup,
     ListGroupItem,

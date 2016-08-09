@@ -1,21 +1,5 @@
 import React,  { Component } from 'react';
-import ReactDOM from 'react-dom';
-import Dashboard from './dashboard.jsx';
-import request from 'superagent';
-import {
-    Col,
-    form,
-    Form,
-    FormGroup,
-    FormControl,
-    Control,
-    ControlLabel,
-    Checkbox,
-    Button,
-    Tab,
-    Tabs,
-    Modal
-} from 'react-bootstrap';
+import { Col, Form, FormGroup, FormControl, Button, Modal } from 'react-bootstrap';
 
 export default class BucketListItemModalForm extends Component {
   constructor() {

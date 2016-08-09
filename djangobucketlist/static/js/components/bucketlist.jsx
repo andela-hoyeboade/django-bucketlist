@@ -3,7 +3,7 @@ import BucketListItem from './bucketlistitem.jsx';
 import BucketListModalForm from './bucketlist-modal.jsx';
 import BucketListItemModalForm from './bucketlist-item-modal.jsx';
 import request from 'superagent';
-import { OverlayTrigger, Popover, Accordion, Panel, Alert } from 'react-bootstrap';
+import { OverlayTrigger, Popover, Accordion, Panel, Alert, Pagination } from 'react-bootstrap';
 
 export default class BucketList extends Component {
   constructor() {
@@ -29,6 +29,8 @@ export default class BucketList extends Component {
     this.displayFlashMessage = this.displayFlashMessage.bind(this);
     this.hideDeletePopover = this.hideDeletePopover.bind(this);
     this.displayNewItemFlashMessage = this.displayNewItemFlashMessage.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
+    this.handleClick = this.handleClick.bind(this)
     this.state = {
       items: [],
       newBucketListName: '',
@@ -43,12 +45,25 @@ export default class BucketList extends Component {
       displayNewItemMessageStatus: "none",
       newItemFlashMessage: "",
       newItemMessageType: "success",
+      activePage: 1,
     }
+  }
+
+  handleClick(no) {
+    alert(no)
+//    this.props.fetchBucketlistByPage(this.state.activePage)
+  }
+
+  handleSelect(eventKey) {
+    this.setState({
+      activePage: eventKey
+    });
+    this.props.fetchBucketlistByPage(eventKey)
   }
 
   onbucketlistClick(bucketlistId, bucketlistName) {
     if (bucketlistId === '' || bucketlistId === undefined) {
-      this.setState({items: []});
+      return;
     }
     else {
       this.setState({
@@ -90,7 +105,7 @@ export default class BucketList extends Component {
             this.props.fetchAllBucketlists();
             return this.displayFlashMessage("Succesfully created", "success")
           }
-          var message = (("message" in result.body) && !(result.body.message === '')) ? result.body.message : "Unable to create a new bucketlist"
+          var message = (("detail" in result.body) && !(result.body.detail === '')) ? result.body.detail : "Unable to create a new bucketlist"
           return this.displayFlashMessage(message, "danger")
         }
         return this.displayFlashMessage("An error occured", "danger")
@@ -133,7 +148,7 @@ export default class BucketList extends Component {
             this.props.fetchAllBucketlists();
             return this.displayFlashMessage("Succesfully deleted", "success")
           }
-          var message = (("message" in result.body) && !(result.body.message === '')) ? result.body.message : "Unable to delete bucketlist"
+          var message = (("detail" in result.body) && !(result.body.detail === '')) ? result.body.detail : "Unable to delete bucketlist"
           return this.displayFlashMessage(message, "danger")
         }
         return this.displayFlashMessage("An error occured", "danger")
@@ -183,7 +198,7 @@ export default class BucketList extends Component {
             this.fetchBucketlistItems(bucketlistId)
             return this.displayNewItemFlashMessage("Succesfully created", "success")
           }
-          var message = (("message" in result.body) && !(result.body.message === '')) ? result.body.message : "Unable to create item"
+          var message = (("detail" in result.body) && !(result.body.detail === '')) ? result.body.detail : "Unable to create item"
           return this.displayNewItemFlashMessage(message, "danger")
         }
         return this.displayNewItemFlashMessage("An error occured", "danger")
@@ -231,7 +246,7 @@ export default class BucketList extends Component {
             this.props.fetchAllBucketlists();
             return this.displayFlashMessage("Succesfully updated", "success")
           }
-          var message = (("message" in result.body) && !(result.body.message === '')) ? result.body.message : "Unable to update bucketlist"
+          var message = (("detail" in result.body) && !(result.body.detail === '')) ? result.body.detail : "Unable to update bucketlist"
           return this.displayFlashMessage(message, "danger")
         }
         return this.displayFlashMessage("An error occured", "danger")
@@ -259,7 +274,6 @@ export default class BucketList extends Component {
 
   }
   hideDeletePopover() {
-    console.log(this.state.showDeletePopover)
     this.setState({ showDeletePopover: false })
   }
 
@@ -330,7 +344,19 @@ export default class BucketList extends Component {
               {this.displayAllBucketlists()}
             </Accordion>
           </Panel>
+          <Pagination
+          prev
+          next
+          first
+          last
+          ellipsis
+          items={this.props.bucketlistCount}
+          maxButtons={5}
+          activePage={this.state.activePage}
+          onSelect={this.handleSelect}
+          />
         </div>
+
         <div className="bucket-list-items">
           <BucketListItem
             bucketlistId = {this.state.bucketlistId}

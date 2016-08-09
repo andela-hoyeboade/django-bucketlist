@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Menu from './menu.jsx';
 import BucketList from './bucketlist.jsx';
 import request from 'superagent';
+import { Pagination } from 'react-bootstrap';
 
 export default class Dashboard extends Component {
   constructor() {
@@ -9,16 +10,10 @@ export default class Dashboard extends Component {
     this.handleLogout = this.handleLogout.bind(this);
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.fetchAllBucketlists = this.fetchAllBucketlists.bind(this);
+    this.fetchBucketlistByPage = this.fetchBucketlistByPage.bind(this);
     this.state = {
       bucketlists: [],
-      bucketlistId: 0,
-      bucketlistName: '',
-      bucketlistItemName: '',
-      bucketlistItemStatus: false,
-      newBucketlistForm: false,
-      newBucketlistItemForm: false,
-      editBucketlistForm: false,
-      items: [],
+      bucketlistCount: 0
     }
   }
 
@@ -26,6 +21,20 @@ export default class Dashboard extends Component {
     if (!localStorage.getItem('isAuthenticated')) {
       this.context.router.push('/')
     }
+  }
+
+  fetchBucketlistByPage(page) {
+    request
+      .get('/api/v1/bucketlists/?page='+page)
+      .set('Authorization', 'Token ' + (JSON.parse(localStorage
+            .getItem('token'))))
+      .end((err, result) => {
+        if (result.status === 200) {
+          this.setState({
+            bucketlists: result.body.results,
+          });
+        }
+      });
   }
 
   componentDidMount() {
@@ -40,12 +49,11 @@ export default class Dashboard extends Component {
             .getItem('token'))))
       .end((err, result) => {
         if (result.status === 200) {
+          var count = result.body.count
+          var countValue =  (count % 10 === 0) ? count/10 : Math.floor(count/10) + 1
           this.setState({
-            bucketlists: result.body,
-          });
-        } else {
-          this.setState({
-            bucketlists: [],
+            bucketlists: result.body.results,
+            bucketlistCount: countValue
           });
         }
       });
@@ -76,9 +84,10 @@ export default class Dashboard extends Component {
         <BucketList
           bucketlists={this.state.bucketlists}
           fetchAllBucketlists={this.fetchAllBucketlists}
+          fetchBucketlistByPage={this.fetchBucketlistByPage}
+          bucketlistCount={this.state.bucketlistCount}
         />
-
-      </div>
+        </div>
     );
   }
 }
