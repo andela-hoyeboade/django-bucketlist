@@ -109,7 +109,7 @@ The app can be used by visiting the site https://mybucketlists.herokuapp.com, cr
 2. cd into djangobucketlist and run python manage.py test
 
 ##Project Demo
-Click <a href='https://youtu.be/SxhpTVLr3uQ'>here </a> to view the project demo
+Click <a href='https://www.youtube.com/watch?v=l6wMlBOgTVM'>here </a> to view the project demo
 
 ## References
 http://docs.djangoproject.com/ <br />
