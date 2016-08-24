@@ -20,19 +20,19 @@ The API documentation is available <a href="https://mybucketlists.herokuapp.com/
 1. Clone the repo
 `git clone https://github.com/andela-hoyeboade/django-bucketlist.git/` and navigate to the project directory
 
-2. Create and activate a virtual environment
+2. Create and activate a virtual environment e.g `mkvirtualenv venv`
 
 3. Install dependencies
 ```pip install -r requirements.txt```
 
-4. Run the app
+4. From the project root directory, run the app
   * Set up the database
       - Create a postgres database using pgadmin or any other possible methods.
-      - From the project root directory, navigate to djangobucketlist/django-bucketlist/settings/development.py file, then update the database settings to hold your database name, your postgres user, password and any other neccessary information
-  * Make migrations by running the following commands.<br>
-      - From the project root directory, run `cd djangobucketlist` and `python manage.py makemigrations` to create the models for the app.
-      - From the project root directory, run `cd djangobucketlist` and `python manage.py migrate` to create necessary tables in the database.
-  * From the project root directory, run `cd djangobucketlist` and `python manage.py runserver` to get the app running
+      -  navigate to djangobucketlist/django-bucketlist/settings/development.py file, then update the database settings to hold your database name, your postgres user, password and any other neccessary information
+  * Make migrations.<br>
+      - Run `cd djangobucketlist` and `python manage.py makemigrations` to create the models for the app.
+      - After making migrations, run `python manage.py migrate` to create necessary tables in the database.
+  * Run `cd djangobucketlist` and `python manage.py runserver` to get the app running
 
 ## Functionality, Endpoints and Accessiblity
   <table>
