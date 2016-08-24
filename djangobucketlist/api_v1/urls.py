@@ -1,7 +1,6 @@
 from django.conf.urls import include, url
 
-from api_v1 import views
-from views import view_bucketlists, view_users
+from api_v1.views import view_users, view_bucketlists
 
 urlpatterns = [
     url(r'^auth/login$', view_users.LoginView.as_view(), name='apilogin'),

@@ -1,8 +1,7 @@
-from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions
 
-from bucketlist.models import BucketList, BucketListItem
+from bucketlist.models import BucketList
 
 
 class IsBucketlistOwner(permissions.BasePermission):
