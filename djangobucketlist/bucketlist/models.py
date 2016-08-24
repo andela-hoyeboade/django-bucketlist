@@ -2,13 +2,10 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-# Create your models here.
-"""
-Models for bucketlist app
-"""
-
-
 class Base(models.Model):
+    """
+    Base model inherited by other models
+    """
     name = models.CharField(max_length=200, null=False)
     date_created = models.DateTimeField(
         auto_now_add=True, verbose_name='created_on')
@@ -21,6 +18,9 @@ class Base(models.Model):
 
 
 class BucketList(Base):
+    """
+    Model for bucketlist
+    """
     owner = models.ForeignKey(
         User, related_name='bucketlist', on_delete=models.CASCADE)
 
@@ -32,6 +32,9 @@ class BucketList(Base):
 
 
 class BucketListItem(Base):
+    """
+    Model for bucketlist item
+    """
     bucketlist = models.ForeignKey(
         BucketList, related_name='items', on_delete=models.CASCADE)
     done = models.BooleanField(default=False)

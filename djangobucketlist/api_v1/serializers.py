@@ -5,6 +5,9 @@ from bucketlist.models import BucketList, BucketListItem
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """
+    Serializer for user objects
+    """
     bucketlist = serializers.PrimaryKeyRelatedField(
         many=True, queryset=BucketList.objects.all())
 
@@ -14,7 +17,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class BucketListItemSerializer(serializers.ModelSerializer):
-
+    """
+    Serializer for bucketlist item objects
+    """
     bucketlist = serializers.ReadOnlyField(source='bucketlist.id')
 
     class Meta:
@@ -25,7 +30,9 @@ class BucketListItemSerializer(serializers.ModelSerializer):
 
 
 class BucketListSerializer(serializers.ModelSerializer):
-
+    """
+    Serializer for bucketlist objects
+    """
     items = BucketListItemSerializer(many=True, read_only=True)
     owner = serializers.ReadOnlyField(source='owner.username')
 
