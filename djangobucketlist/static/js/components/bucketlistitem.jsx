@@ -63,10 +63,11 @@ export default class BucketListItem extends Component {
         return (
           <Well  bsSize="small">
           <div className="done-tips">
-          <div className="green-circle"></div>
-          <div className="done">&nbsp;&nbsp;Done</div>
           <div className="grey-circle"></div>
+          <div className="done">&nbsp;&nbsp;Done</div>
+          <div className="green-circle"></div>
           <div className="not-done">&nbsp;&nbsp;Not done</div>
+
           </div>
           </Well>
         )
@@ -145,7 +146,7 @@ export default class BucketListItem extends Component {
             this.props.fetchBucketlistItems(bucketlistId);
             return this.displayFlashMessage("Succesfully updated", "success")
           }
-          var message = (("message" in result.body) && !(result.body.message === '')) ? result.body.message : "Unable to update item"
+          var message = (("detail" in result.body) && !(result.body.detail === '')) ? result.body.detail : "Unable to update item"
           return this.displayFlashMessage(message, "danger")
         }
         return this.displayFlashMessage("An error occured", "danger")
@@ -170,7 +171,7 @@ export default class BucketListItem extends Component {
             this.props.fetchBucketlistItems(bucketlistId);
             return this.displayFlashMessage("Succesfully deleted", "success")
           }
-          var message = (("message" in result.body) && !(result.body.message === '')) ? result.body.message : "Unable to delete item"
+          var message = (("detail" in result.body) && !(result.body.detail === '')) ? result.body.detail : "Unable to delete item"
           return this.displayFlashMessage(message, "danger")
         }
         return this.displayFlashMessage("An error occured", "danger")
@@ -180,13 +181,21 @@ export default class BucketListItem extends Component {
   displayItemDoneStatus(itemDoneStatus) {
       if (itemDoneStatus === true) {
         return (
-          <a className="green-circle"></a>
+          <a className="grey-circle"></a>
         )
       }
       return (
-        <a className="grey-circle"></a>
+        <a className="green-circle"></a>
       )
   }
+
+  getItemColor(itemDoneStatus) {
+      if (itemDoneStatus === true) {
+        return ("Grey")
+      }
+      return ("Green")
+  }
+
 
   displaySingleBucketlistItem(bucketlistId, item) {
     return (
@@ -194,7 +203,7 @@ export default class BucketListItem extends Component {
         <div className="row"  key={item.id}>
           <div id={item.id} className="single-bucketlist-item">
             {this.displayItemDoneStatus(item.done)}
-            <a className="item-name">{item.name} </a>
+            <a className="item-name" style={{ 'color': this.getItemColor(item.done) }}>{item.name} </a>
             <div className="manage">
               <a onClick={()=>this.handleEditBucketlistItem(bucketlistId, item.id, item.name, item.done)}><span className="glyphicon glyphicon-pencil" title="Edit this item"></span></a>
               <OverlayTrigger

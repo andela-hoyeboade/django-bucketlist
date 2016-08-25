@@ -368,7 +368,6 @@ textarea {
   padding-left: 0.8em;
   word-break: break-all;
   text-decoration: none;
-  color: black;
 }
 .item-name {
   padding: 0.3em;
@@ -376,6 +375,10 @@ textarea {
 
 .single-bucketlist-item {
   background-color: #fff;
+}
+
+.single-bucketlist-item :hover {
+  text-decoration: none;
 }
 
 .bucket-list-item-title {
@@ -491,6 +494,7 @@ textarea {
   -webkit-border-radius: 50px;
   border-radius: 50px;
   float: left;
+  margin-left: 2em;
 }
 
 .done-tips .grey-circle {
@@ -501,7 +505,7 @@ textarea {
   -webkit-border-radius: 50px;
   border-radius: 50px;
   float: left;
-  margin-left: 2em;
+  margin-left: 0em;
 }
 
 .done {
