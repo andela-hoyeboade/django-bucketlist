@@ -494,7 +494,7 @@ textarea {
   -webkit-border-radius: 50px;
   border-radius: 50px;
   float: left;
-  margin-left: 2em;
+  margin-left: 0em;
 }
 
 .done-tips .grey-circle {
@@ -505,7 +505,7 @@ textarea {
   -webkit-border-radius: 50px;
   border-radius: 50px;
   float: left;
-  margin-left: 0em;
+  margin-left: 2em;
 }
 
 .done {
