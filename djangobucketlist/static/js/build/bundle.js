@@ -46821,17 +46821,17 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'done-tips' },
-	            _react2.default.createElement('div', { className: 'grey-circle' }),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'done' },
-	              '  Done'
-	            ),
 	            _react2.default.createElement('div', { className: 'green-circle' }),
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'not-done' },
 	              '  Not done'
+	            ),
+	            _react2.default.createElement('div', { className: 'grey-circle' }),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'done' },
+	              '  Done'
 	            )
 	          )
 	        );

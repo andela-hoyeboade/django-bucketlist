@@ -63,11 +63,10 @@ export default class BucketListItem extends Component {
         return (
           <Well  bsSize="small">
           <div className="done-tips">
-          <div className="grey-circle"></div>
-          <div className="done">&nbsp;&nbsp;Done</div>
           <div className="green-circle"></div>
           <div className="not-done">&nbsp;&nbsp;Not done</div>
-
+          <div className="grey-circle"></div>
+          <div className="done">&nbsp;&nbsp;Done</div>
           </div>
           </Well>
         )
